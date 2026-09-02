@@ -284,18 +284,19 @@
     <div class="route-grid">
       <div class="route-col">
         <div class="col-hdr">Fuentes</div>
-        <div class="r-node" id="n-mic" onclick="connectNode('mic')">🎤<span>Micrófono</span></div>
+        <div class="r-node" id="n-mic" onclick="connectNode('mic')">🎤<span>Micrófono (XLR)</span></div>
+        <div class="r-node" id="n-mic-int" onclick="connectNode('mic-int')">💻<span>Mic Integrado</span></div>
         <div class="r-node" id="n-guitar" onclick="connectNode('guitar')">🎸<span>Guitarra</span></div>
         <div class="r-node" id="n-kb" onclick="connectNode('kb')">🎹<span>Teclado MIDI</span></div>
       </div>
       <div class="route-col">
-        <div class="col-hdr">Interfaz de Audio</div>
-        <div class="r-node" id="n-ext" onclick="connectNode('ext')">🎛️<span>Interfaz Externa<br>(Focusrite, etc.)</span></div>
-        <div class="r-node" id="n-int" onclick="connectNode('int')">🖥️<span>Tarjeta Interna<br>(Built-in)</span></div>
+        <div class="col-hdr">Interfaz (Entrada)</div>
+        <div class="r-node" id="n-ext" onclick="connectNode('ext')">🎛️<span>Interfaz Externa</span></div>
+        <div class="r-node" id="n-int" onclick="connectNode('int')">🖥️<span>Tarjeta Interna</span></div>
       </div>
       <div class="route-col">
         <div class="col-hdr">DAW</div>
-        <div class="r-node rcore" id="n-abl">💻<span>Ableton Live</span></div>
+        <div class="r-node rcore" id="n-abl" onclick="connectNode('abl')" style="cursor:pointer">💻<span>Ableton Live</span></div>
       </div>
       <div class="route-col">
         <div class="col-hdr">Interfaz (Salida)</div>
@@ -850,107 +851,121 @@ function pressTab() {
    M3 — RUTEO (SVG dinámico + Validación de Hardware)
 ═══════════════════════════════════════════════════ */
 const NODE_INFO = {
-  'mic':    { title:'🎤 Micrófono', color:'ra', text:'Señal analógica XLR/TRS. Necesita interfaz de audio para convertirse a digital. Si es micrófono de condensador, la interfaz provee Phantom Power (+48V).' },
-  'guitar': { title:'🎸 Guitarra',  color:'ra', text:'Señal Hi-Z de instrumento. Conecta a una entrada "INST" de la interfaz de audio. También puedes usar una DI Box.' },
-  'kb':     { title:'🎹 Teclado MIDI (USB)', color:'rm', text:'¡El MIDI no lleva audio! Solo manda instrucciones (Nota, Velocidad, CC). Va directo a Ableton por USB, sin necesitar interfaz de audio.' },
-  'ext':    { title:'🎛️ Interfaz (Entrada)', color:'ra', text:'Convierte la señal analógica a digital con alta calidad.' },
-  'int':    { title:'🖥️ Tarjeta Interna',  color:'ra', text:'No tiene entradas físicas profesionales para conectar un micrófono profesional o guitarra directamente.' },
-  'out-ext':{ title:'🎛️ Interfaz (Salida)', color:'ro', text:'El audio digital (101010) sale de Ableton, vuelve a la interfaz y el convertidor D/A lo vuelve analógico para tus monitores.' },
-  'out-int':{ title:'🖥️ Tarjeta Interna (Salida)', color:'ro', text:'La salida default de tu computadora. Buena para audífonos de consumidor.' },
-  'spk':    { title:'🔊 Bocinas',    color:'ro', text:'Monitores de estudio. Si usas Interfaz Externa, van conectados por cables TRS/XLR a la interfaz.' },
-  'head':   { title:'🎧 Audífonos', color:'ro', text:'Misma configuración que bocinas. Útiles para trabajo en silencio.' },
+  'mic':     { title:'🎤 Micrófono XLR', color:'ra', text:'Señal analógica profesional. Necesita preamplificador y conversión analógica-digital.' },
+  'mic-int': { title:'💻 Mic Integrado', color:'ra', text:'El micrófono integrado de tu computadora. Ya está conectado directamente a la Tarjeta Interna.' },
+  'guitar':  { title:'🎸 Guitarra',  color:'ra', text:'Señal de instrumento. Conecta a una entrada "INST" de una interfaz externa.' },
+  'kb':      { title:'🎹 Teclado MIDI', color:'rm', text:'¡El MIDI no es audio! Solo son datos informáticos (Notas, Velocity). Va por USB.' },
+  'ext':     { title:'🎛️ Interfaz Externa (In)', color:'ra', text:'Toma la señal analógica, la amplifica y la convierte a números (Digital) para la PC.' },
+  'int':     { title:'🖥️ Tarjeta Interna (In)',  color:'ra', text:'El chip de audio de tu computadora. Solo recibe el Micrófono Integrado o un puerto de micrófono de consumidor.' },
+  'abl':     { title:'💻 Ableton Live', color:'rcore', text:'El cerebro central. Aquí grabas, aplicas efectos y produces.' },
+  'out-ext': { title:'🎛️ Interfaz Externa (Out)', color:'ro', text:'Ableton manda números, la interfaz los convierte de regreso a electricidad (Analógico) para las bocinas.' },
+  'out-int': { title:'🖥️ Tarjeta Interna (Out)', color:'ro', text:'Salida de audífonos (minijack) de tu computadora.' },
+  'spk':     { title:'🔊 Bocinas',    color:'ro', text:'Monitores de estudio. Si usas Interfaz Externa, van conectados por cables TRS/XLR.' },
+  'head':    { title:'🎧 Audífonos', color:'ro', text:'Monitoreo directo a tus oídos.' },
 };
-let activeSrc = null, activeIfaceIn = null, activeIfaceOut = null;
 
-
-function resetRouting() {
-  ['n-mic','n-guitar','n-kb','n-ext','n-int','n-out-ext','n-out-int','n-spk','n-head'].forEach(id => {
-    const el = document.getElementById(id);
-    if(el) el.classList.remove('ra','rm','ro');
-  });
-  ['l-src','l-in','l-kb','l-out','l-spk'].forEach(clearLine);
-  activeSrc = null; activeIfaceIn = null; activeIfaceOut = null;
-  document.getElementById('rInfo').classList.remove('show');
-  msg('Ruteo reiniciado.', 'var(--muted)');
-}
-
-
-function beep(ac, freq, type='sine') {
-  if (!ac) return;
-  try {
-    const o = ac.createOscillator(), g = ac.createGain();
-    o.type = type; o.frequency.value = freq;
-    o.connect(g); g.connect(ac.destination);
-    o.start(); g.gain.exponentialRampToValueAtTime(0.0001, ac.currentTime + 0.15);
-    o.stop(ac.currentTime + 0.2);
-  } catch(e){}
-}
+let activeSrc = null, activeIfaceIn = null, activeDaw = null, activeIfaceOut = null;
 
 function connectNode(key) {
-  const ac  = getAC();
+  const ac = getAC();
   const inf = NODE_INFO[key];
-  const el  = document.getElementById('n-' + key);
+  const el = document.getElementById('n-' + key);
+  
   document.getElementById('rInfoTitle').textContent = inf.title;
-  document.getElementById('rInfoText').textContent  = inf.text;
+  document.getElementById('rInfoText').textContent = inf.text;
   document.getElementById('rInfo').classList.add('show');
 
-  // Clear previous lines specific to this step
-  if (['mic','guitar','kb'].includes(key)) {
-    ['n-mic','n-guitar','n-kb'].forEach(id => document.getElementById(id).classList.remove('ra','rm','ro'));
-    clearLine('l-src'); clearLine('l-kb');
-    activeSrc = 'n-' + key;
+  // CLICK EN FUENTE
+  if (['mic','mic-int','guitar','kb'].includes(key)) {
+    resetRouting(); // Restart if user clicks a new source
+    activeSrc = key;
     el.classList.add(key==='kb' ? 'rm' : 'ra');
     beep(ac, 440, key==='kb'?'square':'sine');
     
     if (key === 'kb') {
-      drawLine('n-kb', 'n-abl', 'var(--midi)', 'l-kb');
-      msg('¡MIDI va directo por USB! Ahora elige la Interfaz de Salida.', 'var(--midi)');
+      msg('Teclado MIDI seleccionado. ¿A dónde se conecta físicamente? (Haz clic en el siguiente paso)', 'var(--midi)');
     } else {
-      msg('Fuente seleccionada. Ahora elige una <b>Interfaz de Entrada</b>.', 'var(--audio)');
+      msg('Fuente de audio seleccionada. ¿A qué interfaz debe conectarse?', 'var(--audio)');
     }
   } 
+  
+  // CLICK EN INTERFAZ DE ENTRADA
   else if (['ext','int'].includes(key)) {
-    ['n-ext','n-int'].forEach(id => document.getElementById(id).classList.remove('ra','rm','ro'));
-    clearLine('l-src'); clearLine('l-in');
+    if (!activeSrc) return msg('Primero selecciona una FUENTE (Columna 1).', 'var(--danger)');
+    if (activeSrc === 'kb') {
+      return msg('❌ ¡Incorrecto! El Teclado MIDI manda datos por USB, no necesita una interfaz de audio. Conéctalo directo al DAW.', 'var(--danger)');
+    }
+    if (key === 'int' && (activeSrc === 'mic' || activeSrc === 'guitar')) {
+      return msg('❌ ¡Error! Un micrófono profesional XLR o Guitarra no caben en la tarjeta interna.', 'var(--danger)');
+    }
+    if (key === 'ext' && activeSrc === 'mic-int') {
+      return msg('❌ ¡Error! El micrófono de tu laptop no se puede conectar a una interfaz externa.', 'var(--danger)');
+    }
     
-    if (!activeSrc || activeSrc === 'n-kb') {
-      msg('Primero selecciona un Micrófono o Guitarra.', 'var(--danger)');
-      return;
-    }
-    if (key === 'int' && (activeSrc === 'n-mic' || activeSrc === 'n-guitar')) {
-      msg('❌ ¡Error! No puedes conectar XLR o Instrumento a la tarjeta interna.', 'var(--danger)');
-      document.getElementById('rInfoTitle').textContent = 'Conexión Inválida';
-      return;
-    }
-    activeIfaceIn = 'n-' + key;
+    ['n-ext','n-int'].forEach(id => document.getElementById(id).classList.remove('ra'));
+    activeIfaceIn = key;
     el.classList.add('ra');
-    drawLine(activeSrc, activeIfaceIn, 'var(--audio)', 'l-src');
-    setTimeout(()=> drawLine(activeIfaceIn, 'n-abl', 'var(--audio)', 'l-in'), 300);
+    drawLine('n-'+activeSrc, 'n-'+key, 'var(--audio)', 'l-src');
     beep(ac, 523, 'sine');
-    msg('Audio entrando a Ableton. Ahora elige una <b>Interfaz de Salida</b>.', 'var(--audio)');
+    msg('¡Correcto! Señal convertida a digital. ¿A dónde va ahora?', 'var(--audio)');
   }
-  else if (['out-ext','out-int'].includes(key)) {
-    ['n-out-ext','n-out-int'].forEach(id => document.getElementById(id).classList.remove('ra','rm','ro'));
-    clearLine('l-out'); clearLine('l-spk');
-    activeIfaceOut = 'n-' + key;
-    el.classList.add('ro');
-    drawLine('n-abl', activeIfaceOut, 'var(--play)', 'l-out');
-    beep(ac, 659, 'triangle');
-    msg('Señal saliendo de Ableton. Finalmente elige <b>Audífonos o Bocinas</b>.', 'var(--play)');
-  }
-  else if (['spk','head'].includes(key)) {
-    ['n-spk','n-head'].forEach(id => document.getElementById(id).classList.remove('ra','rm','ro'));
-    clearLine('l-spk');
-    
-    if (!activeIfaceOut) {
-      msg('Primero selecciona una Interfaz de Salida.', 'var(--danger)');
-      return;
+  
+  // CLICK EN DAW (ABLETON)
+  else if (key === 'abl') {
+    if (!activeSrc) return msg('Comienza seleccionando una Fuente.', 'var(--danger)');
+    if (activeSrc === 'kb') {
+      activeDaw = key;
+      el.style.borderColor = 'var(--midi)';
+      drawLine('n-kb', 'n-abl', 'var(--midi)', 'l-kb');
+      beep(ac, 587, 'square');
+      return msg('✅ ¡Correcto! El MIDI entra directo por USB. Ahora envía la señal a una Interfaz de Salida.', 'var(--midi)');
     }
-    el.classList.add('ro');
-    drawLine(activeIfaceOut, 'n-' + key, 'var(--play)', 'l-spk');
-    beep(ac, 880, 'triangle');
-    msg('✅ ¡Señal completa! Audio fluyendo desde la entrada hasta la salida.', 'var(--play)');
+    if (!activeIfaceIn) {
+      return msg('❌ Falta un paso: El audio analógico debe pasar por una Interfaz primero.', 'var(--danger)');
+    }
+    activeDaw = key;
+    el.style.borderColor = 'var(--audio)';
+    drawLine('n-'+activeIfaceIn, 'n-abl', 'var(--audio)', 'l-in');
+    beep(ac, 659, 'sine');
+    msg('¡Audio procesándose en Ableton! Ahora envíalo a una Interfaz de Salida.', 'var(--play)');
   }
+  
+  // CLICK EN INTERFAZ DE SALIDA
+  else if (['out-ext','out-int'].includes(key)) {
+    if (!activeDaw) return msg('Primero haz que la señal llegue a Ableton Live.', 'var(--danger)');
+    
+    ['n-out-ext','n-out-int'].forEach(id => document.getElementById(id).classList.remove('ro'));
+    activeIfaceOut = key;
+    el.classList.add('ro');
+    drawLine('n-abl', 'n-'+key, 'var(--play)', 'l-out');
+    document.getElementById('n-abl').style.borderColor = 'var(--text)'; // restore
+    beep(ac, 783, 'triangle');
+    msg('¡Señal digital convertida de regreso a analógica! Finalmente, elige Bocinas o Audífonos.', 'var(--play)');
+  }
+  
+  // CLICK EN SALIDA FINAL
+  else if (['spk','head'].includes(key)) {
+    if (!activeIfaceOut) return msg('Falta pasar por la Interfaz de Salida primero.', 'var(--danger)');
+    
+    ['n-spk','n-head'].forEach(id => document.getElementById(id).classList.remove('ro'));
+    el.classList.add('ro');
+    drawLine('n-'+activeIfaceOut, 'n-'+key, 'var(--play)', 'l-spk');
+    beep(ac, 880, 'triangle');
+    msg('✅ ¡Ruta completada con éxito! Has dominado el ruteo de señal.', 'var(--play)');
+  }
+}
+
+function resetRouting() {
+  ['n-mic','n-mic-int','n-guitar','n-kb','n-ext','n-int','n-abl','n-out-ext','n-out-int','n-spk','n-head'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) {
+      el.classList.remove('ra','rm','ro');
+      if(id === 'n-abl') el.style.borderColor = '';
+    }
+  });
+  ['l-src','l-in','l-kb','l-out','l-spk'].forEach(clearLine);
+  activeSrc = null; activeIfaceIn = null; activeDaw = null; activeIfaceOut = null;
+  document.getElementById('rInfo').classList.remove('show');
 }
 
 function clearLine(id) {
