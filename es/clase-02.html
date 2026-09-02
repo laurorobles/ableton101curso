@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ableton 101 - Clase 2: El Arte del Warping</title>
+  <style>
+    /* VARIABLES (Ableton Dark Mode) */
+    :root {
+      --bg: #2b2b2b;
+      --panel: #3c3c3c;
+      --border: #1a1a1a;
+      --text: #e0e0e0;
+      --text-muted: #999;
+      --warp-accent: #ffbc00; /* Yellow/Orange */
+      --btn-bg: #555;
+      --btn-hover: #666;
+    }
+
+    /* GLOBAL */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 18px;
+      line-height: 1.6;
+    }
+    
+    /* TYPOGRAPHY & LAYOUT */
+    h1 { font-size: 3rem; margin-bottom: 0.5rem; letter-spacing: -1px; }
+    h2 { font-size: 2.2rem; margin-bottom: 1rem; color: #fff; }
+    h3 { font-size: 1.5rem; margin-bottom: 0.8rem; color: #ddd; }
+    p { margin-bottom: 1.2rem; }
+    
+    .header {
+      text-align: center;
+      padding: 4rem 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .subtitle { color: var(--text-muted); font-size: 1.2rem; }
+    
+    section {
+      padding: 4rem 5%;
+      border-bottom: 1px solid var(--border);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--warp-accent);
+      margin-bottom: 1rem;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    /* BUTTONS & CONTROLS */
+    .btn {
+      background: var(--btn-bg);
+      color: #fff;
+      border: 1px solid var(--border);
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background 0.1s;
+    }
+    .btn:hover { background: var(--btn-hover); }
+    .btn:active { transform: translateY(1px); }
+    .btn-warp { background: var(--warp-accent); color: #000; font-weight: bold; }
+    .btn-warp:hover { background: #e6a800; }
+
+    select, input[type="range"] {
+      padding: 0.5rem;
+      background: #222;
+      color: #fff;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      font-size: 1rem;
+    }
+
+    /* M1: WARP MARKER DRAG & DROP */
+    .m1-container {
+      position: relative;
+      height: 150px;
+      background: #222;
+      border: 1px solid var(--border);
+      margin: 2rem 0;
+      overflow: hidden;
+    }
+    
+    /* La onda (waveform) dividida para escalar */
+    .wave-wrap {
+      position: absolute;
+      top: 0; left: 0; height: 100%;
+      width: 50%; /* Representa la primera mitad del clip (hasta el snare) */
+      transform-origin: left center;
+      /* Dibuja una onda sencilla tipo kick (izq) y snare (der) */
+      background: 
+        /* Kick */
+        radial-gradient(ellipse at 10% 50%, rgba(100,100,100,0.8) 0%, transparent 20%),
+        /* Snare */
+        radial-gradient(ellipse at 95% 50%, rgba(150,150,150,0.8) 0%, transparent 25%);
+      transition: transform 0.1s linear;
+    }
+
+    .grid-lines {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: repeating-linear-gradient(90deg, transparent, transparent calc(25% - 1px), rgba(255,255,255,0.1) calc(25% - 1px), rgba(255,255,255,0.1) 25%);
+      pointer-events: none;
+    }
+    
+    /* La tachuela amarilla */
+    .warp-marker {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 12px;
+      height: 100%;
+      background: rgba(255, 188, 0, 0.4);
+      border-top: 10px solid var(--warp-accent);
+      cursor: ew-resize;
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+    .warp-marker::before {
+      content: '';
+      position: absolute;
+      top: -10px; left: -4px; width: 20px; height: 20px;
+    }
+
+    #m1-message {
+      font-weight: bold;
+      color: var(--warp-accent);
+      min-height: 1.6rem;
+    }
+
+    /* M2: WARP FROM HERE VS STRAIGHT */
+    .m2-track {
+      background: #222;
+      border: 1px solid var(--border);
+      height: 80px;
+      margin-bottom: 1rem;
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding-left: 1rem;
+      overflow: hidden;
+    }
+    .m2-wave {
+      position: absolute;
+      top: 0; left: 150px; right: 0; bottom: 0;
+      background: repeating-linear-gradient(90deg, transparent, transparent 15%, rgba(150,150,150,0.3) 15%, rgba(150,150,150,0.3) 16%);
+    }
+    .m2-track-title {
+      position: relative;
+      z-index: 5;
+      font-size: 0.9rem;
+      color: #ccc;
+      width: 130px;
+    }
+    .m2-marker {
+      position: absolute;
+      top: 0; width: 4px; height: 100%;
+      background: var(--warp-accent);
+      display: none;
+    }
+
+    /* M3: ALGORITHMS */
+    .m3-controls {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    #m3-desc {
+      background: #222;
+      padding: 1.5rem;
+      border-left: 4px solid var(--warp-accent);
+      font-style: italic;
+      color: #ccc;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <div class="header">
+    <div class="tag">Soundspace Academy</div>
+    <h1>Ableton 101 - Clase 2</h1>
+    <p class="subtitle">El Arte del Warping: Manipulación de tiempo y tempo.</p>
+  </div>
+
+  <!-- MÓDULO 1 -->
+  <section id="modulo1">
+    <h2>Módulo 1: ¿Qué es el Warp? (La Liga Elástica)</h2>
+    <p>En Ableton Live, el audio no es estático; se comporta como una liga elástica. Puedes estirar o encoger el tiempo sin afectar el tono (pitch). Ayúdanos a cuadrar este beat arrastrando el marcador al compás (línea blanca).</p>
+    
+    <div class="panel">
+      <div class="m1-container" id="m1-container">
+        <!-- Onda dividida -->
+        <div class="wave-wrap" id="m1-wave"></div>
+        <!-- Gridlines (25%, 50%, 75%) -->
+        <div class="grid-lines"></div>
+        <!-- Marcador interactivo -->
+        <div class="warp-marker" id="m1-marker"></div>
+      </div>
+      <p id="m1-message">Arrastra el marcador amarillo (Warp Marker) para sincronizar el Snare con la línea del Grid (75%).</p>
+    </div>
+  </section>
+
+  <!-- MÓDULO 2 -->
+  <section id="modulo2">
+    <h2>Módulo 2: "Warp from Here" vs "Straight"</h2>
+    <p>Ableton utiliza algoritmos para cuadrar audios. Si grabas a un baterista humano (que varía su velocidad), Ableton pondrá muchos marcadores para corregir cada golpe. Si usas música electrónica, basta con un marcador "recto" (Straight).</p>
+    
+    <div class="panel">
+      <!-- Pista A -->
+      <div style="display:flex; gap:1rem; align-items:center; margin-bottom:0.5rem;">
+        <button class="btn btn-warp" onclick="warpFromHere()">Warp from Here</button>
+        <p style="margin:0; font-size:0.9rem;">Ideal para bateristas humanos o grabaciones sueltas.</p>
+      </div>
+      <div class="m2-track" id="trackA">
+        <div class="m2-track-title">Baterista Humano</div>
+        <div class="m2-wave"></div>
+      </div>
+
+      <!-- Pista B -->
+      <div style="display:flex; gap:1rem; align-items:center; margin-top:2rem; margin-bottom:0.5rem;">
+        <button class="btn btn-warp" onclick="warpStraight()">Warp Straight</button>
+        <p style="margin:0; font-size:0.9rem;">Ideal para acapellas electrónicas y stems a un tempo constante.</p>
+      </div>
+      <div class="m2-track" id="trackB">
+        <div class="m2-track-title">Drum Machine</div>
+        <div class="m2-wave"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MÓDULO 3 -->
+  <section id="modulo3">
+    <h2>Módulo 3: El Simulador de Algoritmos</h2>
+    <p>Ableton tiene distintos "Modos Warp" matemáticos optimizados para diferentes tipos de sonido. Enciende el audio, cambia el algoritmo y baja el tempo para escuchar cómo reacciona cada uno.</p>
+    
+    <div class="panel">
+      <div class="m3-controls">
+        <button class="btn btn-warp" id="btn-play" onclick="toggleAudio()">▶ Encender Audio</button>
+        
+        <div class="control-group">
+          <label for="warp-mode">Modo Warp:</label>
+          <select id="warp-mode" onchange="updateMode()">
+            <option value="beats">Beats</option>
+            <option value="tones">Tones</option>
+            <option value="texture">Texture</option>
+            <option value="repitch">Re-Pitch</option>
+            <option value="complex">Complex</option>
+          </select>
+        </div>
+
+        <div class="control-group" style="flex: 1;">
+          <label for="tempo-slider">Tempo: <span id="tempo-val">120</span> BPM</label>
+          <input type="range" id="tempo-slider" min="60" max="140" value="120" oninput="updateTempo(this.value)">
+        </div>
+      </div>
+
+      <div id="m3-desc">
+        <strong>Beats:</strong> El modo por defecto. Especializado en percusión. Si bajas mucho el tempo, notarás que el sonido se "entrecorta" o tartamudea (Stutter) porque el algoritmo separa los golpes y rellena el silencio.
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // ==========================================
+    // MÓDULO 1: LÓGICA DRAG & DROP
+    // ==========================================
+    const container = document.getElementById('m1-container');
+    const marker = document.getElementById('m1-marker');
+    const wave = document.getElementById('m1-wave');
+    const msg = document.getElementById('m1-message');
+    
+    let isDragging = false;
+
+    marker.addEventListener('mousedown', () => isDragging = true);
+    document.addEventListener('mouseup', () => {
+      if(isDragging) checkSnap();
+      isDragging = false;
+    });
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const rect = container.getBoundingClientRect();
+      let x = e.clientX - rect.left;
+      
+      // Limitar movimiento
+      if (x < 20) x = 20;
+      if (x > rect.width - 20) x = rect.width - 20;
+      
+      // Mover marcador
+      marker.style.left = x + 'px';
+      
+      // Escalar la onda (su tamaño original representa el 50% del ancho del contenedor)
+      // Escala X = (Posición actual X) / (Ancho original que es rect.width * 0.5)
+      const originalWidth = rect.width * 0.5;
+      const scaleX = x / originalWidth;
+      wave.style.transform = `scaleX(${scaleX})`;
+      
+      msg.textContent = "Estirando onda...";
+      msg.style.color = "var(--text-muted)";
+    });
+
+    function checkSnap() {
+      const rect = container.getBoundingClientRect();
+      const markerX = parseFloat(marker.style.left);
+      const targetX = rect.width * 0.75; // La 3ra línea (75%)
+      
+      // Snap tolerance de 15px
+      if (Math.abs(markerX - targetX) < 15) {
+        marker.style.left = targetX + 'px';
+        wave.style.transform = `scaleX(${targetX / (rect.width * 0.5)})`;
+        msg.textContent = "¡Perfecto! El golpe de tarola (snare) ahora está sincronizado al tempo del proyecto en la marca del 75%.";
+        msg.style.color = "var(--play)";
+      } else {
+        msg.textContent = "Suelta el marcador cerca de la línea del 75% para cuadrarlo.";
+        msg.style.color = "var(--warp-accent)";
+      }
+    }
+
+    // ==========================================
+    // MÓDULO 2: ANIMACIONES DE MARCADORES
+    // ==========================================
+    function warpFromHere() {
+      const track = document.getElementById('trackA');
+      // Limpiar anteriores
+      track.querySelectorAll('.m2-marker').forEach(e => e.remove());
+      
+      // Crear 15 marcadores aleatorios (ajuste humano)
+      for(let i=0; i<15; i++) {
+        setTimeout(() => {
+          const m = document.createElement('div');
+          m.className = 'm2-marker';
+          // Entre 150px y el final del track
+          const offset = 150 + Math.random() * (track.offsetWidth - 160);
+          m.style.left = offset + 'px';
+          m.style.display = 'block';
+          track.appendChild(m);
+        }, i * 100);
+      }
+    }
+
+    function warpStraight() {
+      const track = document.getElementById('trackB');
+      track.querySelectorAll('.m2-marker').forEach(e => e.remove());
+      
+      const m = document.createElement('div');
+      m.className = 'm2-marker';
+      m.style.left = '160px'; // Un solo marcador al inicio
+      m.style.display = 'block';
+      track.appendChild(m);
+      
+      // Animación de cuadratura
+      const wave = track.querySelector('.m2-wave');
+      wave.style.transition = 'background-position 0.5s';
+      wave.style.backgroundPosition = '10px 0';
+    }
+
+
+    // ==========================================
+    // MÓDULO 3: WEB AUDIO API & ALGORITMOS
+    // ==========================================
+    let ac = null;
+    let isPlaying = false;
+    let baseTempo = 120;
+    
+    // Nodos
+    let osc = null;
+    let vca = null; // Stutter / Beats mode
+    let stutterInterval = null;
+    let noiseNode = null; // Texture mode
+    let noiseVca = null;
+
+    function getAC() {
+      if(!ac) {
+        ac = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if(ac.state === 'suspended') ac.resume();
+      return ac;
+    }
+
+    const modeDescriptions = {
+      beats: "<strong>Beats:</strong> El modo por defecto. Especializado en percusión. Si bajas mucho el tempo, notarás que el sonido se 'entrecorta' o tartamudea (Stutter) porque el algoritmo separa los golpes y rellena el silencio.",
+      tones: "<strong>Tones:</strong> Para voces, bajos o sintes solistas. Utiliza una estructura granular básica. Intenta mantener el tono original estirando fragmentos vocales (grains).",
+      texture: "<strong>Texture:</strong> Para sintes atmosféricos, pads o ruido. Modifica la aleatoriedad de los fragmentos, generando una sensación 'arenosa' o reverberante al bajar la velocidad.",
+      repitch: "<strong>Re-Pitch:</strong> Como una tornamesa de DJ. Al bajar el tempo (slider), el tono/frecuencia del sonido cae inmediatamente de forma proporcional.",
+      complex: "<strong>Complex:</strong> El algoritmo más avanzado (y el que más CPU consume). Identifica características rítmicas y tonales simultáneamente para ocultar los artefactos al estirar audios mezclados."
+    };
+
+    function updateMode() {
+      const mode = document.getElementById('warp-mode').value;
+      document.getElementById('m3-desc').innerHTML = modeDescriptions[mode];
+      applyWarpAlgorithm();
+    }
+
+    function updateTempo(val) {
+      document.getElementById('tempo-val').innerText = val;
+      applyWarpAlgorithm();
+    }
+
+    function toggleAudio() {
+      const btn = document.getElementById('btn-play');
+      if (isPlaying) {
+        stopWarpAudio();
+        btn.textContent = "▶ Encender Audio";
+        btn.style.background = "var(--warp-accent)";
+        btn.style.color = "#000";
+        isPlaying = false;
+      } else {
+        startWarpAudio();
+        btn.textContent = "⏹ Apagar Audio";
+        btn.style.background = "var(--danger)";
+        btn.style.color = "#fff";
+        isPlaying = true;
+      }
+    }
+
+    function startWarpAudio() {
+      const ctx = getAC();
+      
+      // Sonido base: Un sinte pulsante
+      osc = ctx.createOscillator();
+      osc.type = 'sawtooth';
+      osc.frequency.value = 220; // Nota A3
+      
+      vca = ctx.createGain();
+      vca.gain.value = 0.3;
+      
+      // Setup de ruido (Texture)
+      noiseNode = ctx.createBufferSource();
+      noiseNode.buffer = createNoiseBuffer(ctx);
+      noiseNode.loop = true;
+      noiseVca = ctx.createGain();
+      noiseVca.gain.value = 0; // Apagado por defecto
+      noiseNode.connect(noiseVca).connect(ctx.destination);
+      noiseNode.start();
+
+      osc.connect(vca).connect(ctx.destination);
+      osc.start();
+      
+      applyWarpAlgorithm();
+    }
+
+    function stopWarpAudio() {
+      if(osc) { osc.stop(); osc = null; }
+      if(noiseNode) { noiseNode.stop(); noiseNode = null; }
+      if(stutterInterval) { clearInterval(stutterInterval); stutterInterval = null; }
+    }
+
+    function createNoiseBuffer(ctx) {
+      const bufferSize = ctx.sampleRate * 2;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+      }
+      return buffer;
+    }
+
+    // El corazón del simulador: traduce tempo y select en acciones Web Audio
+    function applyWarpAlgorithm() {
+      if(!isPlaying) return;
+      const ctx = getAC();
+      const mode = document.getElementById('warp-mode').value;
+      const currentTempo = parseFloat(document.getElementById('tempo-slider').value);
+      
+      // Limpiar estados previos
+      if(stutterInterval) { clearInterval(stutterInterval); stutterInterval = null; }
+      vca.gain.setTargetAtTime(0.3, ctx.currentTime, 0.05); // Restaurar volumen
+      osc.frequency.setTargetAtTime(220, ctx.currentTime, 0.05); // Restaurar tono base
+      noiseVca.gain.setTargetAtTime(0, ctx.currentTime, 0.05); // Apagar ruido
+
+      const ratio = currentTempo / baseTempo; // 120 / 120 = 1.0. (60 / 120 = 0.5)
+
+      switch(mode) {
+        case 'repitch':
+          // En Re-Pitch, el tono baja proporcionalmente a la velocidad
+          osc.frequency.setTargetAtTime(220 * ratio, ctx.currentTime, 0.05);
+          break;
+
+        case 'beats':
+          // Tartamudeo rítmico. Si el tempo es menor a 100, se nota el hueco.
+          const beatDuration = (60 / currentTempo) * 1000; // ms por beat
+          stutterInterval = setInterval(() => {
+            // Sube volumen (ataque)
+            vca.gain.setTargetAtTime(0.4, ctx.currentTime, 0.01);
+            // Cae abruptamente, el silencio depende de qué tan lento es el tempo
+            // ratio = 0.5 -> el sonido dura la mitad del tiempo, el resto es silencio
+            const holdTime = beatDuration * (ratio > 1 ? 1 : ratio);
+            setTimeout(() => {
+              if(!isPlaying) return;
+              vca.gain.setTargetAtTime(0, ctx.currentTime, 0.01);
+            }, holdTime);
+          }, beatDuration);
+          break;
+
+        case 'texture':
+          // Simula el "grain size". Al bajar tempo, entra ruido blanco "reverberante".
+          if (ratio < 1.0) {
+            noiseVca.gain.setTargetAtTime(0.15 * (1 - ratio), ctx.currentTime, 0.1);
+          }
+          break;
+
+        case 'tones':
+          // Simula granularidad "suave" usando un trémolo muy rápido (grains de 50ms)
+          if (ratio < 1.0) {
+            const grainSpeed = 100 * ratio; 
+            stutterInterval = setInterval(() => {
+              vca.gain.setTargetAtTime(0.3, ctx.currentTime, 0.02);
+              setTimeout(() => {
+                if(isPlaying) vca.gain.setTargetAtTime(0.1, ctx.currentTime, 0.02);
+              }, grainSpeed / 2);
+            }, grainSpeed);
+          }
+          break;
+
+        case 'complex':
+          // Complex intenta mantener la integridad original perfecta sin importar el tempo
+          // Solo reduciremos mínimamente la amplitud como "artefacto" de procesador.
+          vca.gain.setTargetAtTime(0.3, ctx.currentTime, 0.05);
+          break;
+      }
+    }
+  </script>
+</body>
+</html>
