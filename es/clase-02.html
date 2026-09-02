@@ -279,23 +279,41 @@
     complex: "<strong>Complex:</strong> El algoritmo más avanzado. Identifica características rítmicas y tonales para estirar audios manteniendo el tono original. Ideal para pistas completas."
   };
 
+    function base64ToArrayBuffer(base64) {
+    const binary_string = window.atob(base64);
+    const len = binary_string.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
+        bytes[i] = binary_string.charCodeAt(i);
+    }
+    return bytes.buffer;
+  }
+
   async function initTone() {
     await Tone.start();
     if (!player && window.amenBase64) {
       return new Promise((resolve) => {
-        player = new Tone.Player({
-          url: "data:audio/wav;base64," + window.amenBase64,
-          loop: true,
-          onload: () => {
+        try {
+          const arrayBuf = base64ToArrayBuffer(window.amenBase64.replace(/^data:audio\/wav;base64,/, ''));
+          Tone.context.decodeAudioData(arrayBuf).then(buffer => {
+            player = new Tone.Player(buffer);
+            player.loop = true;
+            
             pitchShift = new Tone.PitchShift(0);
-            tremolo = new Tone.Tremolo(9, 0).start(); // For Tones mode
+            tremolo = new Tone.Tremolo(9, 0).start();
+            tremolo.depth.value = 0; // Initialize at 0
             
             player.chain(tremolo, pitchShift, Tone.Destination);
             document.getElementById('audio-status').style.display = 'none';
             resolve(true);
-          },
-          onerror: () => resolve(false)
-        });
+          }).catch(e => {
+            console.error("Decode error", e);
+            resolve(false);
+          });
+        } catch (e) {
+          console.error("Base64 error", e);
+          resolve(false);
+        }
       });
     }
     return !!player;
