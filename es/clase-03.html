@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Ableton 101 — Clase 3: Arreglo y Edición</title>
+  <style>
+    :root {
+      --bg:#F8F9FA; --surface:#fff; --text:#000; --muted:#555;
+      --border:#E5E7EB; --audio:#0055FF; --midi:#FF5500;
+      --play:#00B84D; --cc:#8800DD; --danger:#E53E3E;
+      --warp-accent: #FFBC00;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:22px;line-height:1.5;-webkit-font-smoothing:antialiased}
+    ::-webkit-scrollbar{width:0;background:transparent}
+    h1{font-size:4.5rem;font-weight:900;letter-spacing:-.04em;line-height:1.05;margin-bottom:1rem}
+    h2{font-size:3rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.8rem}
+    h3{font-size:1.8rem;font-weight:700;margin-bottom:.5rem}
+    .sub{font-size:1.5rem;color:var(--muted);max-width:900px;margin-bottom:2.5rem;font-weight:500}
+    section{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:5rem 5%;border-bottom:2px solid var(--border);overflow:visible}
+    .tag{display:inline-block;font-size:1rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font-size:1.2rem;font-weight:700;padding:.9rem 1.8rem;border-radius:12px;border:none;cursor:pointer;transition:transform .1s,filter .15s;color:#fff;user-select:none;font-family:inherit}
+    .btn:active{transform:scale(.96)} .btn:hover{filter:brightness(1.1)}
+    .btn-audio{background:var(--audio)} .btn-midi{background:var(--midi)}
+    .btn-play{background:var(--play)} .btn-dark{background:var(--text)}
+    .btn-outline{background:transparent;border:3px solid var(--border);color:var(--text)}
+    .panel{background:var(--surface);border:3px solid var(--border);border-radius:20px;padding:2.5rem;box-shadow:0 8px 24px rgba(0,0,0,.04)}
+    .analogy{margin-top:1.5rem;padding:1.2rem 1.5rem;background:#F0F4F8;border-left:6px solid #CBD5E1;font-size:1.2rem;border-radius:0 10px 10px 0}
+    .row{display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
+    
+    #toast{position:fixed;bottom:40px;left:50%;transform:translateX(-50%) translateY(160px);background:var(--text);color:#fff;padding:1.2rem 2.5rem;border-radius:100px;font-size:1.4rem;font-weight:bold;z-index:9999;transition:transform .4s cubic-bezier(.175,.885,.32,1.275);box-shadow:0 20px 40px rgba(0,0,0,.25);max-width:640px;text-align:center}
+    #toast.show{transform:translateX(-50%) translateY(0)}
+
+    /* M1 */
+    .timeline { position:relative; height:200px; background:var(--bg); border:2px solid var(--border); border-radius:10px; overflow:hidden; margin:2rem 0; display:flex; flex-direction:column; }
+    .track { flex:1; border-bottom:1px solid var(--border); position:relative; display:flex; align-items:center; }
+    .track:last-child { border-bottom:none; }
+    .track-header { width:120px; background:var(--surface); border-right:2px solid var(--border); height:100%; display:flex; align-items:center; padding:0 1rem; font-weight:bold; font-size:1rem; z-index:10; }
+    .clip { position:absolute; height:80%; top:10%; background:var(--audio); color:#fff; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:1rem; font-weight:bold; cursor:ew-resize; user-select:none; box-shadow:0 4px 6px rgba(0,0,0,0.1); }
+    .grid { position:absolute; left:120px; right:0; top:0; bottom:0; background:repeating-linear-gradient(90deg, transparent, transparent calc(10% - 1px), rgba(0,0,0,0.05) calc(10% - 1px), rgba(0,0,0,0.05) 10%); pointer-events:none; }
+
+    /* M2 */
+    .edit-area { height:120px; background:var(--bg); border:2px dashed var(--muted); border-radius:10px; margin:2rem 0; position:relative; display:flex; align-items:center; padding-left:2rem; }
+    .edit-clip { background:var(--midi); height:60px; width:150px; border-radius:6px; margin-right:10px; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:bold; transition:all 0.2s; cursor:pointer; }
+    .edit-clip.selected { box-shadow:0 0 0 4px #fff, 0 0 0 8px var(--play); }
+    
+    /* M3 */
+    .structure { display:flex; gap:0.5rem; height:80px; margin:2rem 0; }
+    .block { flex:1; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:bold; color:#fff; font-size:1.1rem; }
+    .b-intro { background:#64748B; flex:2; }
+    .b-verso { background:#3B82F6; flex:4; }
+    .b-coro { background:#EF4444; flex:4; }
+    .b-puente { background:#F59E0B; flex:2; }
+
+  </style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<!-- HERO -->
+<section style="background:var(--surface);align-items:center;text-align:center">
+  <div class="tag" style="background:#E5E7EB;padding:.4rem 1rem;border-radius:8px;color:var(--text)">Soundspace Academy</div>
+  <h1>Ableton 101<br>Clase 3: Vista de Arreglo y Edición</h1>
+  <p class="sub" style="font-size:1.8rem;text-align:center;margin:0 auto 1.5rem">Estructurando tu canción en la línea del tiempo.</p>
+  
+  <div style="display:flex;align-items:center;justify-content:center;gap:1.5rem;margin-bottom:2.5rem;text-align:left;max-width:800px;background:#F0F4F8;padding:1.5rem;border-radius:16px;">
+    <img src="../assets/lao_foto.jpg" alt="LAO" style="width:100px;height:100px;border-radius:50%;object-fit:cover;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+    <div>
+      <h3 style="margin-bottom:0.3rem;font-size:1.4rem;">Creado por LAO (Lauro Robles)</h3>
+      <p style="font-size:1rem;color:var(--muted);line-height:1.4;">Una vez que tienes tus *loops* listos, es hora de pintarlos de izquierda a derecha. Así es como pasamos de un "beat" de 4 compases a una canción completa.</p>
+    </div>
+  </div>
+
+  <a href="#m1" class="btn btn-dark" style="text-decoration:none;padding:1.3rem 3rem;font-size:1.7rem">Comenzar Clase ↓</a>
+</section>
+
+<!-- M1: ARRANGEMENT VIEW -->
+<section id="m1">
+  <div class="tag" style="color:#000; background:#E5E7EB">Módulo 01</div>
+  <h2>La Línea del Tiempo (Arrangement View)</h2>
+  <p class="sub">Presiona la tecla <code>TAB</code> para cambiar entre la Vista Sesión (vertical, para improvisar) y la Vista Arreglo (horizontal, para estructurar). En esta vista, el tiempo corre de izquierda a derecha.</p>
+  
+  <div class="panel">
+    <div class="timeline" id="timeline">
+      <div class="grid"></div>
+      <div class="track">
+        <div class="track-header" style="color:var(--audio)">Audio 1</div>
+        <div class="clip" style="left:15%; width:20%" id="clip1">Batería</div>
+      </div>
+      <div class="track">
+        <div class="track-header" style="color:var(--midi)">MIDI 2</div>
+        <div class="clip" style="background:var(--midi); left:40%; width:30%" id="clip2">Bajo</div>
+      </div>
+    </div>
+    <div class="analogy">
+      <strong>🖱️ Interactúa:</strong> Arrastra el clip de Batería o de Bajo hacia la izquierda o derecha para cambiar en qué momento de la canción empiezan a sonar.
+    </div>
+  </div>
+</section>
+
+<!-- M2: EDICIÓN -->
+<section id="m2" style="background:var(--surface)">
+  <div class="tag t-play">Módulo 02</div>
+  <h2>Herramientas de Edición Básicas</h2>
+  <p class="sub">Cortar, Pegar, Duplicar y Unir (Consolidar). Estos comandos de teclado son el pan de cada día del productor. Selecciona un clip de abajo y presiona los botones para ver qué pasa.</p>
+  
+  <div class="panel">
+    <div class="row" style="margin-bottom:1.5rem">
+      <button class="btn btn-outline" onclick="editAction('cut')">✂️ Cortar a la mitad (Cmd+E)</button>
+      <button class="btn btn-outline" onclick="editAction('dup')">👯 Duplicar (Cmd+D)</button>
+      <button class="btn btn-outline" onclick="editAction('join')">🔗 Consolidar (Cmd+J)</button>
+      <button class="btn btn-outline" onclick="editAction('del')" style="color:var(--danger); border-color:var(--danger)">🗑️ Eliminar (Backspace)</button>
+    </div>
+    
+    <div class="edit-area" id="edit-area">
+      <div class="edit-clip selected" onclick="selectClip(this)">Clip 1</div>
+    </div>
+    
+    <div class="analogy" id="edit-msg" style="border-left-color:var(--play)">
+      Haz clic en un clip para seleccionarlo, luego usa las herramientas de arriba para editarlo.
+    </div>
+  </div>
+</section>
+
+<!-- M3: MAQUETA -->
+<section id="m3">
+  <div class="tag t-cc">Módulo 03</div>
+  <h2>Estructura de una Canción Pop/Dance</h2>
+  <p class="sub">Una canción no es solo un loop repitiéndose. Es un viaje con energía dinámica. Usamos los colores de los clips para pintar diferentes secciones visualmente.</p>
+  
+  <div class="panel">
+    <div class="structure">
+      <div class="block b-intro" onclick="msg('Introducción: Presenta la vibra. Poca energía.', '#64748B')">Intro</div>
+      <div class="block b-verso" onclick="msg('Verso: Entra la voz principal o lead. Desarrollo de la historia.', '#3B82F6')">Verso</div>
+      <div class="block b-coro" onclick="msg('Coro (Drop): El clímax de la canción. Toda la energía.', '#EF4444')">Coro</div>
+      <div class="block b-verso" onclick="msg('Verso 2: Bajamos la energía otra vez, pero con alguna variación.', '#3B82F6')">Verso 2</div>
+      <div class="block b-puente" onclick="msg('Puente (Breakdown): Rompe la monotonía antes del coro final.', '#F59E0B')">Puente</div>
+      <div class="block b-coro" onclick="msg('Coro Final: El momento más grande.', '#EF4444')">Coro</div>
+    </div>
+    
+    <div class="analogy" style="border-left-color:var(--cc)">
+      <strong>💡 Truco de Producción:</strong> Trata de usar colores específicos en tus clips para identificar rápidamente tus partes. Por ejemplo: Todo el Coro en rojo, todo el Verso en azul. Haz click en los bloques de arriba para ver su función.
+    </div>
+  </div>
+</section>
+
+<script>
+  // Toast Logic
+  function msg(text, bg, fg) {
+    const t = document.getElementById('toast');
+    t.innerHTML = text;
+    t.style.background = bg || '#000';
+    t.style.color = fg || '#fff';
+    t.classList.add('show');
+    clearTimeout(window._tt);
+    window._tt = setTimeout(() => t.classList.remove('show'), 4500);
+  }
+
+  // M1: Timeline Drag Logic
+  const clips = [document.getElementById('clip1'), document.getElementById('clip2')];
+  let activeClip = null;
+  let offsetX = 0;
+  
+  clips.forEach(clip => {
+    clip.addEventListener('mousedown', (e) => {
+      activeClip = clip;
+      offsetX = e.clientX - clip.getBoundingClientRect().left;
+      clip.style.cursor = 'grabbing';
+    });
+  });
+
+  window.addEventListener('mouseup', () => {
+    if(activeClip) {
+      activeClip.style.cursor = 'ew-resize';
+      msg("✅ Clip movido en el tiempo. ¡Ahora entra en un compás diferente!", "var(--audio)");
+      activeClip = null;
+    }
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!activeClip) return;
+    const parent = activeClip.parentElement;
+    const parentRect = parent.getBoundingClientRect();
+    let x = e.clientX - parentRect.left - offsetX;
+    
+    // Limits (Snap to grid roughly)
+    const minX = 120; // past the header
+    const maxX = parentRect.width - activeClip.offsetWidth;
+    
+    if (x < minX) x = minX;
+    if (x > maxX) x = maxX;
+    
+    // 10% grid snapping simulation
+    const snapGrid = (parentRect.width - 120) * 0.05; 
+    x = Math.round((x - 120) / snapGrid) * snapGrid + 120;
+    
+    activeClip.style.left = (x / parentRect.width) * 100 + '%';
+  });
+
+  // M2: Edit Logic
+  const editArea = document.getElementById('edit-area');
+  
+  function selectClip(el) {
+    document.querySelectorAll('.edit-clip').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function editAction(action) {
+    const selected = document.querySelector('.edit-clip.selected');
+    if(!selected && action !== 'join') {
+      msg("⚠️ Selecciona un clip primero haciéndole clic.", "var(--danger)");
+      return;
+    }
+    
+    if(action === 'cut') {
+      const w = selected.offsetWidth;
+      if (w < 40) { msg("✂️ El clip ya es muy pequeño para cortar.", "var(--danger)"); return; }
+      selected.style.width = (w / 2) + 'px';
+      
+      const newClip = document.createElement('div');
+      newClip.className = 'edit-clip';
+      newClip.style.width = (w / 2) + 'px';
+      newClip.textContent = selected.textContent + ' b';
+      selected.textContent = selected.textContent.replace(' b', '') + ' a';
+      newClip.onclick = function() { selectClip(this); };
+      
+      selected.after(newClip);
+      msg("✂️ Clip cortado en dos (Cmd+E).", "var(--play)");
+    } 
+    else if(action === 'dup') {
+      const newClip = selected.cloneNode(true);
+      newClip.onclick = function() { selectClip(this); };
+      newClip.classList.remove('selected');
+      selected.after(newClip);
+      msg("👯 Clip duplicado justo a la derecha (Cmd+D).", "var(--play)");
+    }
+    else if(action === 'del') {
+      selected.remove();
+      msg("🗑️ Clip eliminado.", "var(--text)");
+    }
+    else if(action === 'join') {
+      const allClips = document.querySelectorAll('.edit-clip');
+      if(allClips.length <= 1) {
+        msg("🔗 Necesitas más de un clip para unirlos.", "var(--danger)");
+        return;
+      }
+      
+      let totalWidth = 0;
+      allClips.forEach(c => { totalWidth += c.offsetWidth + 10; c.remove(); }); // +10 for margin
+      
+      const megaClip = document.createElement('div');
+      megaClip.className = 'edit-clip selected';
+      megaClip.style.width = (totalWidth - 10) + 'px'; // remove last margin
+      megaClip.style.background = 'var(--cc)';
+      megaClip.textContent = 'Clip Consolidado';
+      megaClip.onclick = function() { selectClip(this); };
+      
+      editArea.appendChild(megaClip);
+      msg("🔗 Múltiples clips consolidados en un solo archivo nuevo (Cmd+J).", "var(--cc)");
+    }
+  }
+
+</script>
+</body>
+</html>
