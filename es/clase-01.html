@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Ableton 101 — Soundspace Academy</title>
+  <title>Ableton 101 — Clase 1: Fundamentos Prácticos</title>
   <style>
     :root {
       --bg:#F8F9FA; --surface:#fff; --text:#000; --muted:#555;
       --border:#E5E7EB; --audio:#0055FF; --midi:#FF5500;
       --play:#00B84D; --cc:#8800DD; --danger:#E53E3E;
+      --warp-accent:#FFBC00;
     }
     *{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
@@ -25,132 +26,19 @@
     .btn-audio{background:var(--audio)} .btn-midi{background:var(--midi)}
     .btn-play{background:var(--play)} .btn-dark{background:var(--text)}
     .btn-outline{background:transparent;border:3px solid var(--border);color:var(--text)}
+    .btn-warp{background:var(--warp-accent);color:#000}
+    .btn-cc{background:var(--cc);color:#fff}
     .split{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;width:100%}
     .panel{background:var(--surface);border:3px solid var(--border);border-radius:20px;padding:2.5rem;box-shadow:0 8px 24px rgba(0,0,0,.04)}
     .analogy{margin-top:1.5rem;padding:1.2rem 1.5rem;background:#F0F4F8;border-left:6px solid #CBD5E1;font-size:1.2rem;border-radius:0 10px 10px 0}
     .row{display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
     .mt1{margin-top:1rem} .mt2{margin-top:2rem}
     .t-audio{color:var(--audio)} .t-midi{color:var(--midi)} .t-play{color:var(--play)} .t-cc{color:var(--cc)}
-
-    /* ── M1 ── */
-    #waveCanvas{width:100%;height:130px;background:var(--bg);border-radius:10px;margin:1.2rem 0;display:block}
-    #midiViz{display:flex;align-items:flex-end;gap:6px;height:130px;background:var(--bg);border-radius:10px;padding:.8rem;margin:1.2rem 0;overflow:hidden}
-    .mnote{flex:1;border-radius:4px 4px 0 0;opacity:.15;transition:opacity .08s}
-    .mnote.lit{opacity:1}
-
-    /* ── M2 TAB ── */
-    #m2 { overflow: hidden; }
-    .tab-outer { display: flex; flex-direction: column; align-items: center; gap: 2rem; width: 100%; max-width: 900px; margin: 0 auto; }
-    .daw-window { width: 100%; background: #2c2c2e; border-radius: 12px; padding: 1rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2); position: relative; height: 350px; overflow: hidden; border: 2px solid var(--border); transition: all 0.5s ease; }
     
-    .daw-header { display: flex; justify-content: space-between; margin-bottom: 1rem; border-bottom: 2px solid #444; padding-bottom: 0.5rem; }
-    .daw-title { color: #aaa; font-weight: bold; font-size: 0.9rem; letter-spacing: 1px; }
-    
-    .track-headers { position: absolute; transition: all 0.5s ease; }
-    .track-hdr { position: absolute; background: #444; color: #fff; border-radius: 4px; padding: 0.5rem; font-size: 0.8rem; font-weight: bold; display: flex; align-items: center; justify-content: center; transition: all 0.5s ease; }
-    
-    .clips-container { position: absolute; transition: all 0.5s ease; }
-    .daw-clip { position: absolute; border-radius: 4px; display: flex; align-items: center; padding: 0.5rem; font-size: 0.85rem; font-weight: bold; color: #fff; transition: all 0.5s ease; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.2); overflow: hidden; white-space: nowrap; }
-    
-    .daw-clip[data-track="1"] { background: #3B82F6; }
-    .daw-clip[data-track="2"] { background: #EF4444; }
-    .daw-clip[data-track="3"] { background: #10B981; }
-    .daw-clip[data-track="4"] { background: #F59E0B; }
-
-    /* ESTADO SESIÓN (Columnas Verticales) - 24% width, 1% gap */
-    .daw-window.state-session .track-headers { top: 3rem; left: 1rem; width: calc(100% - 2rem); height: 30px; }
-    .daw-window.state-session .track-hdr[data-tr="1"] { left: 0%; width: 24%; height: 100%; top:0; }
-    .daw-window.state-session .track-hdr[data-tr="2"] { left: 25.33%; width: 24%; height: 100%; top:0; }
-    .daw-window.state-session .track-hdr[data-tr="3"] { left: 50.66%; width: 24%; height: 100%; top:0; }
-    .daw-window.state-session .track-hdr[data-tr="4"] { left: 76%; width: 24%; height: 100%; top:0; }
-
-    .daw-window.state-session .clips-container { top: 6rem; left: 1rem; width: calc(100% - 2rem); height: calc(100% - 7rem); }
-    .daw-window.state-session .daw-clip { width: 24%; height: 40px; }
-    .daw-window.state-session .daw-clip[data-id="A"] { left: 0%; top: 0; }
-    .daw-window.state-session .daw-clip[data-id="B"] { left: 0%; top: 50px; }
-    .daw-window.state-session .daw-clip[data-id="C"] { left: 25.33%; top: 0; }
-    .daw-window.state-session .daw-clip[data-id="D"] { left: 50.66%; top: 50px; }
-    .daw-window.state-session .daw-clip[data-id="E"] { left: 76%; top: 0; }
-
-    /* ESTADO ARREGLO (Filas Horizontales) */
-    .daw-window.state-arrangement .track-headers { top: 3rem; left: 1rem; width: 100px; height: calc(100% - 4rem); }
-    .daw-window.state-arrangement .track-hdr[data-tr="1"] { top: 0%; width: 100%; height: 22%; left:0; }
-    .daw-window.state-arrangement .track-hdr[data-tr="2"] { top: 26%; width: 100%; height: 22%; left:0; }
-    .daw-window.state-arrangement .track-hdr[data-tr="3"] { top: 52%; width: 100%; height: 22%; left:0; }
-    .daw-window.state-arrangement .track-hdr[data-tr="4"] { top: 78%; width: 100%; height: 22%; left:0; }
-
-    .daw-window.state-arrangement .clips-container { top: 3rem; left: 120px; width: calc(100% - 130px); height: calc(100% - 4rem); }
-    .daw-window.state-arrangement .daw-clip { height: 22%; }
-    .daw-window.state-arrangement .daw-clip[data-id="A"] { top: 0%; left: 0%; width: 30%; }
-    .daw-window.state-arrangement .daw-clip[data-id="B"] { top: 0%; left: 35%; width: 40%; }
-    .daw-window.state-arrangement .daw-clip[data-id="C"] { top: 26%; left: 10%; width: 50%; }
-    .daw-window.state-arrangement .daw-clip[data-id="D"] { top: 52%; left: 30%; width: 60%; }
-    .daw-window.state-arrangement .daw-clip[data-id="E"] { top: 78%; left: 0%; width: 20%; }
-
-    #modeLabel{font-size:2rem;font-weight:800;color:var(--midi);transition:color .4s}
-
-    /* ── M3 Routing ── */
-    #routeWrap{position:relative;width:100%;padding:1rem 0 2rem}
-    .route-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem 1rem;position:relative;z-index:2}
-    .route-col{display:flex;flex-direction:column;gap:1.2rem;align-items:center}
-    .col-hdr{font-size:1rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.4rem;text-align:center}
-    .r-node{width:125px;height:125px;background:var(--surface);border:4px solid var(--border);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:2.8rem;cursor:pointer;transition:all .3s;user-select:none;position:relative}
-    .r-node:hover{transform:scale(1.05)}
-    .r-node span{font-size:.8rem;font-weight:700;color:var(--muted);margin-top:.3rem;text-align:center;line-height:1.2}
-    .r-node.ra{border-color:var(--audio);background:#EBF4FF;box-shadow:0 0 18px rgba(0,85,255,.2)}
-    .r-node.rm{border-color:var(--midi);background:#FFF3EB;box-shadow:0 0 18px rgba(255,85,0,.2)}
-    .r-node.ro{border-color:var(--play);background:#E6FFED;box-shadow:0 0 18px rgba(0,184,77,.2)}
-    .r-node.rcore{border-color:var(--text);background:var(--text);color:#fff}
-    .r-node.rcore span{color:#bbb}
-    #routeSVG{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:1}
-    .r-info{margin-top:1.5rem;padding:1.2rem 1.5rem;background:var(--surface);border:3px solid var(--border);border-radius:14px;font-size:1.1rem;display:none}
-    .r-info.show{display:block}
-
-    /* ── M4 Sequencer ── */
-    .seq-wrap{background:var(--surface);padding:2.5rem;border-radius:20px;border:3px solid var(--border)}
-    .seq-grid{display:grid;grid-template-columns:120px repeat(8,1fr);gap:8px;margin-bottom:2rem}
-    .seq-lbl{display:flex;align-items:center;font-size:1.3rem;font-weight:800}
-    .seq-pad{aspect-ratio:1;background:var(--bg);border:3px solid var(--border);border-radius:10px;cursor:pointer;transition:background .1s,transform .1s,border-color .1s}
-    .seq-pad:active{transform:scale(.9)}
-    .seq-pad.kick.on{background:var(--audio);border-color:var(--audio)}
-    .seq-pad.snare.on{background:var(--midi);border-color:var(--midi)}
-    .seq-pad.hat.on{background:var(--play);border-color:var(--play)}
-    .seq-pad.playing{border-color:var(--text);box-shadow:inset 0 0 0 4px rgba(255,255,255,.4)}
-
-    /* ── M5 Piano & Qwerty ── */
-    .piano-outer{background:#1c1c1c;border-radius:14px 14px 0 0;padding:14px 14px 0;position:relative;user-select:none;display:inline-block}
-    .piano-base{background:#111;border-radius:0 0 14px 14px;height:18px}
-    .piano-keys{position:relative;height:175px}
-    .wkey{position:absolute;bottom:0;background:#FAFAFA;border:2px solid #ccc;border-radius:0 0 8px 8px;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;font-size:.7rem;font-weight:700;color:#bbb;z-index:1;transition:background .05s}
-    .wkey:active,.wkey.on{background:#C7D9FF}
-    .bkey{position:absolute;top:0;background:#111;border-radius:0 0 6px 6px;cursor:pointer;z-index:2;transition:background .05s}
-    .bkey:active,.bkey.on{background:#555}
-
-    .knob-wrap{display:flex;flex-direction:column;align-items:center;gap:.8rem}
-    .cc-num{font-size:3.5rem;font-weight:900;color:var(--cc);line-height:1}
-    #ccKnob{cursor:grab;touch-action:none;-webkit-touch-callout:none}
-    #ccKnob:active{cursor:grabbing}
-
-    /* Qwerty Keyboard */
-    .qwerty-wrap { background:#E6E6E6; border-radius:12px; padding:2rem 1.5rem; display:flex; flex-direction:column; gap:8px; font-family:sans-serif; margin-top:2.5rem; position:relative; box-shadow:inset 0 0 0 2px #d0d0d0; }
-    .qwerty-row { display:flex; justify-content:center; gap:8px; }
-    .qk { width:52px; height:52px; border-radius:10px; display:flex; flex-direction:column; justify-content:space-between; padding:4px 6px; font-weight:800; font-size:1.1rem; box-shadow:0 4px 0 rgba(0,0,0,0.1); position:relative; }
-    .qk span { align-self:center; font-size:1.6rem; color:#fff; text-shadow:0 1px 2px rgba(0,0,0,0.2); line-height:1; }
-    .qk-top { font-size:0.7rem; position:absolute; top:4px; left:6px; color:#444; }
-    
-    .qk-gray { background:#ccc; }
-    .qk-orange { background:#FFB54D; }
-    .qk-orange span { color:#fff; }
-    .qk-blue { background:#66C2D9; justify-content:center; align-items:center; }
-    .qk-red { background:#EF5350; justify-content:center; align-items:center; }
-    .qk-arrow { font-size:1.5rem; color:#fff; }
-    
-    .q-lbl { position:absolute; bottom:-25px; font-size:0.8rem; font-weight:800; letter-spacing:1px; color:#000; }
-    
-    /* ── Toast ── */
     #toast{position:fixed;bottom:40px;left:50%;transform:translateX(-50%) translateY(160px);background:var(--text);color:#fff;padding:1.2rem 2.5rem;border-radius:100px;font-size:1.4rem;font-weight:bold;z-index:9999;transition:transform .4s cubic-bezier(.175,.885,.32,1.275);box-shadow:0 20px 40px rgba(0,0,0,.25);max-width:640px;text-align:center}
     #toast.show{transform:translateX(-50%) translateY(0)}
-  </style>
+
+    </style>
 </head>
 <body>
 <div id="toast"></div>
@@ -158,7 +46,7 @@
 <!-- HERO ─────────────────────────────────── -->
 <section style="background:var(--surface);align-items:center;text-align:center">
   <div class="tag" style="background:#E5E7EB;padding:.4rem 1rem;border-radius:8px">Soundspace Academy</div>
-  <h1>Ableton 101<br>Fundamentos Prácticos</h1>
+  <h1>Ableton 101<br>Clase 1: Fundamentos Prácticos</h1>
   <p class="sub" style="font-size:1.8rem;text-align:center;margin:0 auto 1.5rem">Manual interactivo para aprender en el salón.</p>
 
   <div style="display:flex;align-items:center;justify-content:center;gap:1.5rem;margin-bottom:2.5rem;text-align:left;max-width:800px;background:#F0F4F8;padding:1.5rem;border-radius:16px;">
