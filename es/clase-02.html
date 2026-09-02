@@ -176,7 +176,105 @@
   </div>
 </section>
 
+
+<!-- MÓDULO FINAL: RESUMEN Y TEST -->
+<section id="m-final" style="background:#111; color:#fff">
+  <div class="tag" style="background:var(--cc); color:#fff">Módulo Final</div>
+  <h2 style="color:#fff">Resumen de la Clase</h2>
+  <p class="sub" style="color:#aaa">Conceptos, Atajos de Teclado y Referencias.</p>
+  
+  <div class="split" style="margin-bottom:3rem">
+    <div class="panel" style="background:#222; border-color:#333; color:#fff">
+      <h3 style="color:var(--audio); margin-bottom:1rem">🧠 Conceptos Clave</h3>
+      <ul style="margin-left:1.5rem; line-height:1.8; font-size:1.1rem; color:#ddd" id="res-conceptos">
+      </ul>
+    </div>
+    <div class="panel" style="background:#222; border-color:#333; color:#fff">
+      <h3 style="color:var(--play); margin-bottom:1rem">⌨️ Shortcuts (Atajos)</h3>
+      <ul style="margin-left:1.5rem; line-height:1.8; font-size:1.1rem; color:#ddd" id="res-shortcuts">
+      </ul>
+    </div>
+  </div>
+  
+  <div class="panel" style="background:#222; border-color:#333; color:#fff; margin-bottom:4rem">
+    <h3 style="color:var(--warp-accent)">🎧 Referencia Musical</h3>
+    <p id="res-ref" style="font-size:1.1rem; line-height:1.6; color:#ddd; margin-top:1rem"></p>
+  </div>
+
+  <h2 style="text-align:center; color:#fff; margin-bottom:2rem">Test Interactivo</h2>
+  <div class="panel" style="background:#1a1a1a; border:color:var(--cc); border-width:3px; border-style:solid; max-width:800px; margin:0 auto; text-align:center">
+    <div style="font-size:1rem; color:var(--muted); margin-bottom:1rem" id="quiz-progress">Pregunta 1 de 3</div>
+    <h3 id="quiz-q" style="font-size:1.5rem; margin-bottom:2rem; color:#fff">Cargando pregunta...</h3>
+    <div id="quiz-opts" style="display:flex; flex-direction:column; gap:1rem; align-items:center; width:100%">
+    </div>
+    <div id="quiz-feedback" style="margin-top:2rem; font-weight:bold; font-size:1.2rem; min-height:2rem"></div>
+  </div>
+</section>
+
 <script>
+const classData = {
+      conceptos: [
+        "<b>Warping:</b> La habilidad de Ableton para estirar o encoger el audio sin cambiar su afinación, adaptándolo al Tempo (BPM) del proyecto.",
+        "<b>Algoritmo Beats:</b> Ideal para baterías y percusiones. Conserva los transitorios rítmicos.",
+        "<b>Algoritmo Complex / Pro:</b> Ideal para canciones completas o acapellas complejas."
+      ],
+      shortcuts: [
+        "<b>Doble Clic:</b> Crear o eliminar un marcador Warp.",
+        "<b>Shift + Clic en Marcador:</b> Mover un marcador sin afectar a los marcadores adyacentes."
+      ],
+      referencia: "<b>El 'Amen Break' (The Winstons - Amen, Brother):</b> El sample de batería más importante de la historia. Al ser acelerado (pitch y warping) formó la base de géneros enteros como el Jungle y el Drum & Bass en los 90s.",
+      quiz: [
+        { q: "Si quieres warpear un loop de batería (kick, snare, hats), ¿qué algoritmo es mejor?", opts: ["Tones", "Beats", "Texture", "Complex"], ans: 1 },
+        { q: "¿Qué sucede si subes los BPMs en Ableton y un clip de audio NO tiene el Warp activado?", opts: ["Se acelera y se hace más agudo", "Se adapta perfectamente al nuevo tempo", "No le pasa absolutamente nada (se desincroniza)", "Se borra el clip"], ans: 2 },
+        { q: "¿Qué hace el algoritmo Re-Pitch?", opts: ["Preserva la afinación al 100%", "Vincula la velocidad con la afinación (estilo tocadiscos)", "Añade grano y ruido", "Analiza armonías complejas"], ans: 1 }
+      ]
+    };
+
+// --- LOGICA TEST INTERACTIVO ---
+let currentQ = 0;
+function initQuiz() {
+  document.getElementById('res-conceptos').innerHTML = classData.conceptos.map(c => `<li>${c}</li>`).join('');
+  document.getElementById('res-shortcuts').innerHTML = classData.shortcuts.map(s => `<li>${s}</li>`).join('');
+  document.getElementById('res-ref').innerHTML = classData.referencia;
+  loadQuestion();
+}
+
+function loadQuestion() {
+  if (currentQ >= classData.quiz.length) {
+    document.getElementById('quiz-progress').textContent = "¡Test Completado!";
+    document.getElementById('quiz-q').textContent = "🎉 Has terminado el repaso de esta clase.";
+    document.getElementById('quiz-opts').innerHTML = "<button class='btn btn-play' onclick='currentQ=0;loadQuestion()'>🔄 Repetir Test</button>";
+    document.getElementById('quiz-feedback').textContent = "";
+    return;
+  }
+  const q = classData.quiz[currentQ];
+  document.getElementById('quiz-progress').textContent = `Pregunta ${currentQ + 1} de ${classData.quiz.length}`;
+  document.getElementById('quiz-q').textContent = q.q;
+  document.getElementById('quiz-opts').innerHTML = q.opts.map((opt, i) => 
+    `<button class="btn btn-outline" style="width:100%; max-width:500px; color:#fff; border-color:#555" onclick="checkAnswer(${i})">${opt}</button>`
+  ).join('');
+  document.getElementById('quiz-feedback').textContent = "";
+}
+
+function checkAnswer(idx) {
+  const q = classData.quiz[currentQ];
+  const btns = document.getElementById('quiz-opts').querySelectorAll('button');
+  if (idx === q.ans) {
+    btns[idx].style.background = "var(--play)";
+    btns[idx].style.borderColor = "var(--play)";
+    document.getElementById('quiz-feedback').innerHTML = "✅ ¡Correcto!";
+    document.getElementById('quiz-feedback').style.color = "var(--play)";
+    setTimeout(() => { currentQ++; loadQuestion(); }, 1500);
+  } else {
+    btns[idx].style.background = "var(--danger)";
+    btns[idx].style.borderColor = "var(--danger)";
+    document.getElementById('quiz-feedback').innerHTML = "❌ Incorrecto. Intenta de nuevo.";
+    document.getElementById('quiz-feedback').style.color = "var(--danger)";
+  }
+}
+window.addEventListener('DOMContentLoaded', initQuiz);
+
+
   function msg(text, bg, fg) {
     const t = document.getElementById('toast');
     t.innerHTML = text;

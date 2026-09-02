@@ -97,7 +97,7 @@
 
     /* ── M3 Routing ── */
     #routeWrap{position:relative;width:100%;padding:1rem 0 2rem}
-    .route-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem 1rem;position:relative;z-index:2}
+    .route-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1.5rem 1rem;position:relative;z-index:2}
     .route-col{display:flex;flex-direction:column;gap:1.2rem;align-items:center}
     .col-hdr{font-size:1rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.4rem;text-align:center}
     .r-node{width:125px;height:125px;background:var(--surface);border:4px solid var(--border);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:2.8rem;cursor:pointer;transition:all .3s;user-select:none;position:relative}
@@ -298,6 +298,11 @@
         <div class="r-node rcore" id="n-abl">💻<span>Ableton Live</span></div>
       </div>
       <div class="route-col">
+        <div class="col-hdr">Interfaz (Salida)</div>
+        <div class="r-node" id="n-out-ext" onclick="connectNode('out-ext')">🎛️<span>Interfaz Externa</span></div>
+        <div class="r-node" id="n-out-int" onclick="connectNode('out-int')">🖥️<span>Tarjeta Interna</span></div>
+      </div>
+      <div class="route-col">
         <div class="col-hdr">Salida</div>
         <div class="r-node" id="n-spk" onclick="connectNode('spk')">🔊<span>Bocinas</span></div>
         <div class="r-node" id="n-head" onclick="connectNode('head')">🎧<span>Audífonos</span></div>
@@ -484,7 +489,105 @@
 <!-- ═══════════════════════════════════
      JAVASCRIPT
 ═══════════════════════════════════ -->
+
+<!-- MÓDULO FINAL: RESUMEN Y TEST -->
+<section id="m-final" style="background:#111; color:#fff">
+  <div class="tag" style="background:var(--cc); color:#fff">Módulo Final</div>
+  <h2 style="color:#fff">Resumen de la Clase</h2>
+  <p class="sub" style="color:#aaa">Conceptos, Atajos de Teclado y Referencias.</p>
+  
+  <div class="split" style="margin-bottom:3rem">
+    <div class="panel" style="background:#222; border-color:#333; color:#fff">
+      <h3 style="color:var(--audio); margin-bottom:1rem">🧠 Conceptos Clave</h3>
+      <ul style="margin-left:1.5rem; line-height:1.8; font-size:1.1rem; color:#ddd" id="res-conceptos">
+      </ul>
+    </div>
+    <div class="panel" style="background:#222; border-color:#333; color:#fff">
+      <h3 style="color:var(--play); margin-bottom:1rem">⌨️ Shortcuts (Atajos)</h3>
+      <ul style="margin-left:1.5rem; line-height:1.8; font-size:1.1rem; color:#ddd" id="res-shortcuts">
+      </ul>
+    </div>
+  </div>
+  
+  <div class="panel" style="background:#222; border-color:#333; color:#fff; margin-bottom:4rem">
+    <h3 style="color:var(--warp-accent)">🎧 Referencia Musical</h3>
+    <p id="res-ref" style="font-size:1.1rem; line-height:1.6; color:#ddd; margin-top:1rem"></p>
+  </div>
+
+  <h2 style="text-align:center; color:#fff; margin-bottom:2rem">Test Interactivo</h2>
+  <div class="panel" style="background:#1a1a1a; border:color:var(--cc); border-width:3px; border-style:solid; max-width:800px; margin:0 auto; text-align:center">
+    <div style="font-size:1rem; color:var(--muted); margin-bottom:1rem" id="quiz-progress">Pregunta 1 de 3</div>
+    <h3 id="quiz-q" style="font-size:1.5rem; margin-bottom:2rem; color:#fff">Cargando pregunta...</h3>
+    <div id="quiz-opts" style="display:flex; flex-direction:column; gap:1rem; align-items:center; width:100%">
+    </div>
+    <div id="quiz-feedback" style="margin-top:2rem; font-weight:bold; font-size:1.2rem; min-height:2rem"></div>
+  </div>
+</section>
+
 <script>
+const classData = {
+      conceptos: [
+        "<b>Audio vs MIDI:</b> El Audio es sonido real grabado. El MIDI son instrucciones (notas, velocidad).",
+        "<b>Vista Sesión vs Arreglo:</b> Sesión (Vertical) para improvisar loops. Arreglo (Horizontal) para estructurar canciones.",
+        "<b>Ruteo:</b> Las señales analógicas (Mic, Guitarra) necesitan una Interfaz de Audio para entrar a la computadora."
+      ],
+      shortcuts: [
+        "<b>TAB:</b> Cambia entre Vista Sesión y Vista Arreglo.",
+        "<b>Barra Espaciadora:</b> Reproducir / Pausar."
+      ],
+      referencia: "<b>Kraftwerk - The Robots:</b> Pioneros en el uso de secuenciadores y sintetizadores. Su música es un excelente ejemplo de estructuración de patrones MIDI y Audio en su forma más pura.",
+      quiz: [
+        { q: "¿Qué viaja a través de un cable MIDI?", opts: ["Audio Analógico", "Audio Digital", "Instrucciones de Notas y Velocidad", "Electricidad para bocinas"], ans: 2 },
+        { q: "¿Para qué sirve la Vista Sesión (la vertical)?", opts: ["Para masterizar la pista", "Para improvisar y lanzar loops", "Para editar vocales", "Para escribir partituras"], ans: 1 },
+        { q: "Si quieres grabar un micrófono XLR a tu computadora, ¿qué necesitas en medio?", opts: ["Un teclado MIDI", "Una Interfaz de Audio", "Un amplificador de guitarra", "Solo un adaptador USB"], ans: 1 }
+      ]
+    };
+
+// --- LOGICA TEST INTERACTIVO ---
+let currentQ = 0;
+function initQuiz() {
+  document.getElementById('res-conceptos').innerHTML = classData.conceptos.map(c => `<li>${c}</li>`).join('');
+  document.getElementById('res-shortcuts').innerHTML = classData.shortcuts.map(s => `<li>${s}</li>`).join('');
+  document.getElementById('res-ref').innerHTML = classData.referencia;
+  loadQuestion();
+}
+
+function loadQuestion() {
+  if (currentQ >= classData.quiz.length) {
+    document.getElementById('quiz-progress').textContent = "¡Test Completado!";
+    document.getElementById('quiz-q').textContent = "🎉 Has terminado el repaso de esta clase.";
+    document.getElementById('quiz-opts').innerHTML = "<button class='btn btn-play' onclick='currentQ=0;loadQuestion()'>🔄 Repetir Test</button>";
+    document.getElementById('quiz-feedback').textContent = "";
+    return;
+  }
+  const q = classData.quiz[currentQ];
+  document.getElementById('quiz-progress').textContent = `Pregunta ${currentQ + 1} de ${classData.quiz.length}`;
+  document.getElementById('quiz-q').textContent = q.q;
+  document.getElementById('quiz-opts').innerHTML = q.opts.map((opt, i) => 
+    `<button class="btn btn-outline" style="width:100%; max-width:500px; color:#fff; border-color:#555" onclick="checkAnswer(${i})">${opt}</button>`
+  ).join('');
+  document.getElementById('quiz-feedback').textContent = "";
+}
+
+function checkAnswer(idx) {
+  const q = classData.quiz[currentQ];
+  const btns = document.getElementById('quiz-opts').querySelectorAll('button');
+  if (idx === q.ans) {
+    btns[idx].style.background = "var(--play)";
+    btns[idx].style.borderColor = "var(--play)";
+    document.getElementById('quiz-feedback').innerHTML = "✅ ¡Correcto!";
+    document.getElementById('quiz-feedback').style.color = "var(--play)";
+    setTimeout(() => { currentQ++; loadQuestion(); }, 1500);
+  } else {
+    btns[idx].style.background = "var(--danger)";
+    btns[idx].style.borderColor = "var(--danger)";
+    document.getElementById('quiz-feedback').innerHTML = "❌ Incorrecto. Intenta de nuevo.";
+    document.getElementById('quiz-feedback').style.color = "var(--danger)";
+  }
+}
+window.addEventListener('DOMContentLoaded', initQuiz);
+
+
 /* ─── AudioContext ─────────────────────── */
 let actx = null;
 function getAC() {
@@ -750,12 +853,14 @@ const NODE_INFO = {
   'mic':    { title:'🎤 Micrófono', color:'ra', text:'Señal analógica XLR/TRS. Necesita interfaz de audio para convertirse a digital. Si es micrófono de condensador, la interfaz provee Phantom Power (+48V).' },
   'guitar': { title:'🎸 Guitarra',  color:'ra', text:'Señal Hi-Z de instrumento. Conecta a una entrada "INST" de la interfaz de audio. También puedes usar una DI Box.' },
   'kb':     { title:'🎹 Teclado MIDI (USB)', color:'rm', text:'¡El MIDI no lleva audio! Solo manda instrucciones (Nota, Velocidad, CC). Va directo a Ableton por USB, sin necesitar interfaz de audio.' },
-  'ext':    { title:'🎛️ Interfaz Externa', color:'ra', text:'Focusrite, Universal Audio, Audient, etc. Convierte la señal analógica a digital con alta calidad.' },
-  'int':    { title:'🖥️ Tarjeta Interna',  color:'ra', text:'La tarjeta de sonido integrada de tu Mac/PC. ¡Atención! No tiene entradas físicas (XLR o TRS grande) para conectar un micrófono profesional o guitarra directamente.' },
-  'spk':    { title:'🔊 Bocinas',    color:'ro', text:'Monitores de estudio o bocinas domésticas. Configúralas en Ableton: Opciones → Preferencias → Audio → Dispositivo de Salida.' },
-  'head':   { title:'🎧 Audífonos', color:'ro', text:'Misma configuración que bocinas. Útiles para trabajo en silencio. Recomendados: ATH-M50x, MDR-7506.' },
+  'ext':    { title:'🎛️ Interfaz (Entrada)', color:'ra', text:'Convierte la señal analógica a digital con alta calidad.' },
+  'int':    { title:'🖥️ Tarjeta Interna',  color:'ra', text:'No tiene entradas físicas profesionales para conectar un micrófono profesional o guitarra directamente.' },
+  'out-ext':{ title:'🎛️ Interfaz (Salida)', color:'ro', text:'El audio digital (101010) sale de Ableton, vuelve a la interfaz y el convertidor D/A lo vuelve analógico para tus monitores.' },
+  'out-int':{ title:'🖥️ Tarjeta Interna (Salida)', color:'ro', text:'La salida default de tu computadora. Buena para audífonos de consumidor.' },
+  'spk':    { title:'🔊 Bocinas',    color:'ro', text:'Monitores de estudio. Si usas Interfaz Externa, van conectados por cables TRS/XLR a la interfaz.' },
+  'head':   { title:'🎧 Audífonos', color:'ro', text:'Misma configuración que bocinas. Útiles para trabajo en silencio.' },
 };
-let activeSrc = null, activeIface = null;
+let activeSrc = null, activeIfaceIn = null, activeIfaceOut = null;
 
 function connectNode(key) {
   const ac  = getAC();
@@ -765,261 +870,106 @@ function connectNode(key) {
   document.getElementById('rInfoText').textContent  = inf.text;
   document.getElementById('rInfo').classList.add('show');
 
-  if (key === 'mic' || key === 'guitar') {
-    ['n-mic','n-guitar'].forEach(id => document.getElementById(id).classList.remove('ra','rm','ro'));
-    el.classList.add('ra');
+  // Clear previous lines specific to this step
+  if (['mic','guitar','kb'].includes(key)) {
+    ['n-mic','n-guitar','n-kb'].forEach(id => document.getElementById(id).classList.remove('ra','rm','ro'));
+    clearLine('l-src'); clearLine('l-kb');
     activeSrc = 'n-' + key;
-    beep(ac, 440, 'sine');
-    msg('Fuente seleccionada. Ahora elige una <b>Interfaz de Audio</b>.', 'var(--audio)');
-  
-  } else if (key === 'kb') {
-    el.classList.add('rm');
-    drawLine('n-kb', 'n-abl', 'var(--midi)', 'l-kb');
-    beep(ac, 330, 'triangle');
-    msg('🎹 Teclado MIDI → Ableton directo por USB. ¡Sin interfaz de audio!', 'var(--midi)');
-  
-  } else if (key === 'ext' || key === 'int') {
-    // === REGLA: No dejar conectar mic/guitar directo a Tarjeta Interna ===
-    if (activeSrc === 'n-mic' || activeSrc === 'n-guitar') {
-      if (key === 'int') {
-        el.classList.add('ro'); // Flash rojo de error visualmente? no, solo mensaje
-        msg('❌ ¡Error de conexión! No puedes conectar un cable XLR o de Instrumento directo a la computadora. ¡Necesitas la Interfaz Externa!', 'var(--danger)');
-        return;
-      }
-    }
-
-    ['n-ext','n-int'].forEach(id => document.getElementById(id).classList.remove('ra','rm','ro'));
-    el.classList.add('ra');
-    activeIface = 'n-' + key;
+    el.classList.add(key==='kb' ? 'rm' : 'ra');
+    beep(ac, 440, key==='kb'?'square':'sine');
     
-    if (activeSrc) {
-      drawLine(activeSrc, 'n-' + key, 'var(--audio)', 'l-src');
+    if (key === 'kb') {
+      drawLine('n-kb', 'n-abl', 'var(--midi)', 'l-kb');
+      msg('¡MIDI va directo por USB! Ahora elige la Interfaz de Salida.', 'var(--midi)');
     } else {
-      msg('Primero selecciona una fuente (🎤 o 🎸).', 'var(--danger)'); 
+      msg('Fuente seleccionada. Ahora elige una <b>Interfaz de Entrada</b>.', 'var(--audio)');
+    }
+  } 
+  else if (['ext','int'].includes(key)) {
+    ['n-ext','n-int'].forEach(id => document.getElementById(id).classList.remove('ra','rm','ro'));
+    clearLine('l-src'); clearLine('l-in');
+    
+    if (!activeSrc || activeSrc === 'n-kb') {
+      msg('Primero selecciona un Micrófono o Guitarra.', 'var(--danger)');
       return;
     }
-    
-    drawLine('n-' + key, 'n-abl', 'var(--audio)', 'l-iface');
+    if (key === 'int' && (activeSrc === 'n-mic' || activeSrc === 'n-guitar')) {
+      msg('❌ ¡Error! No puedes conectar XLR o Instrumento a la tarjeta interna.', 'var(--danger)');
+      document.getElementById('rInfoTitle').textContent = 'Conexión Inválida';
+      return;
+    }
+    activeIfaceIn = 'n-' + key;
+    el.classList.add('ra');
+    drawLine(activeSrc, activeIfaceIn, 'var(--audio)', 'l-src');
+    setTimeout(()=> drawLine(activeIfaceIn, 'n-abl', 'var(--audio)', 'l-in'), 300);
     beep(ac, 523, 'sine');
-    msg('Interfaz conectada. Ahora elige la <b>Salida de Audio</b>.', 'var(--audio)');
-  
-  } else if (key === 'spk' || key === 'head') {
+    msg('Audio entrando a Ableton. Ahora elige una <b>Interfaz de Salida</b>.', 'var(--audio)');
+  }
+  else if (['out-ext','out-int'].includes(key)) {
+    ['n-out-ext','n-out-int'].forEach(id => document.getElementById(id).classList.remove('ra','rm','ro'));
+    clearLine('l-out'); clearLine('l-spk');
+    activeIfaceOut = 'n-' + key;
     el.classList.add('ro');
-    drawLine('n-abl', 'n-' + key, 'var(--play)', 'l-out-' + key);
-    triumph(ac);
-    msg('✅ ¡Señal completa! Audio fluyendo de entrada a salida.', 'var(--play)');
+    drawLine('n-abl', activeIfaceOut, 'var(--play)', 'l-out');
+    beep(ac, 659, 'triangle');
+    msg('Señal saliendo de Ableton. Finalmente elige <b>Audífonos o Bocinas</b>.', 'var(--play)');
+  }
+  else if (['spk','head'].includes(key)) {
+    ['n-spk','n-head'].forEach(id => document.getElementById(id).classList.remove('ra','rm','ro'));
+    clearLine('l-spk');
+    
+    if (!activeIfaceOut) {
+      msg('Primero selecciona una Interfaz de Salida.', 'var(--danger)');
+      return;
+    }
+    el.classList.add('ro');
+    drawLine(activeIfaceOut, 'n-' + key, 'var(--play)', 'l-spk');
+    beep(ac, 880, 'triangle');
+    msg('✅ ¡Señal completa! Audio fluyendo desde la entrada hasta la salida.', 'var(--play)');
   }
 }
 
-function drawLine(fromId, toId, color, lineId) {
-  const svg  = document.getElementById('routeSVG');
-  const wrap = document.getElementById('routeWrap');
-  const fEl  = document.getElementById(fromId);
-  const tEl  = document.getElementById(toId);
-  if (!fEl || !tEl) return;
-  const wr = wrap.getBoundingClientRect();
-  const fr = fEl.getBoundingClientRect();
-  const tr = tEl.getBoundingClientRect();
-  const x1 = fr.right  - wr.left, y1 = (fr.top  + fr.bottom) / 2 - wr.top;
-  const x2 = tr.left   - wr.left, y2 = (tr.top  + tr.bottom) / 2 - wr.top;
-  const old = document.getElementById(lineId); if (old) old.remove();
-  const line = document.createElementNS('http://www.w3.org/2000/svg','line');
-  line.id = lineId;
+function clearLine(id) {
+  const existing = document.getElementById(id);
+  if (existing) existing.remove();
+}
+
+function drawLine(id1, id2, color, lineId) {
+  clearLine(lineId);
+  const el1 = document.getElementById(id1);
+  const el2 = document.getElementById(id2);
+  const svg = document.getElementById('routeSVG');
+  const w = svg.clientWidth, h = svg.clientHeight;
+  const wrapRect = document.getElementById('routeWrap').getBoundingClientRect();
+  const r1 = el1.getBoundingClientRect();
+  const r2 = el2.getBoundingClientRect();
+
+  const x1 = r1.left + r1.width/2 - wrapRect.left;
+  const y1 = r1.top + r1.height/2 - wrapRect.top;
+  const x2 = r2.left + r2.width/2 - wrapRect.left;
+  const y2 = r2.top + r2.height/2 - wrapRect.top;
+
+  const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  line.setAttribute('id', lineId);
   line.setAttribute('x1', x1); line.setAttribute('y1', y1);
   line.setAttribute('x2', x2); line.setAttribute('y2', y2);
   line.setAttribute('stroke', color);
-  line.setAttribute('stroke-width', '9');
+  line.setAttribute('stroke-width', '6');
+  line.setAttribute('stroke-dasharray', '12 8');
   line.setAttribute('stroke-linecap', 'round');
-  const len = Math.hypot(x2 - x1, y2 - y1);
-  line.setAttribute('stroke-dasharray', len);
-  line.setAttribute('stroke-dashoffset', len);
-  line.style.transition = 'stroke-dashoffset 0.55s ease';
+  
+  const length = Math.sqrt((x2-x1)**2 + (y2-y1)**2);
+  line.style.strokeDashoffset = length;
+  line.style.transition = 'stroke-dashoffset 0.5s ease-out';
   svg.appendChild(line);
-  requestAnimationFrame(() => { line.style.strokeDashoffset = '0'; });
-}
-
-function resetRouting() {
-  document.getElementById('routeSVG').innerHTML = '';
-  document.querySelectorAll('.r-node').forEach(n => n.classList.remove('ra','rm','ro'));
-  document.getElementById('rInfo').classList.remove('show');
-  activeSrc = null; activeIface = null;
-}
-
-function beep(ac, freq, type) {
-  const o = ac.createOscillator(), g = ac.createGain();
-  o.type = type; o.frequency.value = freq;
-  g.gain.setValueAtTime(0, ac.currentTime);
-  g.gain.linearRampToValueAtTime(0.1, ac.currentTime + .04);
-  g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + .7);
-  o.connect(g); g.connect(ac.destination); o.start(); o.stop(ac.currentTime + .7);
-}
-
-function triumph(ac) {
-  [523.25, 659.25, 784.00].forEach((f, i) => {
-    const o = ac.createOscillator(), g = ac.createGain();
-    o.type = 'sine'; o.frequency.value = f;
-    const t = ac.currentTime + i * 0.12;
-    g.gain.setValueAtTime(0, t);
-    g.gain.linearRampToValueAtTime(0.12, t + .04);
-    g.gain.exponentialRampToValueAtTime(0.001, t + .8);
-    o.connect(g); g.connect(ac.destination); o.start(t); o.stop(t + .8);
+  
+  // trigger animation
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      line.style.strokeDashoffset = '0';
+    });
   });
 }
-
-/* ═══════════════════════════════════════════════════
-   M4 — SECUENCIADOR
-═══════════════════════════════════════════════════ */
-const seqGrid = document.getElementById('seqGrid');
-[{id:'kick',label:'🥁 Kick',cls:'kick'},{id:'snare',label:'🪘 Snare',cls:'snare'},{id:'hat',label:'🔔 Hi-Hat',cls:'hat'}]
-.forEach(ins => {
-  const lbl = document.createElement('div'); lbl.className='seq-lbl'; lbl.textContent=ins.label; seqGrid.appendChild(lbl);
-  for (let i=0;i<8;i++) {
-    const p = document.createElement('div'); p.className=`seq-pad ${ins.cls}`;
-    p.dataset.inst=ins.id; p.dataset.step=i; p.onclick=()=>p.classList.toggle('on'); seqGrid.appendChild(p);
-  }
-});
-let seqOn=false, seqSt=0, seqBPM=120, seqIv;
-function updateBPM(v) { seqBPM=+v; document.getElementById('bpmVal').textContent=v; if(seqOn){clearInterval(seqIv);seqIv=setInterval(seqTick,60000/seqBPM/2);} }
-function toggleSeq() {
-  getAC(); const btn=document.getElementById('btnSeq');
-  if (!seqOn) { seqOn=true; btn.textContent='⏹ STOP BEAT'; btn.style.background='var(--danger)'; seqIv=setInterval(seqTick,60000/seqBPM/2); }
-  else { seqOn=false; btn.textContent='▶ PLAY BEAT'; btn.style.background='var(--play)'; clearInterval(seqIv); document.querySelectorAll('.seq-pad').forEach(p=>p.classList.remove('playing')); seqSt=0; }
-}
-function seqTick() {
-  document.querySelectorAll('.seq-pad').forEach(p=>p.classList.remove('playing'));
-  document.querySelectorAll(`.seq-pad[data-step="${seqSt}"]`).forEach(p=>{ p.classList.add('playing'); if(p.classList.contains('on')) drumHit(p.dataset.inst); });
-  seqSt=(seqSt+1)%8;
-}
-function clearSeq() { document.querySelectorAll('.seq-pad').forEach(p=>p.classList.remove('on')); }
-function loadBeat() {
-  clearSeq();
-  [{i:'kick',s:0},{i:'kick',s:4},{i:'snare',s:2},{i:'snare',s:6},...Array.from({length:8},(_,s)=>({i:'hat',s}))]
-  .forEach(({i,s})=>{ document.querySelector(`.seq-pad[data-inst="${i}"][data-step="${s}"]`)?.classList.add('on'); });
-}
-function drumHit(t) {
-  const ac=getAC(), n=ac.currentTime;
-  if (t==='kick') {
-    const o=ac.createOscillator(),g=ac.createGain();
-    o.frequency.setValueAtTime(150,n); o.frequency.exponentialRampToValueAtTime(40,n+.1);
-    g.gain.setValueAtTime(1,n); g.gain.exponentialRampToValueAtTime(.001,n+.3);
-    o.connect(g); g.connect(ac.destination); o.start(n); o.stop(n+.3);
-  } else {
-    const sz=t==='snare'?.1:.04, buf=ac.createBuffer(1,ac.sampleRate*sz,ac.sampleRate), d=buf.getChannelData(0);
-    for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
-    const ns=ac.createBufferSource(); ns.buffer=buf;
-    const f=ac.createBiquadFilter(); f.type='highpass'; f.frequency.value=t==='snare'?1000:7000;
-    const g=ac.createGain(); g.gain.setValueAtTime(t==='snare'?1:.4,n); g.gain.exponentialRampToValueAtTime(.001,n+sz);
-    ns.connect(f); f.connect(g); g.connect(ac.destination); ns.start(n);
-  }
-}
-
-/* ═══════════════════════════════════════════════════
-   M5 — PIANO CSS
-═══════════════════════════════════════════════════ */
-const WKW=56,WKH=170,BKW=36,BKH=108,KG=4,KPL=14;
-const wKeys=[{note:'C4',freq:261.63},{note:'D4',freq:293.66},{note:'E4',freq:329.63},{note:'F4',freq:349.23},{note:'G4',freq:392.00},{note:'A4',freq:440.00},{note:'B4',freq:493.88}];
-const bKeys=[{note:'C#4',freq:277.18,after:0},{note:'D#4',freq:311.13,after:1},null,{note:'F#4',freq:369.99,after:3},{note:'G#4',freq:415.30,after:4},{note:'A#4',freq:466.16,after:5},null];
-const pianoMount=document.getElementById('pianoMount');
-const totalW=KPL+wKeys.length*(WKW+KG)-KG+KPL;
-const pianoOuter=document.createElement('div'); pianoOuter.className='piano-outer'; pianoOuter.style.width=totalW+'px'; pianoOuter.style.maxWidth='100%';
-const keysWrap=document.createElement('div'); keysWrap.className='piano-keys'; keysWrap.style.width=(totalW-KPL*2)+'px'; keysWrap.style.height=WKH+'px';
-
-const activeKeys = new Map();
-function pianoDown(freq,el) {
-  if(activeKeys.has(el)) return;
-  el.classList.add('on');
-  const ac=getAC(), o=ac.createOscillator(), g=ac.createGain();
-  o.type='triangle'; o.frequency.value=freq;
-  g.gain.setValueAtTime(0,ac.currentTime); g.gain.linearRampToValueAtTime(0.22,ac.currentTime+.01);
-  o.connect(g); g.connect(ac.destination); o.start();
-  activeKeys.set(el,{o,g});
-}
-function pianoUp(el) {
-  if(!activeKeys.has(el)) return;
-  el.classList.remove('on');
-  const {o,g}=activeKeys.get(el), ac=getAC();
-  g.gain.linearRampToValueAtTime(.001,ac.currentTime+.12);
-  o.stop(ac.currentTime+.13);
-  activeKeys.delete(el);
-}
-
-wKeys.forEach((k,i)=>{
-  const el=document.createElement('div'); el.className='wkey';
-  el.style.left=(i*(WKW+KG))+'px'; el.style.width=WKW+'px'; el.style.height=WKH+'px';
-  el.textContent=k.note;
-  el.addEventListener('mousedown',e=>{e.preventDefault();pianoDown(k.freq,el)});
-  el.addEventListener('mouseup',()=>pianoUp(el));
-  el.addEventListener('mouseleave',()=>pianoUp(el));
-  el.addEventListener('touchstart',e=>{e.preventDefault();pianoDown(k.freq,el)},{passive:false});
-  el.addEventListener('touchend',()=>pianoUp(el));
-  keysWrap.appendChild(el);
-});
-bKeys.forEach(k=>{
-  if(!k) return;
-  const el=document.createElement('div'); el.className='bkey';
-  el.style.left=((k.after+1)*(WKW+KG)-KG/2-BKW/2)+'px'; el.style.width=BKW+'px'; el.style.height=BKH+'px';
-  el.addEventListener('mousedown',e=>{e.preventDefault();pianoDown(k.freq,el)});
-  el.addEventListener('mouseup',()=>pianoUp(el));
-  el.addEventListener('mouseleave',()=>pianoUp(el));
-  el.addEventListener('touchstart',e=>{e.preventDefault();pianoDown(k.freq,el)},{passive:false});
-  el.addEventListener('touchend',()=>pianoUp(el));
-  keysWrap.appendChild(el);
-});
-
-const pianoBase=document.createElement('div'); pianoBase.className='piano-base'; pianoBase.style.width=totalW+'px';
-pianoOuter.appendChild(keysWrap); pianoMount.appendChild(pianoOuter); pianoMount.appendChild(pianoBase);
-
-/* ═══════════════════════════════════════════════════
-   M5 — CC KNOB SVG
-═══════════════════════════════════════════════════ */
-let ccVal=64, ccDrone=null, ccFilter=null, ccGain=null;
-const CX=95,CY=95,KR=71;
-const ccKnob=document.getElementById('ccKnob');
-const ccLine=document.getElementById('ccLine');
-const ccArc=document.getElementById('ccArc');
-const ccNum=document.getElementById('ccNum');
-
-function renderKnob(v) {
-  ccVal=Math.max(0,Math.min(127,Math.round(v)));
-  ccNum.textContent=ccVal;
-  const angleDeg=-135+(ccVal/127)*270;
-  const angleRad=(angleDeg-90)*Math.PI/180;
-  const lx=CX+KR*Math.cos(angleRad), ly=CY+KR*Math.sin(angleRad);
-  ccLine.setAttribute('x2',lx); ccLine.setAttribute('y2',ly);
-  const sRad=(-135-90)*Math.PI/180, sx=CX+KR*Math.cos(sRad), sy=CY+KR*Math.sin(sRad);
-  const sweep=angleDeg-(-135), large=sweep>180?1:0;
-  ccArc.setAttribute('d', ccVal>0 ? `M ${sx} ${sy} A ${KR} ${KR} 0 ${large} 1 ${lx} ${ly}` : '');
-  if(ccFilter) ccFilter.frequency.value=80+(ccVal/127)*5000;
-}
-
-let dragging=false, dY0=0, dV0=64;
-function dragStart(y) { dragging=true; dY0=y; dV0=ccVal; startDrone(); }
-function dragMove(y)  { if(!dragging) return; renderKnob(dV0+(dY0-y)); }
-function dragEnd()    { if(!dragging) return; dragging=false; stopDrone(); }
-
-ccKnob.addEventListener('mousedown',e=>{e.preventDefault();dragStart(e.clientY)});
-document.addEventListener('mousemove',e=>{if(dragging)dragMove(e.clientY)});
-document.addEventListener('mouseup',dragEnd);
-ccKnob.addEventListener('touchstart',e=>{e.preventDefault();dragStart(e.touches[0].clientY)},{passive:false});
-ccKnob.addEventListener('touchmove',e=>{e.preventDefault();dragMove(e.touches[0].clientY)},{passive:false});
-ccKnob.addEventListener('touchend',dragEnd);
-
-function startDrone() {
-  if(ccDrone) return;
-  const ac=getAC();
-  ccDrone=ac.createOscillator(); ccFilter=ac.createBiquadFilter(); ccGain=ac.createGain();
-  ccDrone.type='sawtooth'; ccDrone.frequency.value=65.41;
-  ccFilter.type='lowpass'; ccFilter.frequency.value=80+(ccVal/127)*5000; ccFilter.Q.value=7;
-  ccGain.gain.setValueAtTime(.22,ac.currentTime);
-  ccDrone.connect(ccFilter); ccFilter.connect(ccGain); ccGain.connect(ac.destination); ccDrone.start();
-}
-function stopDrone() {
-  if(!ccDrone) return;
-  const ac=getAC(), ref=ccDrone; ccDrone=null;
-  ccGain.gain.linearRampToValueAtTime(.001,ac.currentTime+.12);
-  setTimeout(()=>{try{ref.stop();}catch(e){}},150);
-}
-renderKnob(64);
 
 /* ─── Carga de bell.wav al inicio ─────── */
 function failAudioChange() {
