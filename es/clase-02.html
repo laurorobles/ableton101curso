@@ -255,11 +255,13 @@
   let baseTempo = 120;
   
   // Real Audio Logic
-  let amenBuffer = null;
-  let audioSource = null;
+  
+  let amenBuffer = null; // Para la wave
+  
+  // Usaremos un elemento HTML5 Audio para tener preservesPitch nativo
+  let htmlAudio = null;
   let audioGain = null;
   
-  // Synth Fallback Logic
   let osc = null;
   let vca = null;
   let stutterInterval = null;
@@ -267,11 +269,11 @@
   let noiseVca = null;
 
   const descriptions = {
-    beats: "<strong>Beats:</strong> El modo por defecto. Especializado en percusión. Si bajas mucho el tempo, notarás que el sonido se 'entrecorta' o tartamudea (Stutter) porque el algoritmo separa los golpes y rellena el silencio.",
-    tones: "<strong>Tones:</strong> Para voces, bajos o sintes solistas. Utiliza una estructura granular básica. Intenta mantener el tono original estirando fragmentos vocales (grains).",
-    texture: "<strong>Texture:</strong> Para sintes atmosféricos, pads o ruido. Modifica la aleatoriedad de los fragmentos, generando una sensación 'arenosa' o reverberante al bajar la velocidad.",
-    repitch: "<strong>Re-Pitch:</strong> Como una tornamesa de DJ. Al bajar el tempo (slider), el tono/frecuencia del sonido cae inmediatamente de forma proporcional.",
-    complex: "<strong>Complex:</strong> El algoritmo más avanzado. Identifica características rítmicas y tonales simultáneamente para ocultar los artefactos al estirar audios mezclados. Mantiene el tono original."
+    beats: "<strong>Beats:</strong> El modo por defecto. Especializado en percusión. Mantiene el tono original y usa un algoritmo rítmico para ajustar el tiempo (simulado aquí con tartamudeo).",
+    tones: "<strong>Tones:</strong> Para voces, bajos o sintes solistas. Intenta mantener el tono original estirando fragmentos vocales (simulado con trémolo).",
+    texture: "<strong>Texture:</strong> Para sintes atmosféricos, pads o ruido. Genera una sensación 'arenosa' o reverberante al bajar la velocidad agregando ruido.",
+    repitch: "<strong>Re-Pitch:</strong> Como una tornamesa de DJ. Al bajar el tempo, el tono/frecuencia del sonido cae inmediatamente de forma proporcional.",
+    complex: "<strong>Complex:</strong> El algoritmo más avanzado. Identifica características rítmicas y tonales para estirar audios manteniendo perfectamente el tono original."
   };
 
   function getAC() {
@@ -291,42 +293,18 @@
     applyWarpAlgorithm();
   }
 
-  function base64ToArrayBuffer(base64) {
-    const binary_string = window.atob(base64);
-    const len = binary_string.length;
-    const bytes = new Uint8Array(len);
-    for (let i = 0; i < len; i++) {
-        bytes[i] = binary_string.charCodeAt(i);
-    }
-    return bytes.buffer;
-  }
-
   async function loadAmen() {
     return new Promise((resolve) => {
       if (window.amenBase64) {
-        // Fallback mágico: Base64 (ignora reglas CORS de Chrome local)
-        const arrayBuf = base64ToArrayBuffer(window.amenBase64);
-        getAC().decodeAudioData(arrayBuf, function(decoded) {
-          amenBuffer = decoded;
-          document.getElementById('audio-status').style.display = 'none';
-          resolve(true);
-        }, function() { resolve(false); });
+        // Inicializar HTML5 Audio con Data URI
+        htmlAudio = new Audio("data:audio/wav;base64," + window.amenBase64);
+        htmlAudio.loop = true;
+        
+        // También guardamos el Buffer para efectos si es necesario, pero usaremos htmlAudio
+        document.getElementById('audio-status').style.display = 'none';
+        resolve(true);
       } else {
-        // Intento XHR normal
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', '../assets/amen.wav', true);
-        xhr.responseType = 'arraybuffer';
-        xhr.onload = function() {
-          if(xhr.status === 200 || xhr.status === 0) {
-            getAC().decodeAudioData(xhr.response, function(decoded) {
-              amenBuffer = decoded;
-              document.getElementById('audio-status').style.display = 'none';
-              resolve(true);
-            }, function() { resolve(false); });
-          } else { resolve(false); }
-        };
-        xhr.onerror = function() { resolve(false); };
-        xhr.send();
+        resolve(false);
       }
     });
   }
@@ -339,7 +317,7 @@
       btn.style.background = "var(--play)";
       isPlaying = false;
     } else {
-      if (!amenBuffer && !document.getElementById('audio-status').dataset.failed) {
+      if (!htmlAudio && !document.getElementById('audio-status').dataset.failed) {
         btn.textContent = "⏳ Cargando...";
         const success = await loadAmen();
         if(!success) {
@@ -356,11 +334,16 @@
 
   function startWarpAudio() {
     const ctx = getAC();
-    if (amenBuffer) {
-      audioSource = ctx.createBufferSource();
-      audioSource.buffer = amenBuffer;
-      audioSource.loop = true;
-      audioGain = ctx.createGain();
+    if (htmlAudio) {
+      htmlAudio.currentTime = 0;
+      htmlAudio.play();
+      
+      // Conectar HTML5 Audio a Web Audio API para los efectos (noise, stutter)
+      if (!audioGain) {
+        const source = ctx.createMediaElementSource(htmlAudio);
+        audioGain = ctx.createGain();
+        source.connect(audioGain).connect(ctx.destination);
+      }
       
       noiseNode = ctx.createBufferSource();
       noiseNode.buffer = createNoiseBuffer(ctx);
@@ -370,8 +353,6 @@
       noiseNode.connect(noiseVca).connect(ctx.destination);
       noiseNode.start();
 
-      audioSource.connect(audioGain).connect(ctx.destination);
-      audioSource.start();
     } else {
       osc = ctx.createOscillator();
       osc.type = 'sawtooth'; osc.frequency.value = 220;
@@ -391,7 +372,7 @@
   }
 
   function stopWarpAudio() {
-    if(audioSource) { try { audioSource.stop(); } catch(e){} audioSource = null; }
+    if(htmlAudio) { htmlAudio.pause(); }
     if(osc) { try { osc.stop(); } catch(e){} osc = null; }
     if(noiseNode) { try { noiseNode.stop(); } catch(e){} noiseNode = null; }
     if(stutterInterval) { clearInterval(stutterInterval); stutterInterval = null; }
@@ -413,54 +394,59 @@
     const ratio = currentTempo / baseTempo;
     
     if(stutterInterval) { clearInterval(stutterInterval); stutterInterval = null; }
-    if (audioSource) audioGain.gain.setTargetAtTime(1.0, ctx.currentTime, 0.05);
-    if (vca) vca.gain.setTargetAtTime(0.3, ctx.currentTime, 0.05);
-    if (osc) osc.frequency.setTargetAtTime(220, ctx.currentTime, 0.05);
-    if (noiseVca) noiseVca.gain.setTargetAtTime(0, ctx.currentTime, 0.05);
+    if (audioGain) audioGain.gain.setValueAtTime(1.0, ctx.currentTime);
+    if (vca) vca.gain.setValueAtTime(0.3, ctx.currentTime);
+    if (osc) osc.frequency.setValueAtTime(220, ctx.currentTime);
+    if (noiseVca) noiseVca.gain.setValueAtTime(0, ctx.currentTime);
     
-    if (audioSource) {
+    if (htmlAudio) {
+      // Ajustar velocidad
+      htmlAudio.playbackRate = ratio;
+      
+      // Magia de HTML5: preservesPitch (nativo del navegador)
       if (mode === 'repitch') {
-        audioSource.playbackRate.setTargetAtTime(ratio, ctx.currentTime, 0.05);
+        htmlAudio.preservesPitch = false;
       } else {
-        audioSource.playbackRate.setTargetAtTime(1.0, ctx.currentTime, 0.05); 
+        htmlAudio.preservesPitch = true;
       }
       
       if (mode === 'beats') {
         const beatDur = (60 / currentTempo) * 1000;
         stutterInterval = setInterval(() => {
-          audioGain.gain.setTargetAtTime(1.0, ctx.currentTime, 0.01);
+          audioGain.gain.setValueAtTime(1.0, ctx.currentTime);
           const hold = beatDur * (ratio > 1 ? 1 : ratio);
-          setTimeout(() => { if(isPlaying && audioGain) audioGain.gain.setTargetAtTime(0, ctx.currentTime, 0.01); }, hold);
+          setTimeout(() => { if(isPlaying && audioGain) audioGain.gain.setValueAtTime(0, ctx.currentTime); }, hold);
         }, beatDur);
       } else if (mode === 'texture' && ratio < 1.0) {
-        noiseVca.gain.setTargetAtTime(0.2 * (1 - ratio), ctx.currentTime, 0.1);
+        noiseVca.gain.setValueAtTime(0.2 * (1 - ratio), ctx.currentTime);
       } else if (mode === 'tones' && ratio < 1.0) {
         const grainSpeed = 100 * ratio;
         stutterInterval = setInterval(() => {
-          audioGain.gain.setTargetAtTime(1.0, ctx.currentTime, 0.02);
-          setTimeout(() => { if(isPlaying && audioGain) audioGain.gain.setTargetAtTime(0.4, ctx.currentTime, 0.02); }, grainSpeed / 2);
+          audioGain.gain.setValueAtTime(1.0, ctx.currentTime);
+          setTimeout(() => { if(isPlaying && audioGain) audioGain.gain.setValueAtTime(0.4, ctx.currentTime); }, grainSpeed / 2);
         }, grainSpeed);
       }
     } else {
-      if (mode === 'repitch') osc.frequency.setTargetAtTime(220 * ratio, ctx.currentTime, 0.05);
+      if (mode === 'repitch') osc.frequency.setValueAtTime(220 * ratio, ctx.currentTime);
       if (mode === 'beats') {
         const beatDur = (60 / currentTempo) * 1000;
         stutterInterval = setInterval(() => {
-          vca.gain.setTargetAtTime(0.4, ctx.currentTime, 0.01);
+          vca.gain.setValueAtTime(0.4, ctx.currentTime);
           const hold = beatDur * (ratio > 1 ? 1 : ratio);
-          setTimeout(() => { if(isPlaying && vca) vca.gain.setTargetAtTime(0, ctx.currentTime, 0.01); }, hold);
+          setTimeout(() => { if(isPlaying && vca) vca.gain.setValueAtTime(0, ctx.currentTime); }, hold);
         }, beatDur);
       } else if (mode === 'texture' && ratio < 1.0) {
-        noiseVca.gain.setTargetAtTime(0.15 * (1 - ratio), ctx.currentTime, 0.1);
+        noiseVca.gain.setValueAtTime(0.15 * (1 - ratio), ctx.currentTime);
       } else if (mode === 'tones' && ratio < 1.0) {
         const grainSpeed = 100 * ratio;
         stutterInterval = setInterval(() => {
-          vca.gain.setTargetAtTime(0.3, ctx.currentTime, 0.02);
-          setTimeout(() => { if(isPlaying && vca) vca.gain.setTargetAtTime(0.1, ctx.currentTime, 0.02); }, grainSpeed / 2);
+          vca.gain.setValueAtTime(0.3, ctx.currentTime);
+          setTimeout(() => { if(isPlaying && vca) vca.gain.setValueAtTime(0.1, ctx.currentTime); }, grainSpeed / 2);
         }, grainSpeed);
       }
     }
   }
 </script>
+
 </body>
 </html>
