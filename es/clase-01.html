@@ -874,6 +874,18 @@ function resetRouting() {
   msg('Ruteo reiniciado.', 'var(--muted)');
 }
 
+
+function beep(ac, freq, type='sine') {
+  if (!ac) return;
+  try {
+    const o = ac.createOscillator(), g = ac.createGain();
+    o.type = type; o.frequency.value = freq;
+    o.connect(g); g.connect(ac.destination);
+    o.start(); g.gain.exponentialRampToValueAtTime(0.0001, ac.currentTime + 0.15);
+    o.stop(ac.currentTime + 0.2);
+  } catch(e){}
+}
+
 function connectNode(key) {
   const ac  = getAC();
   const inf = NODE_INFO[key];
