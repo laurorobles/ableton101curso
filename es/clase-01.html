@@ -862,6 +862,18 @@ const NODE_INFO = {
 };
 let activeSrc = null, activeIfaceIn = null, activeIfaceOut = null;
 
+
+function resetRouting() {
+  ['n-mic','n-guitar','n-kb','n-ext','n-int','n-out-ext','n-out-int','n-spk','n-head'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.classList.remove('ra','rm','ro');
+  });
+  ['l-src','l-in','l-kb','l-out','l-spk'].forEach(clearLine);
+  activeSrc = null; activeIfaceIn = null; activeIfaceOut = null;
+  document.getElementById('rInfo').classList.remove('show');
+  msg('Ruteo reiniciado.', 'var(--muted)');
+}
+
 function connectNode(key) {
   const ac  = getAC();
   const inf = NODE_INFO[key];
