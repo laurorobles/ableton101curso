@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+const fs = require('fs');
+
+const html = `<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8"/>
@@ -161,7 +163,7 @@
     </div>
     
     <div id="audio-status" style="margin-top:1.5rem; font-size:1rem; color:var(--danger); display:none;">
-      ⚠️ No se encontró 'amen.wav' en la carpeta assets. Usando sintetizador de reserva. ¡Sube tu loop a 'assets/amen.wav' para la experiencia completa!
+      ⚠️ No se encontró 'amen.wav' en la carpeta assets. Usando sintetizador de reserva. ¡Sube tu loop para la experiencia completa!
     </div>
   </div>
 </section>
@@ -185,10 +187,8 @@
   let isDragging = false;
 
   marker.addEventListener('mousedown', () => isDragging = true);
-  
-  // Usar window events para que no se congele si el mouse sale del elemento
-  window.addEventListener('mouseup', () => { if(isDragging) checkSnap(); isDragging = false; });
-  window.addEventListener('mousemove', (e) => {
+  document.addEventListener('mouseup', () => { if(isDragging) checkSnap(); isDragging = false; });
+  document.addEventListener('mousemove', (e) => {
     if (!isDragging) return;
     const rect = container.getBoundingClientRect();
     let x = e.clientX - rect.left;
@@ -196,7 +196,7 @@
     if (x > rect.width - 20) x = rect.width - 20;
     marker.style.left = x + 'px';
     const originalWidth = rect.width * 0.5;
-    wave.style.transform = `scaleX(${x / originalWidth})`;
+    wave.style.transform = \`scaleX(\${x / originalWidth})\`;
     m1msg.textContent = "Estirando onda...";
     m1msg.style.color = "var(--muted)";
   });
@@ -205,15 +205,15 @@
     const rect = container.getBoundingClientRect();
     const markerX = parseFloat(marker.style.left);
     const targetX = rect.width * 0.75; 
-    if (Math.abs(markerX - targetX) < 30) {
+    if (Math.abs(markerX - targetX) < 25) {
       marker.style.left = targetX + 'px';
-      wave.style.transform = `scaleX(${targetX / (rect.width * 0.5)})`;
+      wave.style.transform = \`scaleX(\${targetX / (rect.width * 0.5)})\`;
       m1msg.textContent = "¡Perfecto! El golpe de tarola (snare) ahora está sincronizado al tempo del proyecto en la marca del 75%.";
       m1msg.style.color = "var(--play)";
       msg("✅ ¡Audio sincronizado con éxito!", "var(--play)");
     } else {
       m1msg.textContent = "Suelta el marcador cerca de la última línea oscura (75%) para cuadrarlo.";
-      m1msg.style.color = "var(--text)";
+      m1msg.style.color = "var(--warp-accent)";
     }
   }
 
@@ -231,7 +231,7 @@
         track.appendChild(m);
       }, i * 80);
     }
-    msg("📌 Ableton ha creado múltiples marcadores para ajustar las imperfecciones del humano.", "var(--warp-accent)", "#000");
+    msg("📌 Ableton ha creado múltiples marcadores para ajustar al humano.", "var(--warp-accent)", "#000");
   }
 
   function warpStraight() {
@@ -335,11 +335,13 @@
   function startWarpAudio() {
     const ctx = getAC();
     if (amenBuffer) {
+      // Usar audio real
       audioSource = ctx.createBufferSource();
       audioSource.buffer = amenBuffer;
       audioSource.loop = true;
       audioGain = ctx.createGain();
       
+      // Setup Texture Noise for Real Audio
       noiseNode = ctx.createBufferSource();
       noiseNode.buffer = createNoiseBuffer(ctx);
       noiseNode.loop = true;
@@ -351,6 +353,7 @@
       audioSource.connect(audioGain).connect(ctx.destination);
       audioSource.start();
     } else {
+      // Usar Sintetizador
       osc = ctx.createOscillator();
       osc.type = 'sawtooth'; osc.frequency.value = 220;
       vca = ctx.createGain(); vca.gain.value = 0.3;
@@ -397,10 +400,15 @@
     if (noiseVca) noiseVca.gain.setTargetAtTime(0, ctx.currentTime, 0.05);
     
     if (audioSource) {
+      // En Web Audio nativo, cambiar el playbackRate altera el pitch inevitablemente.
+      // Así que "repitch" es su comportamiento natural.
+      // Para simular "Complex" (estirar sin alterar tono), tendríamos que usar un Phase Vocoder o HTML5 <audio> con preservesPitch.
+      // Como estamos en Web Audio, haremos el truco educativo de dejar el rate en 1 y simular cortes rítmicos para Beats, o ruidos para Texture.
+      
       if (mode === 'repitch') {
         audioSource.playbackRate.setTargetAtTime(ratio, ctx.currentTime, 0.05);
       } else {
-        audioSource.playbackRate.setTargetAtTime(1.0, ctx.currentTime, 0.05); 
+        audioSource.playbackRate.setTargetAtTime(1.0, ctx.currentTime, 0.05); // "Complex" fake
       }
       
       if (mode === 'beats') {
@@ -420,6 +428,7 @@
         }, grainSpeed);
       }
     } else {
+      // Simulador Synth
       if (mode === 'repitch') osc.frequency.setTargetAtTime(220 * ratio, ctx.currentTime, 0.05);
       if (mode === 'beats') {
         const beatDur = (60 / currentTempo) * 1000;
