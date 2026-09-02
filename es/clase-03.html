@@ -132,17 +132,99 @@
   <p class="sub">Una canción no es solo un loop repitiéndose. Es un viaje con energía dinámica. Usamos los colores de los clips para pintar diferentes secciones visualmente.</p>
   
   <div class="panel">
-    <div class="structure">
-      <div class="block b-intro" onclick="msg('Introducción: Presenta la vibra. Poca energía.', '#64748B')">Intro</div>
-      <div class="block b-verso" onclick="msg('Verso: Entra la voz principal o lead. Desarrollo de la historia.', '#3B82F6')">Verso</div>
-      <div class="block b-coro" onclick="msg('Coro (Drop): El clímax de la canción. Toda la energía.', '#EF4444')">Coro</div>
-      <div class="block b-verso" onclick="msg('Verso 2: Bajamos la energía otra vez, pero con alguna variación.', '#3B82F6')">Verso 2</div>
-      <div class="block b-puente" onclick="msg('Puente (Breakdown): Rompe la monotonía antes del coro final.', '#F59E0B')">Puente</div>
-      <div class="block b-coro" onclick="msg('Coro Final: El momento más grande.', '#EF4444')">Coro</div>
+    <div style="margin-bottom: 1.5rem;">
+      <label for="genre-select" style="font-weight:bold; color:var(--muted); font-size:1.2rem;">Elige un Género Musical:</label>
+      <select id="genre-select" onchange="changeGenre(this.value)" style="margin-left:1rem; padding:0.5rem; font-size:1.2rem; border-radius:8px; border:2px solid var(--border);">
+        <option value="pop">Pop Clásico</option>
+        <option value="edm">EDM / Mainstage</option>
+        <option value="techno">Techno / Underground</option>
+        <option value="hiphop">Hip-Hop / Trap</option>
+      </select>
+    </div>
+
+    <div class="structure" id="structure-viz">
+      <!-- Inyectado por JS -->
     </div>
     
     <div class="analogy" style="border-left-color:var(--cc)">
       <strong>💡 Truco de Producción:</strong> Trata de usar colores específicos en tus clips para identificar rápidamente tus partes. Por ejemplo: Todo el Coro en rojo, todo el Verso en azul. Haz click en los bloques de arriba para ver su función.
+    </div>
+  </div>
+</section>
+
+
+<!-- M4: EFECTOS (PRESETS) -->
+<section id="m4" style="background:var(--surface)">
+  <div class="tag t-audio">Módulo 04</div>
+  <h2>La Magia de los Efectos</h2>
+  <p class="sub">Los efectos de audio transforman el sonido de forma drástica. Selecciona un efecto abajo para encadenarlo a nuestra fuente de sonido.</p>
+  
+  <div class="panel">
+    <div style="text-align:center; margin-bottom:2rem">
+      <button class="btn btn-dark" id="btn-fx-play" onclick="toggleFxAudio()" style="font-size:1.5rem">▶ Escuchar Original (Dry)</button>
+    </div>
+    
+    <div class="row" style="justify-content:center; gap:2rem">
+      <button class="btn btn-outline" style="border-color:#3B82F6" onclick="setEffect('space')">🌌 1. Espacio (Reverb/Delay)</button>
+      <button class="btn btn-outline" style="border-color:#8B5CF6" onclick="setEffect('mod')">🌀 2. Modulación (Chorus)</button>
+      <button class="btn btn-outline" style="border-color:#EF4444" onclick="setEffect('color')">🔥 3. Color (Distorsión)</button>
+    </div>
+    
+    <div class="analogy" id="fx-msg" style="border-left-color:var(--audio); margin-top:2.5rem; text-align:center">
+      Haz clic en un efecto para escuchar cómo altera la señal seca (Dry).
+    </div>
+  </div>
+</section>
+
+<!-- M5: JUEGO A CIEGAS -->
+<section id="m5">
+  <div class="tag" style="color:#000; background:#E5E7EB">Módulo 05</div>
+  <h2>Juego: Reconocimiento Sonoro</h2>
+  <p class="sub">Un productor profesional puede identificar efectos con los ojos cerrados. Reproduce el sonido misterioso y adivina qué efecto tiene aplicado.</p>
+  
+  <div class="panel" style="text-align:center">
+    <button class="btn btn-dark" id="btn-mystery" onclick="playMystery()" style="font-size:1.5rem; padding:1.2rem 3rem; margin-bottom:2rem">❓ Reproducir Sonido Misterioso</button>
+    
+    <div class="row" style="justify-content:center; margin-bottom:1rem">
+      <button class="btn btn-outline" onclick="guessEffect('space')">Reverb / Delay</button>
+      <button class="btn btn-outline" onclick="guessEffect('color')">Distorsión</button>
+      <button class="btn btn-outline" onclick="guessEffect('mod')">Chorus</button>
+      <button class="btn btn-outline" onclick="guessEffect('filter')">Filtro (Wah-Wah)</button>
+    </div>
+  </div>
+</section>
+
+<!-- M6: AUTOMATIZACIÓN -->
+<section id="m6" style="background:var(--surface)">
+  <div class="tag t-cc">Módulo 06</div>
+  <h2>La Mano Fantasma (Automatización)</h2>
+  <p class="sub">La automatización es decirle a Ableton que mueva los controles por ti mientras la canción avanza. Observa cómo la curva roja (Vista de Arreglo) dibuja el giro de la perilla del filtro en el tiempo real.</p>
+  
+  <div class="panel">
+    <div style="display:flex; align-items:center; gap:3rem; margin-bottom:2rem; justify-content:center; flex-wrap:wrap">
+      
+      <!-- Knob -->
+      <div style="display:flex; flex-direction:column; align-items:center">
+        <div style="width:120px; height:120px; border-radius:50%; background:#2b2b2b; border:6px solid #1a1a1a; position:relative; box-shadow:0 10px 20px rgba(0,0,0,0.2)">
+          <div id="knob-indicator" style="position:absolute; top:10px; left:50%; width:6px; height:30px; background:var(--cc); transform-origin:bottom center; transform:translateX(-50%) rotate(-135deg); border-radius:3px; transition:transform 0.1s linear"></div>
+        </div>
+        <strong style="margin-top:1rem">Filtro (Cutoff)</strong>
+      </div>
+      
+      <!-- Timeline Chart -->
+      <div style="position:relative; width:300px; height:120px; border-bottom:2px solid var(--border); border-left:2px solid var(--border)">
+        <!-- Red curve simulation -->
+        <svg width="300" height="120" style="position:absolute; top:0; left:0; overflow:visible">
+          <path d="M 0 100 L 100 10 L 200 10 L 300 100" fill="none" stroke="var(--danger)" stroke-width="4" />
+          <!-- Moving playhead -->
+          <line id="playhead" x1="0" y1="0" x2="0" y2="120" stroke="var(--play)" stroke-width="2" />
+        </svg>
+      </div>
+
+    </div>
+    
+    <div style="text-align:center">
+      <button class="btn btn-cc" onclick="playAutomation()" style="background:var(--cc); color:#fff; font-size:1.3rem">✨ Reproducir Automatización</button>
     </div>
   </div>
 </section>
@@ -261,6 +343,364 @@
       editArea.appendChild(megaClip);
       msg("🔗 Múltiples clips consolidados en un solo archivo nuevo (Cmd+J).", "var(--cc)");
     }
+  }
+
+
+  // M3: Estructuras por Género
+  const genres = {
+    pop: {
+      blocks: [
+        {name: "Intro", class: "b-intro", flex: 1, text: "Presenta la vibra, usualmente 4 u 8 compases."},
+        {name: "Verso 1", class: "b-verso", flex: 2, text: "Desarrolla la historia, entra la voz."},
+        {name: "Pre-Coro", class: "b-puente", flex: 1, text: "Crea tensión y prepara el terreno."},
+        {name: "Coro", class: "b-coro", flex: 2, text: "El clímax pegadizo y memorable."},
+        {name: "Verso 2", class: "b-verso", flex: 2, text: "Mantiene el ritmo pero baja la energía."},
+        {name: "Coro", class: "b-coro", flex: 2, text: "Regresa la energía principal."},
+        {name: "Puente", class: "b-puente", flex: 1, text: "Cambio total de acordes o ritmo para no aburrir."},
+        {name: "Coro Final", class: "b-coro", flex: 3, text: "Explosión final, a veces con más elementos."}
+      ]
+    },
+    edm: {
+      blocks: [
+        {name: "Intro (DJ)", class: "b-intro", flex: 2, text: "Intro rítmico para que el DJ mezcle (16 compases)."},
+        {name: "Breakdown", class: "b-verso", flex: 2, text: "Se quitan los bajos, entran acordes épicos y voces."},
+        {name: "Build-Up", class: "b-puente", flex: 1, text: "Risers, tarolas acelerando (snare roll), muchísima tensión."},
+        {name: "DROP", class: "b-coro", flex: 2, text: "Estalla el bajo y el sintetizador principal."},
+        {name: "Break 2", class: "b-verso", flex: 2, text: "Respiro antes del segundo asalto."},
+        {name: "Build-Up", class: "b-puente", flex: 1, text: "Tensión de nuevo."},
+        {name: "DROP 2", class: "b-coro", flex: 2, text: "Segundo clímax, a veces más intenso."},
+        {name: "Outro", class: "b-intro", flex: 2, text: "Solo ritmo para que el DJ salga mezclando."}
+      ]
+    },
+    techno: {
+      blocks: [
+        {name: "Intro / Groove", class: "b-intro", flex: 3, text: "Bombo, bajos y percusiones hipnóticas que evolucionan muy lento."},
+        {name: "Desarrollo", class: "b-verso", flex: 3, text: "Se agregan elementos sutiles (hats, ruidos, texturas)."},
+        {name: "Break", class: "b-puente", flex: 1, text: "Se quita el bombo abruptamente. Atmósferas tensas."},
+        {name: "DROP", class: "b-coro", flex: 4, text: "Regresa el bombo con máxima intensidad (Peak time)."},
+        {name: "Desvanecimiento", class: "b-intro", flex: 3, text: "Los elementos se apagan gradualmente."}
+      ]
+    },
+    hiphop: {
+      blocks: [
+        {name: "Intro", class: "b-intro", flex: 1, text: "Establece el beat y el sample principal (4 compases)."},
+        {name: "Coro (Hook)", class: "b-coro", flex: 2, text: "El estribillo pegadizo, a menudo vocal o un sample vocal."},
+        {name: "Verso 1", class: "b-verso", flex: 3, text: "Barras del rapero. El beat se simplifica para dejar espacio a la voz."},
+        {name: "Coro", class: "b-coro", flex: 2, text: "Regresa el estribillo con toda la percusión."},
+        {name: "Verso 2", class: "b-verso", flex: 3, text: "Segunda intervención vocal."},
+        {name: "Coro", class: "b-coro", flex: 2, text: "Gancho final."},
+        {name: "Outro", class: "b-intro", flex: 1, text: "El beat se desvanece (Fade out)."}
+      ]
+    }
+  };
+
+  function changeGenre(genre) {
+    const container = document.getElementById('structure-viz');
+    container.innerHTML = '';
+    genres[genre].blocks.forEach(b => {
+      const el = document.createElement('div');
+      el.className = 'block ' + b.class;
+      el.style.flex = b.flex;
+      el.style.cursor = 'pointer';
+      el.textContent = b.name;
+      // Add custom color overrides for better contrast based on style if needed
+      if(b.class==='b-intro') el.style.background = '#64748B';
+      if(b.class==='b-verso') el.style.background = '#3B82F6';
+      if(b.class==='b-coro') el.style.background = '#EF4444';
+      if(b.class==='b-puente') el.style.background = '#F59E0B';
+      
+      el.onclick = () => msg('<b>' + b.name + ':</b> ' + b.text, el.style.background, '#fff');
+      container.appendChild(el);
+    });
+    msg('Estructura cambiada a: ' + document.getElementById('genre-select').options[document.getElementById('genre-select').selectedIndex].text, 'var(--cc)');
+  }
+  
+  // Init genre
+  window.addEventListener('DOMContentLoaded', () => {
+    if(document.getElementById('genre-select')) changeGenre('pop');
+  });
+
+  // --- M4: EFECTOS (Web Audio API) ---
+  let fxAC = null;
+  let fxIsPlaying = false;
+  let fxOsc = null;
+  let fxGain = null;
+  
+  // Nodos de efecto
+  let fxDelay = null;
+  let fxChorus = null;
+  let fxShaper = null;
+
+  function initFxAC() {
+    if(!fxAC) fxAC = new (window.AudioContext || window.webkitAudioContext)();
+    if(fxAC.state === 'suspended') fxAC.resume();
+    return fxAC;
+  }
+
+  function toggleFxAudio() {
+    const ac = initFxAC();
+    const btn = document.getElementById('btn-fx-play');
+    
+    if (fxIsPlaying) {
+      if(fxOsc) fxOsc.stop();
+      if(fxGain) fxGain.disconnect();
+      btn.textContent = "▶ Escuchar Original (Dry)";
+      btn.style.background = "var(--text)";
+      fxIsPlaying = false;
+      document.getElementById('fx-msg').innerHTML = "Haz clic en un efecto para escuchar cómo altera la señal seca (Dry).";
+      document.getElementById('fx-msg').style.borderColor = "var(--audio)";
+    } else {
+      // Create a basic arpeggio loop using an oscillator
+      fxOsc = ac.createOscillator();
+      fxOsc.type = 'sawtooth';
+      
+      fxGain = ac.createGain();
+      fxGain.gain.value = 0.5;
+      
+      // Setup FX Nodes
+      fxDelay = ac.createDelay();
+      fxDelay.delayTime.value = 0.3; // 300ms
+      const feedback = ac.createGain();
+      feedback.gain.value = 0.4;
+      fxDelay.connect(feedback);
+      feedback.connect(fxDelay);
+      
+      fxChorus = ac.createOscillator();
+      fxChorus.type = 'sine';
+      fxChorus.frequency.value = 2; // LFO speed
+      const chorusGain = ac.createGain();
+      chorusGain.gain.value = 0.005;
+      fxChorus.connect(chorusGain);
+      
+      fxShaper = ac.createWaveShaper();
+      fxShaper.curve = makeDistortionCurve(400); // Heavy distortion
+      fxShaper.oversample = '4x';
+      
+      // Default routing (Dry)
+      fxOsc.connect(fxGain);
+      fxGain.connect(ac.destination);
+      
+      // Arpeggiator logic
+      const notes = [261.63, 329.63, 392.00, 523.25]; // C E G C
+      let step = 0;
+      fxOsc.frequency.value = notes[0];
+      
+      fxOsc.start();
+      fxIsPlaying = true;
+      btn.textContent = "⏹ Detener Audio";
+      btn.style.background = "var(--danger)";
+      
+      // Step sequencer
+      window.fxInterval = setInterval(() => {
+        if(!fxIsPlaying) { clearInterval(window.fxInterval); return; }
+        step = (step + 1) % notes.length;
+        fxOsc.frequency.setValueAtTime(notes[step], ac.currentTime);
+        // Envelope per step
+        fxGain.gain.setValueAtTime(0, ac.currentTime);
+        fxGain.gain.linearRampToValueAtTime(0.5, ac.currentTime + 0.02);
+        fxGain.gain.exponentialRampToValueAtTime(0.01, ac.currentTime + 0.2);
+      }, 250);
+    }
+  }
+
+  function makeDistortionCurve(amount) {
+    const k = amount;
+    const n_samples = 44100;
+    const curve = new Float32Array(n_samples);
+    const deg = Math.PI / 180;
+    for (let i = 0; i < n_samples; ++i) {
+      const x = i * 2 / n_samples - 1;
+      curve[i] = (3 + k) * x * 20 * deg / (Math.PI + k * Math.abs(x));
+    }
+    return curve;
+  }
+
+  function setEffect(type) {
+    if(!fxIsPlaying) { msg("⚠️ ¡Dale Play al audio primero!", "var(--danger)"); return; }
+    const ac = initFxAC();
+    
+    // Disconnect everything
+    fxGain.disconnect();
+    try{ fxDelay.disconnect(); }catch(e){}
+    try{ chorusGain.disconnect(); }catch(e){}
+    try{ fxShaper.disconnect(); }catch(e){}
+    
+    const msgEl = document.getElementById('fx-msg');
+    
+    if (type === 'space') {
+      fxGain.connect(fxDelay);
+      fxDelay.connect(ac.destination);
+      fxGain.connect(ac.destination); // Dry/Wet mix
+      msgEl.innerHTML = "<strong>Espacio (Delay):</strong> Crea copias del sonido retrasadas en el tiempo. ¡Como gritar en una montaña!";
+      msgEl.style.borderColor = "#3B82F6";
+    } else if (type === 'mod') {
+      fxGain.connect(ac.destination);
+      // Simulate chorus with a second detuned osc (fake chorus for simplicity without full delay buffers)
+      const fakeChorus = ac.createOscillator();
+      fakeChorus.type = 'sawtooth';
+      fakeChorus.frequency.value = fxOsc.frequency.value;
+      
+      // Modulate the fake chorus frequency with LFO
+      fxChorus.connect(fakeChorus.frequency);
+      fxChorus.start();
+      
+      const fakeGain = ac.createGain();
+      fakeChorus.connect(fakeGain);
+      fakeGain.connect(ac.destination);
+      fakeChorus.start();
+      
+      // Sync fake chorus with step sequencer
+      const oldInterval = window.fxInterval;
+      clearInterval(oldInterval);
+      let step = 0;
+      const notes = [261.63, 329.63, 392.00, 523.25];
+      window.fxInterval = setInterval(() => {
+        if(!fxIsPlaying) { clearInterval(window.fxInterval); fakeChorus.stop(); return; }
+        step = (step + 1) % notes.length;
+        fxOsc.frequency.setValueAtTime(notes[step], ac.currentTime);
+        fakeChorus.frequency.setValueAtTime(notes[step], ac.currentTime);
+        
+        fxGain.gain.setValueAtTime(0, ac.currentTime);
+        fxGain.gain.linearRampToValueAtTime(0.3, ac.currentTime + 0.02);
+        fxGain.gain.exponentialRampToValueAtTime(0.01, ac.currentTime + 0.2);
+        
+        fakeGain.gain.setValueAtTime(0, ac.currentTime);
+        fakeGain.gain.linearRampToValueAtTime(0.3, ac.currentTime + 0.02);
+        fakeGain.gain.exponentialRampToValueAtTime(0.01, ac.currentTime + 0.2);
+      }, 250);
+      
+      msgEl.innerHTML = "<strong>Modulación (Chorus):</strong> Clona el sonido y lo desafina ligeramente creando un efecto robótico o de rayo láser.";
+      msgEl.style.borderColor = "#8B5CF6";
+    } else if (type === 'color') {
+      fxGain.connect(fxShaper);
+      fxShaper.connect(ac.destination);
+      msgEl.innerHTML = "<strong>Color (Distorsión):</strong> Satura la señal creando ruido armónico. Suena agresivo, como un megáfono roto.";
+      msgEl.style.borderColor = "#EF4444";
+    }
+  }
+
+  // --- M5: JUEGO MISTERIOSO ---
+  let mysteryType = '';
+  function playMystery() {
+    const types = ['space', 'color', 'filter'];
+    mysteryType = types[Math.floor(Math.random() * types.length)];
+    
+    // Reuse fx generator
+    const ac = initFxAC();
+    const osc = ac.createOscillator();
+    osc.type = 'square';
+    osc.frequency.value = 110; // Low bass note
+    
+    const gain = ac.createGain();
+    gain.gain.setValueAtTime(0.5, ac.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 1.5);
+    
+    if (mysteryType === 'space') {
+      const delay = ac.createDelay();
+      delay.delayTime.value = 0.2;
+      const fb = ac.createGain(); fb.gain.value = 0.6;
+      delay.connect(fb).connect(delay);
+      osc.connect(gain).connect(delay).connect(ac.destination);
+      gain.connect(ac.destination);
+    } else if (mysteryType === 'color') {
+      const shaper = ac.createWaveShaper();
+      shaper.curve = makeDistortionCurve(800);
+      osc.connect(gain).connect(shaper).connect(ac.destination);
+    } else if (mysteryType === 'filter') {
+      const filter = ac.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(200, ac.currentTime);
+      filter.frequency.linearRampToValueAtTime(2000, ac.currentTime + 0.5);
+      filter.frequency.linearRampToValueAtTime(200, ac.currentTime + 1.0);
+      osc.connect(gain).connect(filter).connect(ac.destination);
+    }
+    
+    osc.start();
+    osc.stop(ac.currentTime + 2);
+    msg("🎵 Escucha atentamente...", "var(--play)");
+  }
+
+  function guessEffect(guess) {
+    if (!mysteryType) { msg("⚠️ Dale a 'Reproducir Sonido Misterioso' primero", "var(--danger)"); return; }
+    if (guess === mysteryType) {
+      msg("✅ ¡Correcto! Tienes buen oído.", "var(--play)");
+      mysteryType = ''; // reset
+    } else {
+      msg("❌ Fallaste. Intenta de nuevo.", "var(--danger)");
+    }
+  }
+
+  // --- M6: AUTOMATIZACIÓN ---
+  function playAutomation() {
+    const ac = initFxAC();
+    const osc = ac.createOscillator();
+    osc.type = 'sawtooth';
+    osc.frequency.value = 65.41; // C2 bass
+    
+    const filter = ac.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.value = 100; // start low
+    
+    const gain = ac.createGain();
+    gain.gain.value = 0.4;
+    
+    osc.connect(filter).connect(gain).connect(ac.destination);
+    
+    const now = ac.currentTime;
+    const dur = 4.0; // 4 seconds animation
+    osc.start(now);
+    osc.stop(now + dur);
+    
+    // Automate Filter Frequency (Red Curve)
+    // M 0 100 L 100 10 L 200 10 L 300 100 
+    // In CSS width it's 300px total, divided in 3 segments.
+    // 0 to 1.33s : Goes up
+    // 1.33 to 2.66s : Stays up
+    // 2.66 to 4.0s : Goes down
+    
+    filter.frequency.setValueAtTime(100, now);
+    filter.frequency.linearRampToValueAtTime(3000, now + (dur/3));
+    filter.frequency.setValueAtTime(3000, now + (dur * 2/3));
+    filter.frequency.linearRampToValueAtTime(100, now + dur);
+    
+    // Animate DOM
+    const knob = document.getElementById('knob-indicator');
+    const playhead = document.getElementById('playhead');
+    
+    let startTime = null;
+    function animate(time) {
+      if(!startTime) startTime = time;
+      const elapsed = (time - startTime) / 1000;
+      
+      if (elapsed > dur) {
+        knob.style.transform = "translateX(-50%) rotate(-135deg)";
+        playhead.setAttribute('x1', "0");
+        playhead.setAttribute('x2', "0");
+        return;
+      }
+      
+      // Move playhead (0 to 300px)
+      const x = (elapsed / dur) * 300;
+      playhead.setAttribute('x1', x);
+      playhead.setAttribute('x2', x);
+      
+      // Rotate Knob (-135deg to +135deg)
+      // Math based on the filter curve:
+      let freqPercent = 0;
+      if (elapsed <= dur/3) {
+        freqPercent = elapsed / (dur/3);
+      } else if (elapsed <= dur*2/3) {
+        freqPercent = 1;
+      } else {
+        freqPercent = 1 - ((elapsed - dur*2/3) / (dur/3));
+      }
+      
+      const rot = -135 + (freqPercent * 270);
+      knob.style.transform = `translateX(-50%) rotate(${rot}deg)`;
+      
+      requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
   }
 
 </script>
