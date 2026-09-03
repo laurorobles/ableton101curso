@@ -318,4 +318,242 @@
   document.addEventListener("touchend", touchHandler, {passive: false});
 </script>
 <div style="position:fixed;bottom:15px;right:20px;font-size:0.9rem;opacity:0.35;z-index:9999;font-weight:700;">Creado por @laurorobles</div>
+<script>
+function msg(text, bg, fg) {
+    const t = document.getElementById('toast');
+    t.innerHTML = text;
+    t.style.background = bg || '#000';
+    t.style.color = fg || '#fff';
+    t.classList.add('show');
+    clearTimeout(window._tt);
+    window._tt = setTimeout(() => t.classList.remove('show'), 4500);
+  }
+
+  // M1
+  const container = document.getElementById('m1-container');
+  const marker = document.getElementById('m1-marker');
+  const wave = document.getElementById('m1-wave');
+  const m1msg = document.getElementById('m1-message');
+  let isDragging = false;
+
+  marker.addEventListener('mousedown', () => isDragging = true);
+  
+  // Usar window events para que no se congele si el mouse sale del elemento
+  window.addEventListener('mouseup', () => { if(isDragging) checkSnap(); isDragging = false; });
+  window.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    const rect = container.getBoundingClientRect();
+    let x = e.clientX - rect.left;
+    if (x < 20) x = 20;
+    if (x > rect.width - 20) x = rect.width - 20;
+    marker.style.left = x + 'px';
+    const originalWidth = rect.width * 0.5;
+    wave.style.transform = `scaleX(${x / originalWidth})`;
+    m1msg.textContent = "Estirando onda...";
+    m1msg.style.color = "var(--muted)";
+  });
+
+  function checkSnap() {
+    const rect = container.getBoundingClientRect();
+    const markerX = parseFloat(marker.style.left);
+    const targetX = rect.width * 0.75; 
+    if (Math.abs(markerX - targetX) < 30) {
+      marker.style.left = targetX + 'px';
+      wave.style.transform = `scaleX(${targetX / (rect.width * 0.5)})`;
+      m1msg.textContent = "¡Perfecto! El golpe de tarola (snare) ahora está sincronizado al tempo del proyecto en la marca del 75%.";
+      m1msg.style.color = "var(--play)";
+      msg("✅ ¡Audio sincronizado con éxito!", "var(--play)");
+    } else {
+      m1msg.textContent = "Suelta el marcador cerca de la última línea oscura (75%) para cuadrarlo.";
+      m1msg.style.color = "var(--text)";
+    }
+  }
+
+  // M2
+  function warpFromHere() {
+    const track = document.getElementById('trackA');
+    track.querySelectorAll('.m2-marker').forEach(e => e.remove());
+    for(let i=0; i<15; i++) {
+      setTimeout(() => {
+        const m = document.createElement('div');
+        m.className = 'm2-marker';
+        const offset = 180 + Math.random() * (track.offsetWidth - 200);
+        m.style.left = offset + 'px';
+        m.style.display = 'block';
+        track.appendChild(m);
+      }, i * 80);
+    }
+    msg("📌 Ableton ha creado múltiples marcadores para ajustar las imperfecciones del humano.", "var(--warp-accent)", "#000");
+  }
+
+  function warpStraight() {
+    const track = document.getElementById('trackB');
+    track.querySelectorAll('.m2-marker').forEach(e => e.remove());
+    const m = document.createElement('div');
+    m.className = 'm2-marker';
+    m.style.left = '180px';
+    m.style.display = 'block';
+    track.appendChild(m);
+    const w = track.querySelector('.m2-wave');
+    w.style.transition = 'background-position 0.5s';
+    w.style.backgroundPosition = '10px 0';
+    msg("📏 Un solo marcador. Audio electrónico cuadrado instantáneamente.", "var(--play)");
+  }
+
+  // M3
+  let isPlaying = false;
+  let baseTempo = 120;
+  let player = null;
+  let pitchShift = null;
+  let tremolo = null;
+  let stutterLoop = null;
+
+  const descriptions = {
+    beats: "<strong>Beats:</strong> El modo por defecto. Especializado en percusión. Mantiene el tono original y usa un algoritmo rítmico para ajustar el tiempo (simulado aquí con tartamudeo).",
+    tones: "<strong>Tones:</strong> Para voces, bajos o sintes solistas. Intenta mantener el tono original estirando fragmentos vocales (simulado con trémolo rápido).",
+    texture: "<strong>Texture:</strong> Para sintes atmosféricos o ruido. Genera una sensación 'arenosa' o reverberante al bajar la velocidad agregando granulidad extrema.",
+    repitch: "<strong>Re-Pitch:</strong> Como una tornamesa de DJ. El tiempo y el tono están enlazados. Si subes el tempo, el tono sube. El slider de Pitch añade transposición extra.",
+    complex: "<strong>Complex:</strong> El algoritmo más avanzado. Identifica características rítmicas y tonales para estirar audios manteniendo el tono original. Ideal para pistas completas."
+  };
+
+    function base64ToArrayBuffer(base64) {
+    const binary_string = window.atob(base64);
+    const len = binary_string.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
+        bytes[i] = binary_string.charCodeAt(i);
+    }
+    return bytes.buffer;
+  }
+
+  async function initTone() {
+    await Tone.start();
+    if (!player && window.amenBase64) {
+      return new Promise((resolve) => {
+        try {
+          const arrayBuf = base64ToArrayBuffer(window.amenBase64.replace(/^data:audio\/wav;base64,/, ''));
+          Tone.context.decodeAudioData(arrayBuf).then(buffer => {
+            player = new Tone.Player(buffer);
+            player.loop = true;
+            
+            pitchShift = new Tone.PitchShift(0);
+            tremolo = new Tone.Tremolo(9, 0).start();
+            tremolo.depth.value = 0; // Initialize at 0
+            
+            player.chain(tremolo, pitchShift, Tone.Destination);
+            document.getElementById('audio-status').style.display = 'none';
+            resolve(true);
+          }).catch(e => {
+            console.error("Decode error", e);
+            resolve(false);
+          });
+        } catch (e) {
+          console.error("Base64 error", e);
+          resolve(false);
+        }
+      });
+    }
+    return !!player;
+  }
+
+  function updateMode() {
+    const mode = document.getElementById('warp-mode').value;
+    document.getElementById('m3-desc').innerHTML = descriptions[mode];
+    applyWarpAlgorithm();
+    const modeNames = {beats:"Beats", tones:"Tones", texture:"Texture", repitch:"Re-Pitch", complex:"Complex"};
+    msg("🎛 Modo Warp: " + modeNames[mode], "var(--audio)");
+  }
+
+  function updateTempo(val) {
+    document.getElementById('tempo-val').innerText = val;
+    applyWarpAlgorithm();
+  }
+  
+  function updatePitch(val) {
+    let sign = val > 0 ? "+" : "";
+    document.getElementById('pitch-val').innerText = sign + val;
+    applyWarpAlgorithm();
+  }
+
+  async function toggleAudio() {
+    const btn = document.getElementById('btn-play');
+    if (isPlaying) {
+      if(player) player.stop();
+      if(stutterLoop) { clearInterval(stutterLoop); stutterLoop = null; }
+      btn.textContent = "▶ Reproducir (Amen Break)";
+      btn.style.background = "var(--play)";
+      isPlaying = false;
+      msg("⏹ Audio detenido.", "var(--text)");
+    } else {
+      btn.textContent = "⏳ Cargando...";
+      const success = await initTone();
+      if(!success) {
+        document.getElementById('audio-status').style.display = 'block';
+        btn.textContent = "▶ Reproducir (Falló)";
+        msg("❌ Error al cargar el audio.", "var(--danger)");
+        return;
+      }
+      player.start();
+      btn.textContent = "⏹ Detener Audio";
+      btn.style.background = "var(--danger)";
+      isPlaying = true;
+      applyWarpAlgorithm();
+      msg("▶ Reproduciendo Amen Break...", "var(--play)");
+    }
+  }
+
+  function applyWarpAlgorithm() {
+    if(!isPlaying || !player) return;
+    
+    const mode = document.getElementById('warp-mode').value;
+    const currentTempo = parseFloat(document.getElementById('tempo-slider').value);
+    const userPitch = parseFloat(document.getElementById('pitch-slider').value);
+    const ratio = currentTempo / baseTempo;
+    
+    // Reset effects
+    if(stutterLoop) { clearInterval(stutterLoop); stutterLoop = null; }
+    tremolo.depth.value = 0;
+    player.mute = false;
+
+    // Time stretching in Tone.Player naturally changes pitch (like vinyl)
+    player.playbackRate = ratio;
+    
+    // Calculate how many semitones the playbackRate shifted the audio
+    const naturalPitchShift = 12 * Math.log2(ratio);
+
+    if (mode === 'repitch') {
+      // In Re-Pitch, we WANT the natural pitch shift, plus whatever the user added
+      pitchShift.pitch = userPitch;
+    } else {
+      // In Complex/Beats/Tones/Texture, we MUST counteract the natural pitch shift
+      // to keep the audio at its original pitch, then add the user's transposition.
+      pitchShift.pitch = userPitch - naturalPitchShift;
+      
+      // Simulate artifacts of different modes
+      if (mode === 'beats' && ratio < 1) {
+        // Stutter effect for Beats mode when slowed down
+        const beatDur = (60 / currentTempo) * 1000;
+        stutterLoop = setInterval(() => {
+          player.mute = false;
+          const hold = beatDur * ratio;
+          setTimeout(() => { if(isPlaying) player.mute = true; }, hold);
+        }, beatDur);
+      } else if (mode === 'texture' && ratio < 1) {
+        // Texture creates a grainy/smudged sound. We use extreme pitch shift window size.
+        pitchShift.windowSize = 0.01; // Grainy
+      } else if (mode === 'tones' && ratio < 1) {
+        // Tones stretches grains cleanly. We simulate with tremolo.
+        pitchShift.windowSize = 0.05;
+        tremolo.depth.value = 0.8;
+        tremolo.frequency.value = 8 * ratio;
+      }
+      
+      // Reset window size for non-texture modes
+      if (mode !== 'texture' && mode !== 'tones') {
+        pitchShift.windowSize = 0.1;
+      }
+    }
+  }
+</script>
+</script>
 </body></html>
