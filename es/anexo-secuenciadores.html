@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Ableton 101 — Historia de la Música Electrónica</title>
+  <style>
+    :root {
+      --bg:#F8F9FA; --surface:#fff; --text:#000; --muted:#555;
+      --border:#E5E7EB; --audio:#0055FF; --midi:#FF5500;
+      --play:#00B84D;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:18px;line-height:1.6; padding:4rem 5%;}
+    
+    .btn-back { position:fixed; top:20px; left:20px; background:var(--surface); color:var(--text); text-decoration:none; padding:10px 15px; border-radius:8px; border:2px solid var(--border); font-weight:bold; z-index:9999; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
+    
+    header { text-align:center; padding:4rem 2rem; border-radius:24px; border:2px solid var(--border); margin-bottom:4rem; background:#111; color:#fff; }
+    h1 { font-size:3.5rem; font-weight:900; line-height:1.1; margin-bottom:1rem; }
+    p.sub { font-size:1.4rem; color:#aaa; max-width:800px; margin:0 auto; }
+    
+    .timeline { position:relative; max-width:1000px; margin:0 auto; padding:2rem 0; }
+    .timeline::before { content:''; position:absolute; top:0; left:50%; width:4px; height:100%; background:var(--midi); transform:translateX(-50%); opacity:0.3; }
+    
+    .event { position:relative; margin-bottom:4rem; width:100%; display:flex; justify-content:space-between; align-items:center; }
+    .event:nth-child(even) { flex-direction:row-reverse; }
+    
+    .content { width:45%; background:var(--surface); padding:2rem; border-radius:16px; border:2px solid var(--border); box-shadow:0 10px 30px rgba(0,0,0,0.05); position:relative; transition:transform 0.2s; }
+    .content:hover { transform:scale(1.02); border-color:var(--midi); }
+    
+    .year { position:absolute; top:-15px; left:20px; background:var(--midi); color:#fff; font-weight:bold; padding:0.4rem 1.2rem; border-radius:20px; font-size:1rem; letter-spacing:0.05em; box-shadow:0 4px 10px rgba(255,85,0,0.3); }
+    .event:nth-child(even) .year { left:auto; right:20px; }
+    
+    .dot { position:absolute; left:50%; width:20px; height:20px; background:var(--midi); border-radius:50%; transform:translate(-50%, -50%); border:4px solid var(--bg); box-shadow:0 0 0 4px var(--midi); z-index:2; top:50%; }
+    
+    h3 { font-size:1.5rem; margin-top:1rem; margin-bottom:0.5rem; color:#111; }
+    p.desc { color:var(--muted); font-size:1.1rem; }
+    
+    .embed-container { position:relative; padding-bottom:56.25%; height:0; overflow:hidden; max-width:100%; border-radius:8px; margin-top:1rem; }
+    .embed-container iframe { position:absolute; top:0; left:0; width:100%; height:100%; }
+    
+    @media (max-width: 768px) {
+      .timeline::before { left:20px; }
+      .event { flex-direction:column !important; align-items:flex-end; }
+      .content { width:calc(100% - 50px); }
+      .dot { left:20px; }
+      .year { left:20px !important; right:auto !important; }
+    }
+  </style>
+</head>
+<body>
+
+<a href="../index.html" class="btn-back">← Volver al Índice</a>
+
+<header>
+  <h1>La Evolución de la Música Electrónica</h1>
+  <p class="sub">Desde los primeros autómatas mecánicos hasta la revolución digital del MIDI y los DAWs modernos. Un viaje a través de las máquinas que cambiano la música para siempre.</p>
+</header>
+
+<div class="timeline">
+  
+  <div class="event">
+    <div class="dot"></div>
+    <div class="content">
+      <div class="year">Siglo IX</div>
+      <h3>Los Hermanos Banū Mūsā</h3>
+      <p class="desc">En Bagdad, tres inventores persas crearon el primer instrumento musical programable del mundo: un órgano hidráulico que tocaba cilindros intercambiables con púas. Este concepto de "pines mecánicos" que disparan notas es el abuelo absoluto de la secuenciación musical.</p>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="dot"></div>
+    <div class="content">
+      <div class="year">1800s</div>
+      <h3>Organillos y Rollos Perforados</h3>
+      <p class="desc">La Revolución Industrial trajo las cajas musicales y las pianolas. Utilizaban tarjetas de cartón perforadas o rollos de papel donde los agujeros representaban notas. Este método binario (agujero = nota ON, papel = nota OFF) sentó las bases lógicas de la informática y el MIDI.</p>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="dot"></div>
+    <div class="content">
+      <div class="year">1957</div>
+      <h3>RCA Mark II Sound Synthesizer</h3>
+      <p class="desc">El primer sintetizador programable real, adquirido por Columbia-Princeton. Ocupaba una habitación entera y se programaba ingresando comandos en papel perforado. Hizo posible la composición de música electrónica puramente académica y vanguardista.</p>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="dot"></div>
+    <div class="content">
+      <div class="year">1968</div>
+      <h3>Moog 960 Sequential Controller</h3>
+      <p class="desc">Bob Moog introdujo el secuenciador por pasos controlado por voltaje (CV/Gate). Al girar las perillas en un panel de 8 o 16 pasos, los músicos podían programar bucles rítmicos y melódicos repetitivos. Wendy Carlos y Tangerine Dream lo utilizaron para revolucionar el paisaje sonoro de los 70s.</p>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="dot"></div>
+    <div class="content">
+      <div class="year">1974</div>
+      <h3>Kraftwerk y la Repetición</h3>
+      <p class="desc">La banda alemana Kraftwerk lanza "Autobahn". Combinando sintetizadores Moog y percusión electrónica personalizada, demostraron que las secuencias rígidas y mecánicas no eran frías, sino el futuro del pop. Nace la música puramente "secuenciada".</p>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="dot"></div>
+    <div class="content">
+      <div class="year">1980</div>
+      <h3>Roland TR-808</h3>
+      <p class="desc">Ikutaro Kakehashi diseña la caja de ritmos TR-808. Su secuenciador visual de 16 pasos con luces rojas y naranjas estableció el estándar (la grilla de 16 pasos) que usamos hoy. Aunque fue un fracaso inicial por no sonar como "baterías reales", su bajo sub-grave y sus chasquidos definieron para siempre el Hip Hop, el Trap y el Electro.</p>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="dot"></div>
+    <div class="content">
+      <div class="year">1981</div>
+      <h3>Roland TB-303 y el Acid House</h3>
+      <p class="desc">Creada como una máquina para que los guitarristas tuvieran acompañamiento de bajo, fracasó estrepitosamente. Años después, productores de Chicago como Phuture la compraron barata en casas de empeño, abusaron de sus perillas de filtro (Resonance / Cutoff) y crearon el sonido squelchy y lisérgico del <strong>Acid House</strong>.</p>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="dot"></div>
+    <div class="content">
+      <div class="year">1983</div>
+      <h3>El Nacimiento del MIDI</h3>
+      <p class="desc">Musical Instrument Digital Interface. Por primera vez en la historia, un teclado Yamaha podía comunicarse con una caja de ritmos Roland. El MIDI no transmite audio, transmite *datos de interpretación* (Nota, Velocidad, Duración). Esto permitió que un solo músico controlara un estudio entero desde una computadora.</p>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="dot"></div>
+    <div class="content">
+      <div class="year">Fines de 80s</div>
+      <h3>Atari ST: El Cerebro del Estudio</h3>
+      <p class="desc">La computadora Atari ST venía con puertos MIDI integrados. Combinada con software temprano como Cubase (de Steinberg) y Notator (que luego sería Logic Pro), permitió secuenciar múltiples pistas de hardware de forma gráfica. Nace el "Secuenciador MIDI por Software".</p>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="dot"></div>
+    <div class="content">
+      <div class="year">1990s</div>
+      <h3>La Era del DAW y el Piano Roll</h3>
+      <p class="desc">Las computadoras se vuelven lo suficientemente potentes para procesar AUDIO digital, no solo MIDI. Los secuenciadores evolucionan a Digital Audio Workstations (DAWs). La interfaz del <strong>Piano Roll</strong> (una cuadrícula con un teclado a la izquierda) se estandariza como la forma universal de escribir notas musicales.</p>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="dot"></div>
+    <div class="content">
+      <div class="year">2001</div>
+      <h3>Ableton Live: El Instrumento</h3>
+      <p class="desc">Creado por Gerhard Behles y Robert Henke, Ableton Live rompió el paradigma lineal del arreglo (de izquierda a derecha). Introdujo la <strong>Session View</strong> (para disparar clips no lineales en vivo) y el <strong>Warping automático</strong>, permitiendo que el software dejara de ser solo una grabadora y se convirtiera en un instrumento tocable en sí mismo.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- AUTHOR CREDIT -->
+<div style="position:fixed; bottom:15px; right:20px; font-size:0.9rem; color:inherit; opacity:0.35; z-index:9999; font-weight:700; pointer-events:none;">
+  Creado por @laurorobles
+</div>
+<script src="../js/tooltips.js"></script>
+</body>
+</html>

@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Ableton 101 — Clase 6: Estructura y Arreglo</title>
+  <style>
+    :root {
+      --bg:#F8F9FA; --surface:#fff; --text:#000; --muted:#555;
+      --border:#E5E7EB; --audio:#0055FF; --midi:#FF5500;
+      --play:#00B84D; --cc:#8800DD; --danger:#E53E3E;
+      --warp-accent:#FFBC00;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:-apple-system,sans-serif;font-size:18px;line-height:1.6;padding:4rem 5%}
+    ::-webkit-scrollbar{width:0;background:transparent}
+    h1 { font-size:3.5rem; font-weight:900; margin-bottom:1rem; }
+    h2{font-size:3rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.8rem}
+    h3{font-size:1.8rem;font-weight:700;margin-bottom:.5rem}
+    .sub{font-size:1.5rem;color:var(--muted);max-width:900px;margin-bottom:2.5rem;font-weight:500}
+    section { max-width:1000px; margin:0 auto 5rem; padding:4rem 0; border-bottom:1px solid var(--border); }
+    .tag{display:inline-block;font-size:1rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem; border-radius:4px; padding:2px 6px;}
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;width:100%}
+    .panel{background:var(--surface);border:3px solid var(--border);border-radius:20px;padding:2.5rem;box-shadow:0 8px 24px rgba(0,0,0,.04)}
+    .analogy{margin-top:1.5rem;padding:1.2rem 1.5rem;background:#F0F4F8;border-left:6px solid #CBD5E1;font-size:1.2rem;border-radius:0 10px 10px 0}
+    .t-audio{color:var(--audio)} .t-midi{color:var(--midi)} .t-play{color:var(--play)} .t-cc{color:var(--cc)}
+    
+    header { text-align:center; padding:4rem 2rem; border-radius:24px; border:2px solid var(--border); margin-bottom:4rem; background:var(--surface); }
+
+    .m-final { background:#111; color:#fff; padding:4rem; border-radius:24px; margin-top:4rem; max-width:1000px; margin:4rem auto; }
+    .m-final h2 { color:#fff; }
+    .m-final .tag { background:#333; color:#fff; }
+    .m-final h3 { color:var(--play); border-bottom:1px solid #333; padding-bottom:0.5rem; margin-bottom:1.5rem; margin-top:2rem; }
+    .m-final ul { list-style:none; }
+    .m-final li { margin-bottom:1rem; color:#ccc; display:flex; gap:1rem; }
+
+    /* M2 Canvas interaction */
+    #energyCanvas { width: 100%; height: 300px; background: #fff; border-radius: 12px; border: 2px solid var(--border); cursor: crosshair; }
+    .controls { display:flex; gap: 1rem; margin-bottom: 1rem; }
+    
+    /* Quiz */
+    .quiz-app { background:#222; border:1px solid #333; border-radius:16px; padding:2rem; margin-top:2rem; }
+    .q-text { font-size:1.4rem; color:#fff; margin-bottom:1.5rem; }
+    .q-opt { display:block; width:100%; text-align:left; background:#333; color:#fff; border:2px solid transparent; padding:1.2rem; border-radius:8px; margin-bottom:0.8rem; cursor:pointer; font-size:1.1rem; transition:all 0.2s; }
+    .q-opt:hover { background:#444; border-color:#555; }
+    .q-opt.correct { background:var(--play) !important; color:#fff; border-color:#fff; }
+    .q-opt.wrong { background:var(--danger) !important; color:#fff; }
+    .q-progress { color:var(--muted); margin-bottom:1rem; font-weight:bold; }
+    .q-next { background:var(--audio); color:#fff; padding:1rem 2rem; border:none; border-radius:8px; font-weight:bold; font-size:1.2rem; cursor:pointer; margin-top:1rem; display:none; }
+    
+    .btn { display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font-size:1.2rem;font-weight:700;padding:.9rem 1.8rem;border-radius:12px;border:none;cursor:pointer;transition:transform .1s,filter .15s;color:#fff;user-select:none;font-family:inherit; }
+    .btn:active { transform:scale(.96); }
+    .btn-audio{background:var(--audio)} .btn-midi{background:var(--midi)}
+    .btn-play{background:var(--play)} .btn-dark{background:var(--text)}
+    .btn-outline{background:transparent;border:3px solid var(--border);color:var(--text)}
+
+    .ear-candy-item { display:flex; align-items:center; gap: 1rem; padding: 1rem; background: #F0F4F8; border-radius: 10px; margin-bottom: 1rem; cursor:pointer; border-left: 5px solid var(--play); transition: 0.2s;}
+    .ear-candy-item:hover { background: #E2E8F0; }
+  </style>
+</head>
+<body>
+<a href="../index.html" style="position:fixed; top:20px; left:20px; background:var(--surface); color:var(--text); text-decoration:none; padding:10px 15px; border-radius:8px; border:2px solid var(--border); font-weight:bold; font-size:0.9rem; z-index:9999; box-shadow:0 4px 10px rgba(0,0,0,0.1); transition:transform 0.1s;">
+  ← Volver al Índice
+</a>
+
+<header>
+  <div class="tag">Soundspace Academy</div>
+  <h1>Ableton 101<br>Clase 6: Estructura y Arreglo</h1>
+  <p class="sub" style="margin-bottom:2rem">De la idea de 8 compases a una canción completa.</p>
+</header>
+
+<section id="m1">
+  <div class="tag t-audio">Módulo 01</div>
+  <h2>El Esqueleto de la Canción</h2>
+  <p class="sub">Una pista necesita un viaje: Intro, Desarrollo, Clímax y Desenlace.</p>
+  <div class="split">
+    <div class="panel">
+      <h3 class="t-audio">Partes Fundamentales</h3>
+      <ul style="margin-left: 1.5rem; line-height: 1.8;">
+        <li><strong>Intro:</strong> Presenta la atmósfera (16 a 32 compases).</li>
+        <li><strong>Break / Verso:</strong> Cae la energía, se cuenta una historia.</li>
+        <li><strong>Build-up:</strong> Tensión ascendente. Redobles y filtros abriéndose.</li>
+        <li><strong>Drop / Coro:</strong> El clímax. Toda la energía se libera.</li>
+        <li><strong>Outro:</strong> Elementos se despiden para facilitar la mezcla al DJ.</li>
+      </ul>
+      <div class="analogy" style="border-left-color:var(--audio)">
+        <strong>💡 La Montaña Rusa.</strong><br>
+        Si siempre vas rápido, aburre. Necesitas las subidas lentas (Build-up) para que la caída (Drop) se sienta emocionante.
+      </div>
+    </div>
+    <div class="panel">
+      <div style="display:flex; flex-direction:column; gap: 0.5rem; height:100%;">
+        <div style="background:#E2E8F0; padding:1rem; border-radius:8px; display:flex; justify-content:space-between"><span>Intro</span> <span>16 Bar</span></div>
+        <div style="background:#CBD5E1; padding:1rem; border-radius:8px; display:flex; justify-content:space-between"><span>Break</span> <span>16 Bar</span></div>
+        <div style="background:#94A3B8; padding:1rem; border-radius:8px; display:flex; justify-content:space-between; color:#fff;"><span>Build-up</span> <span>8 Bar</span></div>
+        <div style="background:var(--audio); padding:1rem; border-radius:8px; display:flex; justify-content:space-between; color:#fff; font-weight:bold; font-size:1.2rem; transform:scale(1.05); margin:0.5rem 0;"><span>DROP</span> <span>32 Bar</span></div>
+        <div style="background:#E2E8F0; padding:1rem; border-radius:8px; display:flex; justify-content:space-between"><span>Outro</span> <span>16 Bar</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="m2">
+  <div class="tag t-midi">Módulo 02</div>
+  <h2>Gráfica de Energía</h2>
+  <p class="sub">Haz clic y arrastra verticalmente sobre los bloques para ajustar su energía. Observa la curva de tensión.</p>
+  
+  <div class="panel">
+    <div class="controls">
+      <button class="btn btn-midi" onclick="resetCanvas()">↺ Reiniciar Curva</button>
+      <button class="btn btn-outline" onclick="presetEDM()">Generar Preset EDM</button>
+      <button class="btn btn-outline" onclick="presetPop()">Generar Preset Pop</button>
+    </div>
+    <canvas id="energyCanvas"></canvas>
+    <div class="analogy" style="border-left-color:var(--midi)">
+      <strong>💡 Contraste es Rey.</strong><br>
+      Un <em>Drop</em> en nivel 10 solo suena inmenso si el <em>Build-up</em> previo retiene graves o baja la energía antes del impacto.
+    </div>
+  </div>
+</section>
+
+<section id="m3">
+  <div class="tag t-play">Módulo 03</div>
+  <h2>La Regla del 4 y 8</h2>
+  <p class="sub">Matemáticas musicales: por qué tu cerebro ama la simetría de los compases.</p>
+  
+  <div class="split">
+    <div class="panel">
+      <h3>Bloques Simétricos</h3>
+      <p>La mayoría de la música electrónica está construida en compases de 4/4 (4 tiempos por compás).</p>
+      <p>Nuestro cerebro anticipa cambios cada <strong>4, 8, 16 o 32 compases</strong>.</p>
+      
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1.5rem;">
+        <div style="border:2px solid var(--border); padding:1rem; border-radius:8px; text-align:center;">
+          <h4 style="font-size:2rem; color:var(--play);">8</h4>
+          <span>Compases</span><br>
+          <small style="color:var(--muted)">Frase básica</small>
+        </div>
+        <div style="border:2px solid var(--border); padding:1rem; border-radius:8px; text-align:center;">
+          <h4 style="font-size:2rem; color:var(--play);">16</h4>
+          <span>Compases</span><br>
+          <small style="color:var(--muted)">Sección completa (Verso)</small>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>El Turnaround</h3>
+      <p>Para evitar la monotonía en un loop de 8 compases, introduce un cambio sutil en el último compás (el octavo).</p>
+      <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:1rem;">
+        <div style="width:40px; height:40px; background:#E2E8F0; display:flex; align-items:center; justify-content:center; border-radius:4px;">1</div>
+        <div style="width:40px; height:40px; background:#E2E8F0; display:flex; align-items:center; justify-content:center; border-radius:4px;">2</div>
+        <div style="width:40px; height:40px; background:#E2E8F0; display:flex; align-items:center; justify-content:center; border-radius:4px;">3</div>
+        <div style="width:40px; height:40px; background:#E2E8F0; display:flex; align-items:center; justify-content:center; border-radius:4px;">4</div>
+        <div style="width:40px; height:40px; background:#E2E8F0; display:flex; align-items:center; justify-content:center; border-radius:4px;">5</div>
+        <div style="width:40px; height:40px; background:#E2E8F0; display:flex; align-items:center; justify-content:center; border-radius:4px;">6</div>
+        <div style="width:40px; height:40px; background:#E2E8F0; display:flex; align-items:center; justify-content:center; border-radius:4px;">7</div>
+        <div style="width:40px; height:40px; background:var(--play); color:#fff; font-weight:bold; display:flex; align-items:center; justify-content:center; border-radius:4px; transform:scale(1.1);">8!</div>
+      </div>
+      <div class="analogy" style="border-left-color:var(--play); margin-top:1.5rem;">
+        <strong>💡 El Despertador.</strong><br>
+        Ese cambio en el compás 8 "despierta" al oyente y le avisa que la frase se va a repetir o que viene una sección nueva.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="m4">
+  <div class="tag t-cc">Módulo 04</div>
+  <h2>Transiciones y Ear Candy</h2>
+  <p class="sub">El pegamento que une las diferentes secciones de tu canción.</p>
+  
+  <div class="panel" style="max-width:800px; margin:0 auto;">
+    <p style="margin-bottom:1.5rem">Haz clic en cada elemento para escuchar cómo funciona una transición.</p>
+    
+    <div class="ear-candy-item" onclick="playNoise('sweep_up')">
+      <div style="font-size:2rem;">🌪️</div>
+      <div>
+        <h4>Sweep Up (Riser)</h4>
+        <p style="color:var(--muted); font-size:1rem;">Ruido blanco subiendo de filtro. Crea anticipación antes del drop.</p>
+      </div>
+    </div>
+    
+    <div class="ear-candy-item" onclick="playNoise('impact')">
+      <div style="font-size:2rem;">💥</div>
+      <div>
+        <h4>Impact / Crash</h4>
+        <p style="color:var(--muted); font-size:1rem;">Golpe fuerte con larga caída. Aterriza justo en el compás 1 de la nueva sección.</p>
+      </div>
+    </div>
+    
+    <div class="ear-candy-item" onclick="playNoise('sweep_down')">
+      <div style="font-size:2rem;">💨</div>
+      <div>
+        <h4>Sweep Down (Fall)</h4>
+        <p style="color:var(--muted); font-size:1rem;">Ruido que pierde energía. Ayuda a liberar la tensión después de un impacto.</p>
+      </div>
+    </div>
+    
+    <div class="ear-candy-item" onclick="playReverse()">
+      <div style="font-size:2rem;">⏪</div>
+      <div>
+        <h4>Reverse Cymbal / Reverb</h4>
+        <p style="color:var(--muted); font-size:1rem;">Un platillo en reversa que 'chupa' el sonido hacia el primer tiempo.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="m-final">
+  <div class="tag">Módulo Final</div>
+  <h2>Resumen de Conceptos</h2>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:3rem;">
+    <div>
+      <h3>📚 Conceptos Clave</h3>
+      <ul>
+        <li><span>✅</span> <span>Las canciones necesitan un viaje de energía: Intro, Break, Build-up, Drop, Outro.</span></li>
+        <li><span>✅</span> <span>La regla del 4 y 8: los cambios deben suceder en múltiplos de 8 o 16 compases.</span></li>
+        <li><span>✅</span> <span>Las transiciones (Risers, Impacts) actúan como pegamento entre secciones.</span></li>
+      </ul>
+    </div>
+    <div>
+      <h3>⌨️ Shortcuts Aprendidos</h3>
+      <ul>
+        <li><strong>Cmd/Ctrl + J</strong> <span>Consolidar clips para hacer bloques consistentes.</span></li>
+        <li><strong>Cmd/Ctrl + D</strong> <span>Duplicar selecciones rápidamente.</span></li>
+      </ul>
+    </div>
+  </div>
+  
+  
+    <div style="margin-top: 2rem; border-top: 1px solid #333; padding-top: 2rem;">
+      <h3>📖 Bibliografía y Recursos</h3>
+      <ul style="list-style:none; padding:0;">
+        <li style="margin-bottom:0.5rem;"><a href="anexo-glosario.html" style="color:var(--audio); text-decoration:none;">➔ Consultar el Glosario Oficial</a></li>
+        <li style="margin-bottom:0.5rem;"><a href="anexo-documentales.html" style="color:var(--audio); text-decoration:none;">➔ Ver Documentales Recomendados</a></li>
+        <li style="margin-bottom:0.5rem;"><a href="https://learningmusic.ableton.com/es/" target="_blank" style="color:var(--audio); text-decoration:none;">➔ Ableton Learning Music (Práctica Externa)</a></li>
+      </ul>
+    </div>
+            <h3 style="margin-top:4rem; font-size:2rem; text-align:center; border:none">🧠 Evaluador Interactivo</h3>
+  <div class="quiz-app" id="quiz-app-6">
+    <div class="q-progress" id="q-progress-6">Pregunta 1 de 5</div>
+    <div class="q-text" id="q-text-6"></div>
+    <div id="q-opts-6"></div>
+    <button class="q-next" id="q-next-6" onclick="nextQuestion_6()">Siguiente Pregunta ➔</button>
+  </div>
+</div>
+
+<footer style="text-align:center; padding: 2rem; color: var(--muted); border-top: 1px solid var(--border); margin-top: 2rem;">
+  Creado por @laurorobles
+</footer>
+
+<script>
+  // M2 Canvas Logic
+  const canvas = document.getElementById('energyCanvas');
+  const ctx = canvas.getContext('2d');
+  
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  ctx.scale(dpr, dpr);
+  
+  const width = rect.width;
+  const height = rect.height;
+  
+  const blocks = [
+    { name: 'Intro', bars: 16, val: 0.3 },
+    { name: 'Break', bars: 16, val: 0.2 },
+    { name: 'Build', bars: 8, val: 0.7 },
+    { name: 'Drop', bars: 32, val: 1.0 },
+    { name: 'Outro', bars: 16, val: 0.4 }
+  ];
+  
+  let isDragging = false;
+  let activeBlock = -1;
+  
+  function drawCanvas() {
+    ctx.clearRect(0, 0, width, height);
+    
+    const totalBars = blocks.reduce((sum, b) => sum + b.bars, 0);
+    let currentX = 0;
+    
+    ctx.strokeStyle = '#E5E7EB';
+    ctx.lineWidth = 1;
+    for(let i=0; i<=10; i++) {
+      ctx.beginPath();
+      ctx.moveTo(0, height - (i * height / 10));
+      ctx.lineTo(width, height - (i * height / 10));
+      ctx.stroke();
+    }
+    
+    blocks.forEach((b, i) => {
+      const bWidth = (b.bars / totalBars) * width;
+      const bHeight = b.val * height;
+      const y = height - bHeight;
+      
+      const grad = ctx.createLinearGradient(0, y, 0, height);
+      grad.addColorStop(0, 'rgba(255, 85, 0, 0.7)');
+      grad.addColorStop(1, 'rgba(255, 188, 0, 0.2)');
+      
+      ctx.fillStyle = grad;
+      ctx.fillRect(currentX, y, bWidth, bHeight);
+      
+      ctx.strokeStyle = '#FF5500';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(currentX, y, bWidth, bHeight);
+      
+      ctx.fillStyle = '#fff';
+      ctx.beginPath();
+      ctx.arc(currentX + bWidth/2, y, 8, 0, Math.PI*2);
+      ctx.fill();
+      ctx.stroke();
+      
+      ctx.fillStyle = '#000';
+      ctx.font = 'bold 14px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(b.name, currentX + bWidth/2, height - 20);
+      
+      b.x = currentX;
+      b.w = bWidth;
+      
+      currentX += bWidth;
+    });
+    
+    ctx.beginPath();
+    ctx.strokeStyle = '#0055FF';
+    ctx.lineWidth = 4;
+    blocks.forEach((b, i) => {
+      const cx = b.x + b.w/2;
+      const cy = height - (b.val * height);
+      if (i === 0) ctx.moveTo(cx, cy);
+      else ctx.lineTo(cx, cy);
+    });
+    ctx.stroke();
+  }
+  
+  canvas.addEventListener('mousedown', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+    
+    activeBlock = blocks.findIndex(b => mx >= b.x && mx <= b.x + b.w);
+    if (activeBlock !== -1) isDragging = true;
+  });
+  
+  canvas.addEventListener('mousemove', (e) => {
+    if (!isDragging || activeBlock === -1) return;
+    const rect = canvas.getBoundingClientRect();
+    const my = e.clientY - rect.top;
+    let val = 1 - (my / height);
+    if (val < 0.1) val = 0.1;
+    if (val > 1) val = 1;
+    blocks[activeBlock].val = val;
+    drawCanvas();
+  });
+  
+  canvas.addEventListener('mouseup', () => { isDragging = false; activeBlock = -1; });
+  canvas.addEventListener('mouseleave', () => { isDragging = false; activeBlock = -1; });
+  
+  function resetCanvas() {
+    blocks[0].val = 0.3; blocks[1].val = 0.2; blocks[2].val = 0.7; blocks[3].val = 1.0; blocks[4].val = 0.4;
+    drawCanvas();
+  }
+  function presetEDM() {
+    blocks[0].val = 0.4; blocks[1].val = 0.1; blocks[2].val = 0.8; blocks[3].val = 1.0; blocks[4].val = 0.3;
+    drawCanvas();
+  }
+  function presetPop() {
+    blocks[0].val = 0.5; blocks[1].val = 0.4; blocks[2].val = 0.6; blocks[3].val = 0.8; blocks[4].val = 0.5;
+    drawCanvas();
+  }
+  
+  setTimeout(drawCanvas, 100);
+
+  // M4 Web Audio Synthesis for Transitions
+  let audioCtx = null;
+  
+  function playNoise(type) {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if(audioCtx.state === 'suspended') audioCtx.resume();
+    
+    const bufferSize = audioCtx.sampleRate * 2;
+    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const data = buffer.getChannelData(0);
+    
+    for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+    }
+    
+    const noiseSource = audioCtx.createBufferSource();
+    noiseSource.buffer = buffer;
+    
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = type === 'impact' ? 'lowpass' : 'bandpass';
+    filter.Q.value = type === 'impact' ? 1 : 5;
+    
+    const gain = audioCtx.createGain();
+    
+    noiseSource.connect(filter);
+    filter.connect(gain);
+    gain.connect(audioCtx.destination);
+    
+    const now = audioCtx.currentTime;
+    
+    if (type === 'sweep_up') {
+      filter.frequency.setValueAtTime(200, now);
+      filter.frequency.exponentialRampToValueAtTime(8000, now + 2);
+      gain.gain.setValueAtTime(0.1, now);
+      gain.gain.linearRampToValueAtTime(0.8, now + 1.8);
+      gain.gain.linearRampToValueAtTime(0, now + 2);
+    } else if (type === 'sweep_down') {
+      filter.frequency.setValueAtTime(8000, now);
+      filter.frequency.exponentialRampToValueAtTime(200, now + 2);
+      gain.gain.setValueAtTime(0.8, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 2);
+    } else if (type === 'impact') {
+      filter.frequency.setValueAtTime(400, now);
+      filter.frequency.exponentialRampToValueAtTime(50, now + 1.5);
+      gain.gain.setValueAtTime(1, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 1.5);
+    }
+    
+    noiseSource.start(now);
+    noiseSource.stop(now + 2);
+  }
+
+  function playReverse() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if(audioCtx.state === 'suspended') audioCtx.resume();
+    
+    const osc = audioCtx.createOscillator();
+    osc.type = 'triangle';
+    
+    const gain = audioCtx.createGain();
+    
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    
+    const now = audioCtx.currentTime;
+    osc.frequency.setValueAtTime(2000, now);
+    osc.frequency.linearRampToValueAtTime(4000, now + 1);
+    
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.exponentialRampToValueAtTime(0.5, now + 0.9);
+    gain.gain.linearRampToValueAtTime(0, now + 1);
+    
+    osc.start(now);
+    osc.stop(now + 1);
+  }
+
+  // Quiz Logic
+  const qData_6 = [
+    {
+      "q": "¿Qué sección de la canción representa el clímax energético?",
+      "opts": ["Intro", "Break", "Drop / Coro", "Build-up"],
+      "ans": 2
+    },
+    {
+      "q": "¿Qué es un 'Build-up'?",
+      "opts": ["La parte más tranquila de la canción", "Una sección de tensión ascendente antes del clímax", "El final de la canción", "Un efecto de reverberación"],
+      "ans": 1
+    },
+    {
+      "q": "Según la regla del 4 y 8, los cambios en una canción de música electrónica suelen ocurrir cada...",
+      "opts": ["3 compases", "7 o 9 compases", "8 o 16 compases", "5 compases"],
+      "ans": 2
+    },
+    {
+      "q": "¿Cuál es la función principal de un Riser (Sweep Up)?",
+      "opts": ["Reducir el volumen general", "Añadir graves al drop", "Crear anticipación antes de un cambio de sección", "Finalizar la canción suavemente"],
+      "ans": 2
+    },
+    {
+      "q": "¿Por qué es importante tener un 'Break' antes de un 'Drop'?",
+      "opts": ["Para que la canción dure más tiempo", "Para crear contraste; la caída de energía hace que el drop se sienta más potente", "Para afinar los instrumentos", "Para acelerar el BPM"],
+      "ans": 1
+    }
+  ];
+  let curQ_6 = 0; let score_6 = 0;
+  function renderQ_6() {
+    if(curQ_6 >= qData_6.length) {
+      let p = Math.round((score_6 / qData_6.length) * 100);
+      let msg = p === 100 ? '¡Perfecto! Eres un maestro del Arreglo.' : (p >= 60 ? '¡Bien hecho! Aprobaste.' : 'Necesitas repasar la clase.');
+      
+      if (p >= 60) {
+        localStorage.setItem('ableton101_c6', score_6);
+      }
+      
+      document.getElementById('quiz-app-6').innerHTML = '<div style="text-align:center"><div style="font-size:4rem;margin-bottom:1rem">' + (p>=60?'🏆':'📉') + '</div><h3 style="color:#fff;font-size:2rem;margin-bottom:1rem">Tu Score: ' + score_6 + ' / ' + qData_6.length + ' (' + p + '%)</h3><p style="color:#aaa;font-size:1.2rem">' + msg + '</p></div>';
+      return;
+    }
+    let q = qData_6[curQ_6];
+    document.getElementById('q-progress-6').textContent = 'Pregunta ' + (curQ_6+1) + ' de ' + qData_6.length;
+    document.getElementById('q-text-6').textContent = q.q;
+    let optsHTML = '';
+    q.opts.forEach((opt, idx) => { optsHTML += '<button class="q-opt" onclick="checkQ_6(' + idx + ', ' + q.ans + ', this)">' + opt + '</button>'; });
+    document.getElementById('q-opts-6').innerHTML = optsHTML;
+    document.getElementById('q-next-6').style.display = 'none';
+  }
+  function checkQ_6(sIdx, cIdx, btn) {
+    const btns = document.getElementById('q-opts-6').querySelectorAll('.q-opt');
+    btns.forEach(b => { b.disabled = true; b.style.opacity = '0.7'; });
+    btn.style.opacity = '1';
+    if(sIdx === cIdx) { btn.classList.add('correct'); score_6++; } 
+    else { btn.classList.add('wrong'); btns[cIdx].classList.add('correct'); btns[cIdx].style.opacity = '1'; }
+    document.getElementById('q-next-6').style.display = 'block';
+  }
+  function nextQuestion_6() { curQ_6++; renderQ_6(); }
+  
+  setTimeout(() => renderQ_6(), 100);
+</script>
+
+<script src="../js/tooltips.js"></script>
+<!-- AUTHOR CREDIT -->
+<div style="position:fixed; bottom:15px; right:20px; font-size:0.9rem; color:inherit; opacity:0.35; z-index:9999; font-weight:700; pointer-events:none; transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.35'">
+  Creado por @laurorobles
+</div>
+
+<script>
+  // Global Touch to Mouse mapping for Canvas interactivity on iPads/Mobiles
+  function touchHandler(event) {
+    if(event.target.tagName !== 'CANVAS' && event.target.type !== 'range') return;
+    var touch = event.changedTouches[0];
+    var simulatedEvent = document.createEvent("MouseEvent");
+    simulatedEvent.initMouseEvent({
+        touchstart: "mousedown",
+        touchmove: "mousemove",
+        touchend: "mouseup"
+    }[event.type], true, true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null);
+    touch.target.dispatchEvent(simulatedEvent);
+    if(event.target.tagName === 'CANVAS') event.preventDefault();
+  }
+  document.addEventListener("touchstart", touchHandler, {passive: false});
+  document.addEventListener("touchmove", touchHandler, {passive: false});
+  document.addEventListener("touchend", touchHandler, {passive: false});
+</script>
+</body>
+</html>

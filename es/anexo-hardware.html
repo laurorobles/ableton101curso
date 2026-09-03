@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Ableton 101 — Guía de Hardware</title>
+  <style>
+    :root {
+      --bg:#F8F9FA; --surface:#fff; --text:#000; --muted:#555;
+      --border:#E5E7EB; --audio:#0055FF; --midi:#FF5500;
+      --play:#00B84D; --danger:#E53E3E;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:-apple-system,sans-serif;font-size:18px;line-height:1.6;padding:4rem 5%}
+    
+    .btn-back { position:fixed; top:20px; left:20px; background:var(--surface); color:var(--text); text-decoration:none; padding:10px 15px; border-radius:8px; border:2px solid var(--border); font-weight:bold; z-index:9999; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
+    
+    header { text-align:center; padding:4rem 2rem; border-radius:24px; border:2px solid var(--border); margin-bottom:4rem; background:#111; color:#fff; }
+    h1 { font-size:3.5rem; font-weight:900; line-height:1.1; margin-bottom:1rem; }
+    p.sub { font-size:1.2rem; color:#aaa; max-width:800px; margin:0 auto; }
+    
+    .panel { background:var(--surface); border:3px solid var(--border); border-radius:20px; padding:2.5rem; margin-bottom:4rem; box-shadow:0 8px 24px rgba(0,0,0,.04); }
+    
+    /* Filtros / Asistente */
+    .assistant { text-align:center; margin-bottom:3rem; }
+    .filter-btn { display:inline-block; background:transparent; border:2px solid var(--border); padding:0.8rem 1.5rem; border-radius:30px; font-weight:bold; cursor:pointer; margin:0.5rem; transition:0.2s; font-size:1rem; }
+    .filter-btn:hover { border-color:var(--audio); color:var(--audio); }
+    .filter-btn.active { background:var(--audio); color:#fff; border-color:var(--audio); }
+    
+    /* Diagrama */
+    .diagram-container { display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:1rem; background:#111; color:#fff; padding:3rem; border-radius:16px; font-weight:bold; text-align:center; }
+    .d-box { background:#222; border:2px solid #444; padding:1rem 2rem; border-radius:12px; }
+    .d-line { height:4px; width:40px; background:var(--audio); position:relative; }
+    .d-line::after { content:''; position:absolute; right:-5px; top:-6px; border-top:8px solid transparent; border-bottom:8px solid transparent; border-left:10px solid var(--audio); }
+    .d-label { font-size:0.8rem; color:#aaa; position:absolute; top:-25px; left:50%; transform:translateX(-50%); white-space:nowrap; }
+    
+    /* Grid de Hardware */
+    .cat-title { font-size:2.2rem; margin-bottom:1.5rem; padding-bottom:0.5rem; border-bottom:2px solid var(--border); margin-top:4rem; }
+    .hw-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:2rem; }
+    
+    .card { background:var(--surface); border:2px solid var(--border); border-radius:16px; padding:2rem; display:flex; flex-direction:column; transition:transform 0.2s, border-color 0.2s; }
+    .card:hover { transform:translateY(-5px); border-color:var(--audio); }
+    .card-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1.5rem; }
+    .card-icon { font-size:3rem; }
+    .card-price { background:var(--play); color:#fff; font-weight:bold; padding:0.4rem 0.8rem; border-radius:8px; font-size:1.1rem; }
+    .card h3 { font-size:1.4rem; margin-bottom:0.5rem; }
+    
+    .tags { margin-bottom:1.5rem; display:flex; flex-wrap:wrap; gap:0.5rem; }
+    .badge { font-size:0.75rem; font-weight:bold; text-transform:uppercase; background:#f0f4f8; color:#555; padding:0.3rem 0.6rem; border-radius:4px; }
+    
+    .proscons { display:grid; grid-template-columns:1fr; gap:1rem; flex:1; }
+    .pro-list, .con-list { list-style:none; font-size:0.95rem; line-height:1.5; }
+    .pro-list li { margin-bottom:0.5rem; display:flex; gap:0.5rem; }
+    .pro-list li::before { content:'✅'; }
+    .con-list li { margin-bottom:0.5rem; display:flex; gap:0.5rem; color:var(--danger); }
+    .con-list li::before { content:'❌'; }
+  </style>
+</head>
+<body>
+
+<a href="../index.html" class="btn-back">← Volver al Índice</a>
+
+<header>
+  <h1>Guía Definitiva de Hardware</h1>
+  <p class="sub">No compres a ciegas. Descubre qué equipo necesitas realmente según tu presupuesto y objetivos.</p>
+</header>
+
+<div class="panel assistant">
+  <h2>¿Qué tipo de productor eres? (Asistente de Selección)</h2>
+  <p style="color:var(--muted); margin-bottom:2rem;">Haz clic en tu perfil para filtrar el equipo recomendado.</p>
+  <div id="filters">
+    <button class="filter-btn active" data-filter="all">Ver Todo</button>
+    <button class="filter-btn" data-filter="bedroom">🏠 Bedroom Studio (Bajo Presupuesto)</button>
+    <button class="filter-btn" data-filter="pro">🎛️ Productor Avanzado (Alta Calidad)</button>
+    <button class="filter-btn" data-filter="viajero">✈️ Nómada / Viajero</button>
+    <button class="filter-btn" data-filter="voces">🎤 Grabar Voces Reales</button>
+  </div>
+</div>
+
+<div class="panel">
+  <h2>Diagrama de Conexión Universal</h2>
+  <p style="color:var(--muted); margin-bottom:2rem;">¿Cómo se conecta todo este equipo en la vida real?</p>
+  
+
+<div class="diagram-container" style="background:#111; padding:3rem 1rem; border-radius:16px; color:#fff; text-align:center;">
+  <style>
+    .flow-grid {
+      display: grid;
+      grid-template-areas: 
+        ". . laptop . ."
+        ". . arrow-up . ."
+        "mic arrow-in int arrow-out monitors"
+        ". . arrow-down . ."
+        ". . auric . .";
+      grid-template-columns: 1fr 60px 1.2fr 60px 1fr;
+      gap: 0.5rem 1rem;
+      align-items: center;
+      justify-items: center;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .flow-box {
+      background: #222; border: 2px solid #444; border-radius: 12px; padding: 1.5rem 1rem;
+      width: 100%; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+    .flow-box h4 { margin-bottom: 0.3rem; font-size: 1.1rem; color: #fff; }
+    .flow-box p { font-size: 0.8rem; color: #aaa; margin:0; }
+    
+    .flow-arrow { display: flex; flex-direction: column; align-items: center; justify-content: center; width:100%; position:relative; }
+    .flow-arrow span { font-size: 0.7rem; color: #888; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; margin-bottom: 4px; white-space:nowrap; }
+    .flow-line { height: 4px; width: 100%; background: #444; position: relative; border-radius:2px; }
+    .flow-line.right::after { content:''; position:absolute; right:-2px; top:-4px; border-top:6px solid transparent; border-bottom:6px solid transparent; border-left:8px solid #444; }
+    .flow-line.down { width: 4px; height: 100%; }
+    .flow-line.down::after { content:''; position:absolute; bottom:-2px; left:-4px; border-left:6px solid transparent; border-right:6px solid transparent; border-top:8px solid #444; }
+    .flow-line.up { width: 4px; height: 100%; }
+    .flow-line.up::after { content:''; position:absolute; top:-2px; left:-4px; border-left:6px solid transparent; border-right:6px solid transparent; border-bottom:8px solid #444; }
+    
+    .hl-blue { border-color: var(--audio) !important; }
+    .hl-blue .flow-line { background: var(--audio); }
+    .hl-blue .flow-line::after { border-left-color: var(--audio); border-top-color: var(--audio); }
+    
+    .hl-orange { border-color: #FF5500 !important; }
+    .hl-orange .flow-line { background: #FF5500; }
+    .hl-orange .flow-line::after { border-left-color: #FF5500; border-right-color: #FF5500; border-top-color: #FF5500; border-bottom-color: #FF5500; }
+
+    .hl-green { border-color: #00B84D !important; }
+    .hl-green .flow-line { background: #00B84D; }
+    .hl-green .flow-line::after { border-left-color: #00B84D; border-top-color: #00B84D; }
+
+    @media (max-width: 768px) {
+      .flow-grid {
+        grid-template-areas: 
+          "mic" "arrow-in" "int" "arrow-up" "laptop" "arrow-out" "monitors" "arrow-down" "auric";
+        grid-template-columns: 1fr;
+      }
+      .flow-line.right::after, .flow-line.left::after { display:none; }
+      .flow-line.right, .flow-line.left { width: 4px !important; height: 30px !important; margin: 10px auto; }
+      .flow-line.right::after, .flow-line.left::after { content:''; display:block; position:absolute; bottom:-2px; left:-4px; border-left:6px solid transparent; border-right:6px solid transparent; border-top:8px solid inherit; }
+      .flow-arrow span { position:static !important; margin:0 !important; }
+    }
+  </style>
+
+  <div class="flow-grid">
+    
+    <!-- Laptop (Top) -->
+    <div class="flow-box hl-orange" style="grid-area: laptop">
+      <h4>💻 Computadora</h4>
+      <p>Ableton Live (Procesamiento Digital)</p>
+    </div>
+    
+    <div class="flow-arrow hl-orange" style="grid-area: arrow-up; height:40px;">
+      <span style="position:absolute; margin-left:140px; margin-top:10px;">USB-C (Datos bidireccionales)</span>
+      <div class="flow-line up" style="height:40px; background:linear-gradient(to top, var(--audio), #FF5500); border:none;"></div>
+    </div>
+
+    <!-- Mic (Left) -->
+    <div class="flow-box" style="grid-area: mic">
+      <h4>🎤 Mic / Sinte</h4>
+      <p>Entrada de Sonido Analógico</p>
+    </div>
+    
+    <div class="flow-arrow hl-blue" style="grid-area: arrow-in">
+      <span>Cable XLR</span>
+      <div class="flow-line right"></div>
+    </div>
+    
+    <!-- Interfaz (Center) -->
+    <div class="flow-box hl-blue" style="grid-area: int; border-width:3px; padding:2rem 1rem;">
+      <h4 style="font-size:1.3rem;">🎛️ Interfaz de Audio</h4>
+      <p>El Cerebro (Conversor A/D)</p>
+    </div>
+    
+    <!-- Monitores (Right) -->
+    <div class="flow-arrow hl-green" style="grid-area: arrow-out">
+      <span>Cables TRS</span>
+      <div class="flow-line right"></div>
+    </div>
+
+    <div class="flow-box hl-green" style="grid-area: monitors">
+      <h4>🔊 Monitores</h4>
+      <p>Salida L/R (Estéreo Principal)</p>
+    </div>
+    
+    <!-- Audifonos (Bottom) -->
+    <div class="flow-arrow hl-green" style="grid-area: arrow-down; height:40px;">
+      <span style="position:absolute; margin-left:110px; margin-top:10px;">Cable Plug 1/4"</span>
+      <div class="flow-line down" style="height:40px;"></div>
+    </div>
+
+    <div class="flow-box hl-green" style="grid-area: auric">
+      <h4>🎧 Audífonos</h4>
+      <p>Monitoreo Silencioso Auxiliar</p>
+    </div>
+    
+  </div>
+</div>
+</div>
+
+<!-- CATALOGO -->
+<div id="catalog">
+
+  <h2 class="cat-title">🎛️ Interfaces de Audio</h2>
+  <div class="hw-grid">
+    
+    <div class="card" data-tags="bedroom,voces">
+      <div class="card-header"><div class="card-icon">🎛️</div><div class="card-price">~$180</div></div>
+      <h3>Focusrite Scarlett 2i2</h3>
+      <div class="tags"><span class="badge">Bedroom Studio</span><span class="badge">Voces</span></div>
+      <div class="proscons">
+        <ul class="pro-list">
+          <li>El estándar de la industria para principiantes.</li>
+          <li>Drivers muy estables y modo "Air" para brillo.</li>
+        </ul>
+        <ul class="con-list">
+          <li>El preamplificador distorsiona si grabas cosas demasiado fuertes.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card" data-tags="pro,voces">
+      <div class="card-header"><div class="card-icon">🎛️</div><div class="card-price">~$200</div></div>
+      <h3>Universal Audio Volt 2</h3>
+      <div class="tags"><span class="badge">Productor Avanzado</span><span class="badge">Voces</span></div>
+      <div class="proscons">
+        <ul class="pro-list">
+          <li>Modo "Vintage" que simula un preamplificador a tubos analógico (ideal para voz).</li>
+          <li>Construcción robusta y metálica.</li>
+        </ul>
+        <ul class="con-list">
+          <li>No incluye software de ruteo complejo.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card" data-tags="pro">
+      <div class="card-header"><div class="card-icon">🎛️</div><div class="card-price">~$200</div></div>
+      <h3>Motu M2</h3>
+      <div class="tags"><span class="badge">Productor Avanzado</span></div>
+      <div class="proscons">
+        <ul class="pro-list">
+          <li>Pantalla LCD a color para ver exactamente los niveles de entrada.</li>
+          <li>Los mejores conversores digitales (ESS Sabre32) por este precio.</li>
+        </ul>
+        <ul class="con-list">
+          <li>A veces hay problemas de stock mundial para comprarla.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <h2 class="cat-title">🎧 Audífonos de Monitoreo</h2>
+  <div class="hw-grid">
+    
+    <div class="card" data-tags="bedroom,viajero,voces">
+      <div class="card-header"><div class="card-icon">🎧</div><div class="card-price">~$150</div></div>
+      <h3>Audio-Technica ATH-M50x</h3>
+      <div class="tags"><span class="badge">Bedroom Studio</span><span class="badge">Viajero</span><span class="badge">Cerrados</span></div>
+      <div class="proscons">
+        <ul class="pro-list">
+          <li>Se doblan por completo (excelentes para viajar).</li>
+          <li>Graves muy presentes y divertidos al producir.</li>
+          <li>No filtran sonido hacia el micrófono al grabar voces.</li>
+        </ul>
+        <ul class="con-list">
+          <li>Los graves exagerados pueden engañarte al mezclar.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card" data-tags="pro,bedroom">
+      <div class="card-header"><div class="card-icon">🎧</div><div class="card-price">~$160</div></div>
+      <h3>Beyerdynamic DT 770 Pro</h3>
+      <div class="tags"><span class="badge">Productor Avanzado</span><span class="badge">Estudio</span></div>
+      <div class="proscons">
+        <ul class="pro-list">
+          <li>Comodidad extrema (almohadillas de terciopelo).</li>
+          <li>Escenario estéreo (Soundstage) inmenso, suenan como si estuvieras en un cuarto grande.</li>
+        </ul>
+        <ul class="con-list">
+          <li>El cable no es removible.</li>
+          <li>No se pliegan, son estorbosos para viajar.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <h2 class="cat-title">🔊 Monitores de Estudio</h2>
+  <div class="hw-grid">
+    
+    <div class="card" data-tags="pro">
+      <div class="card-header"><div class="card-icon">🔊</div><div class="card-price">~$400/par</div></div>
+      <h3>Yamaha HS5</h3>
+      <div class="tags"><span class="badge">Productor Avanzado</span><span class="badge">Plano</span></div>
+      <div class="proscons">
+        <ul class="pro-list">
+          <li>Sonido extremadamente plano, clínico y honesto.</li>
+          <li>Si tu mezcla suena bien aquí, sonará bien en todos lados.</li>
+        </ul>
+        <ul class="con-list">
+          <li>Casi no tienen frecuencias sub-graves. Necesitas un Subwoofer si haces Trap/Techno.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card" data-tags="bedroom">
+      <div class="card-header"><div class="card-icon">🔊</div><div class="card-price">~$350/par</div></div>
+      <h3>KRK Rokit 5 G4</h3>
+      <div class="tags"><span class="badge">Bedroom Studio</span><span class="badge">EDM/Hip Hop</span></div>
+      <div class="proscons">
+        <ul class="pro-list">
+          <li>Diseño icónico con cono amarillo.</li>
+          <li>Muchos graves, muy divertidos para producir e inspirarte.</li>
+          <li>Pantalla digital trasera para corregir la acústica de tu cuarto.</li>
+        </ul>
+        <ul class="con-list">
+          <li>Colorean el sonido; tus bajos pueden engañarte y quedar débiles al exportar.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <h2 class="cat-title">🎹 Controladores MIDI</h2>
+  <div class="hw-grid">
+    
+    <div class="card" data-tags="bedroom,viajero">
+      <div class="card-header"><div class="card-icon">🎹</div><div class="card-price">~$110</div></div>
+      <h3>Arturia MiniLab 3</h3>
+      <div class="tags"><span class="badge">Viajero</span><span class="badge">Bedroom</span></div>
+      <div class="proscons">
+        <ul class="pro-list">
+          <li>Construcción fantástica, se siente como un tanque.</li>
+          <li>Incluye "Analog Lab", un software con miles de presets de sintetizadores vintage gratuitos.</li>
+        </ul>
+        <ul class="con-list">
+          <li>Las teclas son pequeñas (minikeys), difícil tocar acordes complejos.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card" data-tags="pro,viajero">
+      <div class="card-header"><div class="card-icon">🎛️</div><div class="card-price">~$110</div></div>
+      <h3>Novation Launchkey Mini Mk3</h3>
+      <div class="tags"><span class="badge">Productor Avanzado</span><span class="badge">Ableton</span></div>
+      <div class="proscons">
+        <ul class="pro-list">
+          <li>Integración absoluta y perfecta con Ableton Live (Novation y Ableton trabajan juntos).</li>
+          <li>16 pads para disparar clips en Session View.</li>
+        </ul>
+        <ul class="con-list">
+          <li>Construcción un poco plástica comparado al Arturia.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <h2 class="cat-title">🎙️ Micrófonos</h2>
+  <div class="hw-grid">
+    
+    <div class="card" data-tags="bedroom,voces">
+      <div class="card-header"><div class="card-icon">🎙️</div><div class="card-price">~$99</div></div>
+      <h3>Shure SM58 (Dinámico)</h3>
+      <div class="tags"><span class="badge">Bedroom</span><span class="badge">Voces</span><span class="badge">Cuarto sin tratar</span></div>
+      <div class="proscons">
+        <ul class="pro-list">
+          <li>Indestructible. El estándar para tocar en vivo.</li>
+          <li><strong>Dinámico:</strong> Rechaza muy bien el eco de tu cuarto y el ruido de la calle. Excelente si no tienes tratamiento acústico.</li>
+        </ul>
+        <ul class="con-list">
+          <li>Sonido un poco oscuro, le falta el "aire" brillante moderno.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card" data-tags="pro,voces">
+      <div class="card-header"><div class="card-icon">🎙️</div><div class="card-price">~$99</div></div>
+      <h3>Audio-Technica AT2020 (Condensador)</h3>
+      <div class="tags"><span class="badge">Productor Avanzado</span><span class="badge">Voces HD</span></div>
+      <div class="proscons">
+        <ul class="pro-list">
+          <li><strong>Condensador:</strong> Captura cada suspiro, saliva y detalle ultra fino de la voz.</li>
+          <li>El estándar moderno para YouTube y estudios caseros.</li>
+        </ul>
+        <ul class="con-list">
+          <li>Captura TANTO detalle que grabará el ladrido del perro de tu vecino o el eco de tu pared vacía. (Requiere buen cuarto).</li>
+          <li>Requiere activar el botón "+48v" (Phantom Power) en tu interfaz.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+</div> <!-- end catalog -->
+
+<script>
+  // Filter Logic
+  const buttons = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.card');
+  const categories = document.querySelectorAll('.cat-title');
+  const grids = document.querySelectorAll('.hw-grid');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Toggle active states
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      const filter = btn.getAttribute('data-filter');
+      
+      // Filter cards
+      let visibleCats = new Set();
+      cards.forEach(card => {
+        const tags = card.getAttribute('data-tags').split(',');
+        if (filter === 'all' || tags.includes(filter)) {
+          card.style.display = 'flex';
+          // Find which category this belongs to by looking at the parent's previous sibling
+          visibleCats.add(card.parentElement);
+        } else {
+          card.style.display = 'none';
+        }
+      });
+      
+      // Hide empty categories
+      grids.forEach((grid, index) => {
+        const title = grid.previousElementSibling;
+        let hasVisibleCards = Array.from(grid.children).some(c => c.style.display !== 'none');
+        if (hasVisibleCards) {
+          grid.style.display = 'grid';
+          title.style.display = 'block';
+        } else {
+          grid.style.display = 'none';
+          title.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
+<div style="position:fixed;bottom:15px;right:20px;font-size:0.9rem;opacity:0.35;z-index:9999;font-weight:700;">Creado por @laurorobles</div>
+</body>
+</html>

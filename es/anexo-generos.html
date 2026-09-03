@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Ableton 101 — Anatomía de Géneros</title>
+  <style>
+    :root { --bg:#F8F9FA; --surface:#fff; --text:#000; --muted:#555; --border:#E5E7EB; --kick:#E53E3E; --snare:#0055FF; --hat:#FFBC00; --play:#00B84D; }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:-apple-system,sans-serif;font-size:18px;line-height:1.6;padding:4rem 5%;}
+    a.btn-back { position:fixed; top:20px; left:20px; background:var(--surface); color:var(--text); text-decoration:none; padding:10px 15px; border-radius:8px; border:2px solid var(--border); font-weight:bold; z-index:9999; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
+    header { text-align:center; padding:4rem 2rem; border-radius:24px; border:2px solid var(--border); margin-bottom:2rem; background:#111; color:#fff; }
+    h1 { font-size:3.5rem; font-weight:900; line-height:1.1; margin-bottom:1rem; }
+    p.sub { font-size:1.2rem; color:#aaa; max-width:800px; margin:0 auto; }
+    
+    /* Controles de Filtro y Orden */
+    .controls { background:var(--surface); border:2px solid var(--border); border-radius:16px; padding:1.5rem; margin-bottom:3rem; display:flex; flex-direction:column; gap:1.5rem; }
+    .filter-group h3, .sort-group h3 { font-size:1rem; text-transform:uppercase; color:var(--muted); margin-bottom:0.8rem; }
+    .btn-bar { display:flex; flex-wrap:wrap; gap:0.5rem; }
+    .btn-ctrl { background:transparent; border:2px solid var(--border); padding:0.6rem 1rem; border-radius:30px; cursor:pointer; font-weight:bold; font-size:0.9rem; transition:0.2s; }
+    .btn-ctrl:hover { border-color:var(--play); color:var(--play); }
+    .btn-ctrl.active { background:var(--play); border-color:var(--play); color:#fff; }
+    
+    .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:2rem; }
+    
+    .genre-card { background:var(--surface); border:2px solid var(--border); border-radius:16px; padding:2rem; display:flex; flex-direction:column; box-shadow:0 10px 20px rgba(0,0,0,0.03); transition:transform 0.2s, opacity 0.3s; }
+    .genre-card:hover { transform:translateY(-5px); border-color:var(--play); }
+    
+    .g-title { font-size:1.6rem; font-weight:800; margin-bottom:0.5rem; }
+    .g-meta { display:flex; justify-content:space-between; font-size:0.9rem; color:var(--muted); font-weight:bold; margin-bottom:1rem; padding-bottom:1rem; border-bottom:1px solid var(--border); }
+    
+    .g-section { margin-bottom:1rem; }
+    .g-label { display:block; font-size:0.8rem; text-transform:uppercase; font-weight:bold; color:var(--play); letter-spacing:1px; margin-bottom:0.2rem; }
+    .g-text { font-size:0.95rem; line-height:1.5; color:#333; }
+    
+    /* Sequencer */
+    .seq-container { background:#111; padding:1.5rem; border-radius:12px; margin-top:1rem; }
+    .seq-row { display:flex; align-items:center; margin-bottom:0.8rem; }
+    .seq-row:last-child { margin-bottom:0; }
+    .seq-label { width:50px; color:#fff; font-size:0.8rem; font-weight:bold; }
+    .seq-steps { display:flex; gap:4px; flex:1; }
+    .step { flex:1; height:20px; border-radius:4px; background:#333; }
+    .step.k-active { background:var(--kick); box-shadow:0 0 8px var(--kick); }
+    .step.s-active { background:var(--snare); box-shadow:0 0 8px var(--snare); }
+    .step.h-active { background:var(--hat); box-shadow:0 0 8px var(--hat); }
+    .step:nth-child(4n+1) { border-left:2px solid #555; }
+  </style>
+</head>
+<body>
+<a href="../index.html" class="btn-back">← Volver al Índice</a>
+<header>
+  <div style="font-size:3rem; margin-bottom:1rem">🥁</div>
+  <h1>Anatomía de Géneros (Edición Expandida)</h1>
+  <p class="sub">30 Géneros analizados. Filtra por categoría y ordena cronológicamente o por BPM para entender el ecosistema completo.</p>
+</header>
+
+
+<div style="max-width:900px; margin: 0 auto 3rem; background: var(--surface); border: 2px dashed var(--play); padding: 1.5rem; border-radius: 16px; text-align: center; box-shadow: 0 4px 15px rgba(0,184,77,0.1);">
+  <h3 style="margin-bottom: 1rem; color: var(--play); font-size:1.3rem;">🌍 Exploración Externa de Árboles Genealógicos</h3>
+  <p style="font-size: 0.95rem; color: var(--muted); margin-bottom: 1.5rem;">Si quieres profundizar en miles de micro-géneros adicionales y ver el árbol genealógico completo de la música electrónica, te recomendamos visitar estas legendarias guías interactivas:</p>
+  <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+    <a href="https://music.ishkur.com/" target="_blank" onmouseover="this.style.borderColor='var(--play)'" onmouseout="this.style.borderColor='#333'" style="background: #111; color: #fff; padding: 0.8rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: bold; border: 2px solid #333; transition: 0.2s;">🎧 Ishkur's Guide to Electronic Music</a>
+    <a href="https://mendiak.github.io/pulse.roots/" target="_blank" onmouseover="this.style.borderColor='var(--play)'" onmouseout="this.style.borderColor='#333'" style="background: #111; color: #fff; padding: 0.8rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: bold; border: 2px solid #333; transition: 0.2s;">🌐 Pulse Roots (Experimental Genres)</a>
+  </div>
+</div>
+
+
+<div class="controls">
+  <div class="filter-group">
+    <h3>📁 Categoría principal</h3>
+    <div class="btn-bar" id="filters">
+      <button class="btn-ctrl active" data-filter="all">Todos los Géneros</button>
+      <button class="btn-ctrl" data-filter="house">House & Disco</button>
+      <button class="btn-ctrl" data-filter="techno">Techno & Industrial</button>
+      <button class="btn-ctrl" data-filter="bass">Bass & Drum'n'Bass</button>
+      <button class="btn-ctrl" data-filter="urban">Hip Hop & Urban</button>
+      <button class="btn-ctrl" data-filter="trance">Trance & Rave</button>
+      <button class="btn-ctrl" data-filter="exp">Ambient & Synthwave</button>
+    </div>
+  </div>
+  <div class="sort-group">
+    <h3>🔄 Ordenar por</h3>
+    <div class="btn-bar" id="sorters">
+      <button class="btn-ctrl active" data-sort="default">Por Defecto</button>
+      <button class="btn-ctrl" data-sort="bpm-asc">BPM (Lento a Rápido)</button>
+      <button class="btn-ctrl" data-sort="bpm-desc">BPM (Rápido a Lento)</button>
+      <button class="btn-ctrl" data-sort="year-asc">Cronológico (Historia)</button>
+      <button class="btn-ctrl" data-sort="az">Alfabético (A-Z)</button>
+    </div>
+  </div>
+</div>
+
+<div class="grid" id="genre-grid">
+
+  <div class="genre-card" data-cat="house" data-bpm="120" data-year="1970" data-name="Disco">
+    <div class="g-title">Disco</div>
+    <div class="g-meta"><span>📍 Años 1970s</span><span>⏱️ 120 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">El abuelo de la música electrónica de baile. Nació en clubes underground de NY/Filadelfia, fusionando funk, soul y pop con el ritmo "Four-on-the-floor".</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Bajos muy melódicos (slap bass), cuerdas orquestales, y ritmo constante.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Giorgio Moroder, Donna Summer, Chic</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="house" data-bpm="124" data-year="1983" data-name="House (Classic)">
+    <div class="g-title">House (Classic)</div>
+    <div class="g-meta"><span>📍 Años 1983s</span><span>⏱️ 124 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Nació en Chicago. Mezcla el Disco con las primeras cajas de ritmos y sintetizadores.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Piano stabs, hi-hats sincopados, vocales soul.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Frankie Knuckles, Marshall Jefferson</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="house" data-bpm="120" data-year="1988" data-name="Deep House">
+    <div class="g-title">Deep House</div>
+    <div class="g-meta"><span>📍 Años 1988s</span><span>⏱️ 120 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Evolución lenta del House, fusionando acordes complejos de Jazz y atmósferas oscuras.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Acordes menores, bajos redondos y suaves.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Larry Heard, Kerri Chandler</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="house" data-bpm="126" data-year="1995" data-name="Tech House">
+    <div class="g-title">Tech House</div>
+    <div class="g-meta"><span>📍 Años 1995s</span><span>⏱️ 126 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Mezcla el groove del House con los sonidos mecánicos del Techno.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Bajos saltarines (bouncy), vocales rítmicas repetitivas.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Fisher, Green Velvet</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="house" data-bpm="128" data-year="1987" data-name="Acid House">
+    <div class="g-title">Acid House</div>
+    <div class="g-meta"><span>📍 Años 1987s</span><span>⏱️ 128 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Provocó el "Segundo Verano del Amor". Basado en el sintetizador Roland TB-303.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Sonidos de bajo ácidos, resonantes y chirriantes.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Phuture, DJ Pierre</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="house" data-bpm="128" data-year="1992" data-name="Progressive House">
+    <div class="g-title">Progressive House</div>
+    <div class="g-meta"><span>📍 Años 1992s</span><span>⏱️ 128 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Se aleja del formato canción para enfocarse en evoluciones largas y lentas de texturas.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Acordes largos, construcción lenta, sintetizadores épicos.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Deadmau5, Eric Prydz, Sasha</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="house" data-bpm="126" data-year="2010" data-name="Bass House">
+    <div class="g-title">Bass House</div>
+    <div class="g-meta"><span>📍 Años 2010s</span><span>⏱️ 126 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Fusión brutal de House 4/4 con los bajos FM rasposos del Dubstep moderno.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Bajos de FM (Wobbles) extremadamente metálicos y agresivos.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Jauz, Joyryde, Tchami</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="house" data-bpm="122" data-year="2000" data-name="Afro House">
+    <div class="g-title">Afro House</div>
+    <div class="g-meta"><span>📍 Años 2000s</span><span>⏱️ 122 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Originado en Sudáfrica, fusiona el Deep House con polirritmias tribales y vocales tradicionales.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Mucha percusión orgánica (congas, shakers), bajos muy cálidos.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Black Coffee, Keinemusik</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="house" data-bpm="118" data-year="2015" data-name="Lo-Fi House">
+    <div class="g-title">Lo-Fi House</div>
+    <div class="g-meta"><span>📍 Años 2015s</span><span>⏱️ 118 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Respuesta al EDM ultra-limpio. Regresa a las raíces usando ruido y compresión de casete.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Ruido de vinilo, samples de voz ahogados, mucha saturación.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Ross From Friends, DJ Seinfeld</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="house" data-bpm="125" data-year="1995" data-name="French Touch">
+    <div class="g-title">French Touch</div>
+    <div class="g-meta"><span>📍 Años 1995s</span><span>⏱️ 125 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">La respuesta dorada de Francia. Basado en abusar de samples de música Disco de los 70s y efectos phaser.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Samples loopeados con filtros (Low Pass) abriendo y cerrando rítmicamente.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Daft Punk, Justice, Stardust</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="techno" data-bpm="130" data-year="1985" data-name="Techno">
+    <div class="g-title">Techno</div>
+    <div class="g-meta"><span>📍 Años 1985s</span><span>⏱️ 130 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Nació en Detroit mezclando funk con futurismo europeo (Kraftwerk).</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Sintetizadores oscuros, industriales y percusiones matemáticas.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Juan Atkins, Jeff Mills</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="techno" data-bpm="125" data-year="1990" data-name="Minimal Techno">
+    <div class="g-title">Minimal Techno</div>
+    <div class="g-meta"><span>📍 Años 1990s</span><span>⏱️ 125 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Reacción al exceso. Usa el mínimo absoluto de elementos necesarios para hacerte bailar.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Micro-sonidos, silencios muy calculados, diseño sonoro ultra nítido.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Richie Hawtin, Ricardo Villalobos</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="techno" data-bpm="150" data-year="1995" data-name="Hard Techno">
+    <div class="g-title">Hard Techno</div>
+    <div class="g-meta"><span>📍 Años 1995s</span><span>⏱️ 150 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Evolución masiva de los raves alemanes. Velocidad y agresión brutal.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Bombos súper saturados (Rumble), velocidad altísima, ambiente apocalíptico.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Amelie Lens, Kobosil</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="techno" data-bpm="145" data-year="1990" data-name="Industrial Techno">
+    <div class="g-title">Industrial Techno</div>
+    <div class="g-meta"><span>📍 Años 1990s</span><span>⏱️ 145 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Fusiona la estética de fábricas abandonadas y maquinaria pesada con el baile.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Ruido blanco rítmico, sonidos de chatarra, baterías súper distorsionadas.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Blawan, Surgeon</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="techno" data-bpm="180" data-year="1992" data-name="Gabber / Hardcore">
+    <div class="g-title">Gabber / Hardcore</div>
+    <div class="g-meta"><span>📍 Años 1992s</span><span>⏱️ 180 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Nacido en Rotterdam, es la forma más violenta de música de baile europea.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Bombos con distorsión extrema (suenan a motosierra), velocidad ridícula.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Angerfist, Paul Elstak</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="bass" data-bpm="140" data-year="2002" data-name="Dubstep">
+    <div class="g-title">Dubstep</div>
+    <div class="g-meta"><span>📍 Años 2002s</span><span>⏱️ 140 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Nació en Londres oscuro y sub-grave. Luego mutó en el estridente "Brostep" americano.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Medio tempo (Snare en el 3). Bajos Wub-Wub modulados por LFO.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Skream (UK), Skrillex (US)</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="bass" data-bpm="174" data-year="1993" data-name="Drum and Bass">
+    <div class="g-title">Drum and Bass</div>
+    <div class="g-meta"><span>📍 Años 1993s</span><span>⏱️ 174 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">El género rápido y furioso del Reino Unido, acelerando breaks de vinilos de funk (Amen Break).</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Reese Bass (sierra desafinada) y baterías hiper-rápidas sincopadas.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Goldie, Pendulum, Noisia</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="bass" data-bpm="174" data-year="2000" data-name="Liquid Drum & Bass">
+    <div class="g-title">Liquid Drum & Bass</div>
+    <div class="g-meta"><span>📍 Años 2000s</span><span>⏱️ 174 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">La variante suave, emotiva y musical del DnB. Mucho jazz y soul.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Pianos hermosos, vocales susurradas y breaks rápidos pero muy suaves.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Calibre, High Contrast</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="bass" data-bpm="130" data-year="1994" data-name="UK Garage (UKG)">
+    <div class="g-title">UK Garage (UKG)</div>
+    <div class="g-meta"><span>📍 Años 1994s</span><span>⏱️ 130 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Evolucionó del House americano pero con ritmos rotos (syncopated) muy británicos.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Bajos que rebotan, hi-hats súper complejos y sucios, vocales rítmicas cortadas.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Craig David, Burial, Disclosure</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="bass" data-bpm="140" data-year="2000" data-name="Grime">
+    <div class="g-title">Grime</div>
+    <div class="g-meta"><span>📍 Años 2000s</span><span>⏱️ 140 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">La respuesta de los barrios de Londres al Hip Hop. Oscuro, crudo y acelerado.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Ritmos fríos y escasos a 140 BPM, bajos "Eski" de onda cuadrada (muy Nintendo).</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Skepta, Wiley</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="bass" data-bpm="174" data-year="1998" data-name="Neurofunk">
+    <div class="g-title">Neurofunk</div>
+    <div class="g-meta"><span>📍 Años 1998s</span><span>⏱️ 174 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">El subgénero más técnico y oscuro del Drum & Bass. Pura ciencia ficción sonora.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Diseño sonoro microscópico, bajos alienígenas modulados obsesivamente.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Ed Rush & Optical, Black Sun Empire</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="bass" data-bpm="150" data-year="2014" data-name="Future Bass">
+    <div class="g-title">Future Bass</div>
+    <div class="g-meta"><span>📍 Años 2014s</span><span>⏱️ 150 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Toma el ritmo del Trap y Dubstep pero elimina la distorsión oscura por pura alegría y color.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Sintetizadores masivos vibrando con LFO, acordes hermosos y recortes vocales (Vocal chops).</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Flume, Illenium</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="bass" data-bpm="108" data-year="2009" data-name="Moombahton">
+    <div class="g-title">Moombahton</div>
+    <div class="g-meta"><span>📍 Años 2009s</span><span>⏱️ 108 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Inventado por Dave Nada tras ralentizar un track de Electro House (128) al tempo de Reggaeton (108).</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Ritmo Dembow cruzado con sintetizadores EDM estridentes.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Dillon Francis, Major Lazer</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="urban" data-bpm="90" data-year="1990" data-name="Boom Bap">
+    <div class="g-title">Boom Bap</div>
+    <div class="g-meta"><span>📍 Años 1990s</span><span>⏱️ 90 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">El Hip Hop clásico de NY, sampleando discos viejos de soul en la mítica MPC60.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Bombo y tarola prominentes, mucho "swing" humano, suciedad de vinilo (Lo-Fi).</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">DJ Premier, J Dilla</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="urban" data-bpm="140" data-year="2010" data-name="Trap">
+    <div class="g-title">Trap</div>
+    <div class="g-meta"><span>📍 Años 2010s</span><span>⏱️ 140 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">El sonido de Atlanta que conquistó al mundo. Originado en las calles, llevado a los estadios.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Bajos sub largos (808s saturados), hi-hats como ametralladoras en 32vos.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Lex Luger, Metro Boomin</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="urban" data-bpm="140" data-year="2012" data-name="Drill">
+    <div class="g-title">Drill</div>
+    <div class="g-meta"><span>📍 Años 2012s</span><span>⏱️ 140 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Subgénero hiper-agresivo del Trap nacido en Chicago, pero perfeccionado rítmicamente en el Reino Unido (UK Drill).</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Hi-hats rítmicamente irregulares y Bajos 808 que se deslizan drásticamente (Glide/Slide).</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Pop Smoke, Central Cee, Fivio Foreign</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="urban" data-bpm="120" data-year="2018" data-name="Phonk">
+    <div class="g-title">Phonk</div>
+    <div class="g-meta"><span>📍 Años 2018s</span><span>⏱️ 120 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Nacido en SoundCloud y explotó en TikTok. Resucita el oscuro "Memphis Rap" de los 90s pero en formato electrónico agresivo (Drift Phonk).</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Cowbells de la Roland 808 ultra-procesados haciendo melodías oscuras, vocales lo-fi súper saturadas.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Kordhell, Ghostface Playa</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="urban" data-bpm="95" data-year="1995" data-name="Reggaeton">
+    <div class="g-title">Reggaeton</div>
+    <div class="g-meta"><span>📍 Años 1995s</span><span>⏱️ 95 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Fusión de Dancehall y Hip Hop latino. Hoy es el rey del pop global.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">El ritmo Tresillo (Dembow), sub-bajos gruesos, plucks.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Daddy Yankee, Tainy</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="urban" data-bpm="112" data-year="2012" data-name="Amapiano">
+    <div class="g-title">Amapiano</div>
+    <div class="g-meta"><span>📍 Años 2012s</span><span>⏱️ 112 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">El género revolucionario de Sudáfrica. Combina Deep House, jazz y ritmos kwaito.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">El "Log Drum" (una percusión sintetizada ultra gruesa que funge como bajo), shakers contínuos.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Kabza De Small, DJ Maphorisa</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="urban" data-bpm="105" data-year="2005" data-name="Afrobeats">
+    <div class="g-title">Afrobeats</div>
+    <div class="g-meta"><span>📍 Años 2005s</span><span>⏱️ 105 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Fusión contemporánea africana que combina Hiplife, Dancehall y R&B. (No confundir con el Afrobeat de Fela Kuti).</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Ritmos cálidos de síncopa suave, claves, percusión orgánica y guitarras melódicas.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Burna Boy, Wizkid, Rema</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="trance" data-bpm="138" data-year="1993" data-name="Trance">
+    <div class="g-title">Trance</div>
+    <div class="g-meta"><span>📍 Años 1993s</span><span>⏱️ 138 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Diseñado para generar euforia en pistas gigantes, con progresiones largas y emotivas.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Acordes supersaw (sierra), arpegios rápidos, delays gigantes.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Armin van Buuren, Tiësto (clásico)</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="trance" data-bpm="145" data-year="1995" data-name="Psytrance">
+    <div class="g-title">Psytrance</div>
+    <div class="g-meta"><span>📍 Años 1995s</span><span>⏱️ 145 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Nacido en Goa, India. Muy ligado a festivales en la naturaleza y misticismo.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Rolling bass (bajo de triplete galopante), sintetizadores TB-303 extraterrestres.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Infected Mushroom, Astrix</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="trance" data-bpm="135" data-year="1990" data-name="Eurodance">
+    <div class="g-title">Eurodance</div>
+    <div class="g-meta"><span>📍 Años 1990s</span><span>⏱️ 135 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">El sonido pop comercial europeo de los 90s. (Ej. "What is Love").</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Sintetizador Korg M1 (Piano/Bass), vocales femeninas pegajosas, raps masculinos.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Haddaway, Vengaboys</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="exp" data-bpm="0" data-year="1978" data-name="Ambient">
+    <div class="g-title">Ambient</div>
+    <div class="g-meta"><span>📍 Años 1978s</span><span>⏱️ Variable</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Inventado por Brian Eno. Música diseñada tanto para ser ignorada pasivamente como para ser escuchada activamente.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Sin batería constante. Texturas atmosféricas, pads infinitos, sonidos de la naturaleza.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Brian Eno, Boards of Canada</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="exp" data-bpm="110" data-year="1993" data-name="IDM">
+    <div class="g-title">IDM</div>
+    <div class="g-meta"><span>📍 Años 1993s</span><span>⏱️ 110 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Intelligent Dance Music. Diseño de sonido microscópico y ritmos rotos hechos para la mente, no para el club.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Percusiones impredecibles, secuencias algorítmicas, manipulación drástica de samples.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Aphex Twin, Autechre</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="exp" data-bpm="100" data-year="2002" data-name="Glitch Hop">
+    <div class="g-title">Glitch Hop</div>
+    <div class="g-meta"><span>📍 Años 2002s</span><span>⏱️ 100 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Fusión de Hip Hop clásico con el diseño técnico y cortocircuitos del IDM.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Bajos potentes, "fallos" digitales programados hermosamente, ritmos crujientes.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">The Glitch Mob, KOAN Sound</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="exp" data-bpm="80" data-year="2011" data-name="Vaporwave">
+    <div class="g-title">Vaporwave</div>
+    <div class="g-meta"><span>📍 Años 2011s</span><span>⏱️ 80 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Un microgénero hiper-nostálgico de internet. Critica al consumismo de los 80/90s ralentizando samples comerciales.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Música de elevador y R&B de los 80s súper ralentizado (Chopped & Screwed).</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Macintosh Plus, Blank Banshee</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="exp" data-bpm="100" data-year="2010" data-name="Synthwave">
+    <div class="g-title">Synthwave</div>
+    <div class="g-meta"><span>📍 Años 2010s</span><span>⏱️ 100 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Imaginar el futuro desde la óptica de las películas Sci-Fi de 1984.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">LinnDrum, bajos arpegiados al estilo Stranger Things, sintetizadores masivos.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Kavinsky, The Midnight</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="exp" data-bpm="130" data-year="1980" data-name="Chiptune (8-Bit)">
+    <div class="g-title">Chiptune (8-Bit)</div>
+    <div class="g-meta"><span>📍 Años 1980s</span><span>⏱️ 130 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Música hecha literalmente programando chips de sonido de consolas antiguas (Gameboy, NES, Amiga).</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Ondas cuadradas, triangulares y ruido blanco puro sin efectos.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Anamanaguchi, Sabrepulse</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="exp" data-bpm="130" data-year="1982" data-name="Electro">
+    <div class="g-title">Electro</div>
+    <div class="g-meta"><span>📍 Años 1982s</span><span>⏱️ 130 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">No confundir con EDM. Es la base robótica neoyorquina influenciada por Kraftwerk.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Caja TR-808, ritmos rotos, mucho vocoder robótico.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Afrika Bambaataa, Cybotron</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+
+  <div class="genre-card" data-cat="house" data-bpm="126" data-year="2014" data-name="Future House">
+    <div class="g-title">Future House</div>
+    <div class="g-meta"><span>📍 Años 2014s</span><span>⏱️ 126 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Fusión del Deep House con los drops enérgicos del EDM.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Bajos FM metálicos, vocales agudas.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Don Diablo, Oliver Heldens</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="house" data-bpm="122" data-year="2019" data-name="Slap House">
+    <div class="g-title">Slap House</div>
+    <div class="g-meta"><span>📍 Años 2019s</span><span>⏱️ 122 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Rediseño del "Brazilian Bass" que dominó TikTok (remixes pop).</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Bajos saltarines súper marcados y compresión sidechain extrema.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Imanbek, Alok</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="house" data-bpm="122" data-year="1980" data-name="Garage House">
+    <div class="g-title">Garage House</div>
+    <div class="g-meta"><span>📍 Años 1980s</span><span>⏱️ 122 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Nacido en el club Paradise Garage en NY. El eslabón perdido entre el Disco y el House.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Vocales Gospel, pianos efervescentes, swing rítmico de NY.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Larry Levan, Todd Terry</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="techno" data-bpm="132" data-year="2015" data-name="Peak Time Techno">
+    <div class="g-title">Peak Time Techno</div>
+    <div class="g-meta"><span>📍 Años 2015s</span><span>⏱️ 132 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Sonido masivo diseñado para los escenarios principales (mainstage) de festivales inmensos.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Bombos masivos limpios, arpegios gigantes y pausas dramáticas.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Adam Beyer, Charlotte de Witte</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="techno" data-bpm="135" data-year="1993" data-name="Acid Techno">
+    <div class="g-title">Acid Techno</div>
+    <div class="g-meta"><span>📍 Años 1993s</span><span>⏱️ 135 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Tomó la Roland TB-303 de Chicago y la llevó al violento terreno industrial underground de Europa.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Sintetizador 303 aullando constantemente y distorsión exagerada.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Chris Liberator, D.A.V.E.</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="techno" data-bpm="115" data-year="1981" data-name="EBM">
+    <div class="g-title">EBM</div>
+    <div class="g-meta"><span>📍 Años 1981s</span><span>⏱️ 115 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Electronic Body Music. Era post-punk tocada con sintetizadores crudos en Bélgica/Alemania.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Líneas de bajo rígidas de 16 pasos y voces marciales amenazantes.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Front 242, Nitzer Ebb</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="bass" data-bpm="140" data-year="2012" data-name="Riddim">
+    <div class="g-title">Riddim</div>
+    <div class="g-meta"><span>📍 Años 2012s</span><span>⏱️ 140 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">El subgénero más pantanoso, repetitivo y oscuro del Dubstep.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Sintetizadores que chocan (Clap en el tiempo 3) y sonido sumamente cuadrado.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Subtronics, Virtual Riot</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="bass" data-bpm="140" data-year="2010" data-name="Melodic Dubstep">
+    <div class="g-title">Melodic Dubstep</div>
+    <div class="g-meta"><span>📍 Años 2010s</span><span>⏱️ 140 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Antítesis del Brostep. Combina agresión rítmica con la euforia y belleza del Trance.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Bajos enormes abrazados por voces femeninas y arpegios emotivos.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Seven Lions, Illenium</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="bass" data-bpm="160" data-year="1992" data-name="Jungle">
+    <div class="g-title">Jungle</div>
+    <div class="g-meta"><span>📍 Años 1992s</span><span>⏱️ 160 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Antecesor del Drum & Bass. Fusión salvaje de cultura sound-system Reggae/Dub con breaks hiper-rápidos.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Amen Breaks cortados violentamente y gritos/sirenas de ragga dancehall.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Congo Natty, Goldie</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="bass" data-bpm="135" data-year="1995" data-name="Breakbeat (Big Beat)">
+    <div class="g-title">Breakbeat (Big Beat)</div>
+    <div class="g-meta"><span>📍 Años 1995s</span><span>⏱️ 135 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Basado en ritmos rotos (Breaks de funk). Dominó los estadios en la explosión electrónica de los 90s.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Baterías rock-funk sampleadas, riffs de guitarra saturados y sintetizadores ácidos.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">The Prodigy, The Chemical Brothers</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="bass" data-bpm="85" data-year="2015" data-name="Halftime">
+    <div class="g-title">Halftime</div>
+    <div class="g-meta"><span>📍 Años 2015s</span><span>⏱️ 85 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Básicamente Drum & Bass partido a la mitad de su velocidad (170/2 = 85).</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Puro diseño sonoro en graves. Baterías lentas, minimalistas y pesadas.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Ivy Lab, Alix Perez</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="bass" data-bpm="150" data-year="2012" data-name="EDM Trap">
+    <div class="g-title">EDM Trap</div>
+    <div class="g-meta"><span>📍 Años 2012s</span><span>⏱️ 150 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">El sonido del sur de USA (Hi-hats rápidos) adoptado por los DJs de los festivales EDM gigantes.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Lásers (pew-pew), caídas de bajo 808 ultra-saturadas.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">RL Grime, Baauer</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="urban" data-bpm="130" data-year="1980" data-name="Baile Funk (Funk Carioca)">
+    <div class="g-title">Baile Funk (Funk Carioca)</div>
+    <div class="g-meta"><span>📍 Años 1980s</span><span>⏱️ 130 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Cultura nacida en las favelas de Río de Janeiro. Creada originalmente con la Roland TR-808.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">El icónico beat de tambor "Tamborzão", cantos percusivos masivos y frenéticos.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Kevin o Chris, DJ Marlboro</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="urban" data-bpm="95" data-year="2005" data-name="Cumbia Digital">
+    <div class="g-title">Cumbia Digital</div>
+    <div class="g-meta"><span>📍 Años 2005s</span><span>⏱️ 95 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">La evolución de la cumbia tradicional latinoamericana, procesada a través de bajos 808 y sintes electrónicos.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Güiro tocado en el contratiempo (Shakers) combinado con un bombo lento e inmenso.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">ZZK Records, Chancha Vía Circuito</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="trance" data-bpm="150" data-year="1999" data-name="Hardstyle">
+    <div class="g-title">Hardstyle</div>
+    <div class="g-meta"><span>📍 Años 1999s</span><span>⏱️ 150 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Nacido en Holanda, es famoso por su energía explosiva y las patadas de bombo más violentas del EDM.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">El Bombo distorsionado hace una melodía por sí solo (Gong Kick) bajo acordes muy eufóricos.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Headhunterz, Showtek</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="trance" data-bpm="170" data-year="1993" data-name="Happy Hardcore">
+    <div class="g-title">Happy Hardcore</div>
+    <div class="g-meta"><span>📍 Años 1993s</span><span>⏱️ 170 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">La música más infantilmente feliz y ridículamente rápida, icónica de los arcades (DDR) japoneses y UK.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Voces aceleradas tipo ardilla (Pitch shift), bombos 4/4 a la velocidad de la luz.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Scooter, S3RL</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="exp" data-bpm="0" data-year="1960" data-name="Drone">
+    <div class="g-title">Drone</div>
+    <div class="g-meta"><span>📍 Años 1960s</span><span>⏱️ Variable</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Anti-rítmico absoluto. Consiste en notas sostenidas durante 10, 20 o 40 minutos sin parar.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Una pared de sonido infranqueable y estática. Como escuchar el motor del universo vibrar.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Sunn O))), La Monte Young</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="exp" data-bpm="0" data-year="1980" data-name="Dark Ambient">
+    <div class="g-title">Dark Ambient</div>
+    <div class="g-meta"><span>📍 Años 1980s</span><span>⏱️ Variable</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">El lado oscuro del Ambient. Diseñado a propósito para generar desorientación y miedo en el escucha.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Grabaciones de viento macabras, sintetizadores desafinados, ausencia de bombo.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Lustmord, Brian Williams</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="exp" data-bpm="150" data-year="2013" data-name="Hyperpop">
+    <div class="g-title">Hyperpop</div>
+    <div class="g-meta"><span>📍 Años 2013s</span><span>⏱️ 150 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">La cultura de internet llevando la música pop comercial al extremo absoluto de la sobreestimulación (PC Music).</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Autotune exagerado y robótico, bajos trap distorsionados hasta romperse, samples bizarros.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">SOPHIE, 100 gecs, Charli XCX</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div>
+  <div class="genre-card" data-cat="exp" data-bpm="85" data-year="1990" data-name="Trip Hop (Downtempo)">
+    <div class="g-title">Trip Hop (Downtempo)</div>
+    <div class="g-meta"><span>📍 Años 1990s</span><span>⏱️ 85 BPM</span></div>
+    
+    <div class="g-section">
+      <span class="g-label">Historia y Origen</span>
+      <p class="g-text">Hip Hop inglés sumamente lento combinado con melancolía e instrumentación lúgubre de orquesta/jazz.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">El Sonido</span>
+      <p class="g-text">Pianos cinemáticos oscuros y ritmos rotos increíblemente lentos y pesados.</p>
+    </div>
+    
+    <div class="g-section">
+      <span class="g-label">Exponentes Clave</span>
+      <p class="g-text" style="font-weight:bold; color:#111;">Massive Attack, Portishead, Bonobo</p>
+    </div>
+    
+    <div class="seq-container">
+      <div class="seq-row"><div class="seq-label" style="color:var(--kick)">KICK</div><div class="seq-steps"><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step k-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--snare)">SNARE</div><div class="seq-steps"><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step "></div><div class="step s-active"></div><div class="step "></div><div class="step "></div><div class="step "></div></div></div>
+      <div class="seq-row"><div class="seq-label" style="color:var(--hat)">HIHAT</div><div class="seq-steps"><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div><div class="step h-active"></div><div class="step "></div></div></div>
+    </div>
+  </div></div>
+<script>
+  const grid = document.getElementById('genre-grid');
+  const cards = Array.from(grid.querySelectorAll('.genre-card'));
+  let currentFilter = 'all';
+  let currentSort = 'default';
+
+  function render() {
+    // Filter
+    let visible = cards.filter(c => currentFilter === 'all' || c.getAttribute('data-cat') === currentFilter);
+    
+    // Sort
+    if(currentSort === 'bpm-asc') visible.sort((a,b) => parseInt(a.getAttribute('data-bpm')) - parseInt(b.getAttribute('data-bpm')));
+    else if(currentSort === 'bpm-desc') visible.sort((a,b) => parseInt(b.getAttribute('data-bpm')) - parseInt(a.getAttribute('data-bpm')));
+    else if(currentSort === 'year-asc') visible.sort((a,b) => parseInt(a.getAttribute('data-year')) - parseInt(b.getAttribute('data-year')));
+    else if(currentSort === 'az') visible.sort((a,b) => a.getAttribute('data-name').localeCompare(b.getAttribute('data-name')));
+    else if(currentSort === 'default') {
+      // Restore original DOM order
+      visible.sort((a,b) => cards.indexOf(a) - cards.indexOf(b));
+    }
+    
+    grid.innerHTML = '';
+    visible.forEach(c => grid.appendChild(c));
+  }
+
+  // Bind Filters
+  document.querySelectorAll('#filters .btn-ctrl').forEach(btn => {
+    btn.addEventListener('click', e => {
+      document.querySelectorAll('#filters .btn-ctrl').forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      currentFilter = e.target.getAttribute('data-filter');
+      render();
+    });
+  });
+
+  // Bind Sorters
+  document.querySelectorAll('#sorters .btn-ctrl').forEach(btn => {
+    btn.addEventListener('click', e => {
+      document.querySelectorAll('#sorters .btn-ctrl').forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      currentSort = e.target.getAttribute('data-sort');
+      render();
+    });
+  });
+</script>
+<div style="text-align:center; margin-top:4rem; color:var(--muted); font-size:0.9rem;">
+  Creado por @laurorobles
+</div>
+</body>
+</html>

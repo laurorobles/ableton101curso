@@ -11,7 +11,7 @@
     }
     *{box-sizing:border-box;margin:0;padding:0}
     body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:18px;line-height:1.5;padding:4rem 2rem;}
-    .container { max-width: 800px; margin: 0 auto; }
+    .container { max-width: 1200px; margin: 0 auto; }
     h1{font-size:3.5rem;font-weight:900;letter-spacing:-.04em;line-height:1.05;margin-bottom:1rem; text-align:center}
     p.sub{font-size:1.4rem;color:var(--muted);text-align:center;margin-bottom:3rem}
     .class-card { display:block; background:var(--surface); border:2px solid var(--border); border-radius:16px; padding:2rem; margin-bottom:1.5rem; text-decoration:none; color:var(--text); transition:transform 0.2s, border-color 0.2s; box-shadow:0 4px 12px rgba(0,0,0,0.05); }
@@ -26,25 +26,173 @@
 <div class="container">
   <h1>Ableton 101<br>Manual Interactivo</h1>
   <p class="sub">Por LAO (Soundspace Academy)</p>
+  <!-- GLOBAL PROGRESS -->
+  <div style="background:#111; padding:2rem; border-radius:16px; margin:3rem 0; color:#fff; box-shadow:0 10px 30px rgba(0,0,0,0.1)">
+    <div style="display:flex; justify-content:space-between; margin-bottom:1rem">
+      <h3 style="margin:0">🏆 Tu Progreso Global</h3>
+      <h3 style="margin:0; color:var(--play)" id="progText">0 / 15 Clases Aprobadas</h3>
+    </div>
+    <div style="width:100%; height:12px; background:#333; border-radius:10px; overflow:hidden">
+      <div id="progBar" style="width:0%; height:100%; background:var(--play); transition:width 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)"></div>
+    </div>
+    <p style="color:#aaa; font-size:0.9rem; margin-top:1rem; margin-bottom:0">Completa los tests al final de cada clase para llenar esta barra.</p>
+  </div>
 
+
+  
+<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:1.5rem;">
   <a href="es/clase-01.html" class="class-card">
-    <div class="tag">Clase 1</div>
-    <h2>Fundamentos Prácticos</h2>
-    <p>Audio vs MIDI, ruteo de señales, consolas, y uso básico de sintetizadores y cajas de ritmos.</p>
+    <div class="tag" style="background:#607D8B; color:#fff">Clase 1</div>
+    <h2>Fundamentos Prácticos</h2><p>Audio vs MIDI y ruteo de señales.</p>
   </a>
-
   <a href="es/clase-02.html" class="class-card">
     <div class="tag" style="background:#FFBC00; color:#000">Clase 2</div>
-    <h2>El Arte del Warping</h2>
-    <p>Manipulación del tiempo y tempo. Algoritmos Beats, Tones, Texture, Re-Pitch y Complex.</p>
+    <h2>El Arte del Warping</h2><p>Manipulación del tiempo y tempo.</p>
   </a>
-
   <a href="es/clase-03.html" class="class-card">
     <div class="tag" style="background:#0055FF; color:#fff">Clase 3</div>
-    <h2>Arreglo y Edición</h2>
-    <p>Estructura de la canción (Pop, Techno, Hip-Hop), edición de clips, automatización y efectos de audio.</p>
+    <h2>Arreglo y Edición</h2><p>Estructura pop/techno y efectos.</p>
+  </a>
+  <a href="es/clase-04.html" class="class-card">
+    <div class="tag" style="background:#9C27B0; color:#fff">Clase 4</div>
+    <h2>Armonía y Textura</h2><p>Efectos MIDI, Síntesis y Acordes.</p>
+  </a>
+  <a href="es/clase-05.html" class="class-card">
+    <div class="tag" style="background:#009688; color:#fff">Clase 5</div>
+    <h2>Moldeando el Sonido</h2><p>EQ, Compresión, Delay y Reverb.</p>
+  </a>
+  <a href="es/clase-06.html" class="class-card">
+    <div class="tag" style="background:#FF9800; color:#fff">Clase 6</div>
+    <h2>Estructura y Arreglo</h2><p>Automatizaciones y Vista Arreglo.</p>
+  </a>
+  <a href="es/clase-07.html" class="class-card">
+    <div class="tag" style="background:#F44336; color:#fff">Clase 7</div>
+    <h2>Grabación y Hardware</h2><p>Ruteo, Maschine y Latencia.</p>
+  </a>
+  <a href="es/clase-08.html" class="class-card">
+    <div class="tag" style="background:#4CAF50; color:#fff">Clase 8</div>
+    <h2>Mix & Master 1</h2><p>Balance, Paneo e Imagen Estéreo.</p>
+  </a>
+  <a href="es/clase-09.html" class="class-card">
+    <div class="tag" style="background:#E91E63; color:#fff">Clase 9</div>
+    <h2>Mix & Master 2</h2><p>Ecualización y Compresión en mezcla.</p>
+  </a>
+  <a href="es/clase-10.html" class="class-card">
+    <div class="tag" style="background:#3F51B5; color:#fff">Clase 10</div>
+    <h2>Diseño Sonoro 1</h2><p>Osciladores, Filtros y LFO.</p>
+  </a>
+  <a href="es/clase-11.html" class="class-card">
+    <div class="tag" style="background:#00BCD4; color:#fff">Clase 11</div>
+    <h2>Diseño Sonoro 2</h2><p>Wavetables y Serum/Massive.</p>
+  </a>
+  <a href="es/clase-12.html" class="class-card">
+    <div class="tag" style="background:#CDDC39; color:#000">Clase 12</div>
+    <h2>Ritmos Avanzados</h2><p>Polirritmias y Humanización.</p>
+  </a>
+  <a href="es/clase-13.html" class="class-card">
+    <div class="tag" style="background:#FFC107; color:#000">Clase 13</div>
+    <h2>Muestreo (Sampling)</h2><p>Slicing y Simpler Avanzado.</p>
+  </a>
+  <a href="es/clase-14.html" class="class-card">
+    <div class="tag" style="background:#FF5722; color:#fff">Clase 14</div>
+    <h2>Masterización</h2><p>Limitadores, LUFS y Dithering.</p>
+  </a>
+  <a href="es/clase-15.html" class="class-card">
+    <div class="tag" style="background:#D4AF37; color:#fff">Clase 15</div>
+    <h2>Proyecto Final</h2><p>Revisión y optimización de CPU.</p>
   </a>
 </div>
+<div style="margin: 4rem 0 2rem; border-top: 2px solid var(--border); padding-top: 2rem; text-align: center;">
+    <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">Anexos Interactivos</h2>
+    <p style="color: var(--muted); margin-bottom: 2rem;">Material complementario para expandir tu conocimiento.</p>
+  </div>
 
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom:4rem;">
+    <a href="es/anexo-herramientas.html" class="class-card" style="text-align:center; padding: 2rem 1rem; border-color: #0055FF;">
+      <div style="font-size: 3rem; margin-bottom: 1rem;">🚀</div>
+      <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Ecosistema Digital</h3>
+      <p style="font-size: 0.9rem;">Samples, IA, Distribución y Promo.</p>
+    </a>
+
+    <a href="es/anexo-shortcuts.html" class="class-card" style="text-align:center; padding: 2rem 1rem;">
+      <div style="font-size: 3rem; margin-bottom: 1rem;">⌨️</div>
+      <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Dojo de Shortcuts</h3>
+      <p style="font-size: 0.9rem;">Atajos de teclado esenciales.</p>
+    </a>
+
+    <a href="es/anexo-documentales.html" class="class-card" style="text-align:center; padding: 2rem 1rem; border-color: #333; background: #111; color: #fff;">
+      <div style="font-size: 3rem; margin-bottom: 1rem;">🍿</div>
+      <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem; color:#fff;">Cineclub</h3>
+      <p style="font-size: 0.9rem; color:#aaa;">Documentales musicales.</p>
+    </a>
+    
+    <a href="es/anexo-secuenciadores.html" class="class-card" style="text-align:center; padding: 2rem 1rem;">
+      <div style="font-size: 3rem; margin-bottom: 1rem;">🕰️</div>
+      <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Historia del Secuenciador</h3>
+      <p style="font-size: 0.9rem;">Desde cajas musicales al Piano Roll.</p>
+    </a>
+    
+    <a href="es/anexo-glosario.html" class="class-card" style="text-align:center; padding: 2rem 1rem;">
+      <div style="font-size: 3rem; margin-bottom: 1rem;">📕</div>
+      <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Glosario de Audio</h3>
+      <p style="font-size: 0.9rem;">Diccionario de términos técnicos.</p>
+    </a>
+    
+    <a href="es/anexo-generos.html" class="class-card" style="text-align:center; padding: 2rem 1rem;">
+      <div style="font-size: 3rem; margin-bottom: 1rem;">🥁</div>
+      <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Anatomía de Géneros</h3>
+      <p style="font-size: 0.9rem;">Fórmulas MIDI base (House, Techno).</p>
+    </a>
+    
+    <a href="es/anexo-hardware.html" class="class-card" style="text-align:center; padding: 2rem 1rem;">
+      <div style="font-size: 3rem; margin-bottom: 1rem;">🔌</div>
+      <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Guía de Hardware</h3>
+      <p style="font-size: 0.9rem;">Recomendaciones para tu estudio.</p>
+    </a>
+  </div>
+
+</div>
+
+
+  <div style="margin-top:4rem;">
+    <h2 style="font-size: 2rem; margin-bottom: 0.5rem; color:var(--audio);">🏆 Evaluación Final</h2>
+    <p style="color: var(--muted); margin-bottom: 2rem;">Demuestra tus conocimientos y obtén tu calificación de Productor.</p>
+    <a href="es/examen-final.html" class="class-card" style="text-align:center; padding: 3rem 2rem; border-color: var(--audio); background: #F8F9FA; display:block; text-decoration:none; transform:scale(1.02); box-shadow: 0 10px 30px rgba(0,85,255,0.15);">
+      <div style="font-size: 4rem; margin-bottom: 1rem;">🎓</div>
+      <h3 style="font-size: 1.8rem; margin-bottom: 0.5rem; color:#111;">Examen Final de Certificación</h3>
+      <p style="font-size: 1.1rem; color:var(--muted);">60 preguntas aleatorias de toda la currícula técnica, teórica y práctica.</p>
+    </a>
+  </div>
+
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    let passedCount = 0;
+    const cards = document.querySelectorAll('.class-card');
+    for (let i = 1; i <= 15; i++) {
+      const score = localStorage.getItem('ableton101_c' + i);
+      if (score && parseInt(score) >= 60) {
+        passedCount++;
+        // Check if there's a card for this class
+        const card = Array.from(cards).find(c => c.getAttribute('href').includes('clase-' + (i<10?'0'+i:i) + '.html'));
+        if (card) {
+          card.style.borderColor = 'var(--play)';
+          card.style.background = '#F0FFF4'; // Light green tint
+          const h2 = card.querySelector('h2');
+          if (h2 && !h2.innerHTML.includes('✅')) h2.innerHTML += ' <span style="font-size:1.2rem">✅</span>';
+        }
+      }
+    }
+    document.getElementById('progText').innerText = passedCount + ' / 15 Clases Aprobadas';
+    document.getElementById('progBar').style.width = ((passedCount / 15) * 100) + '%';
+  });
+</script>
+
+
+<!-- AUTHOR CREDIT -->
+<div style="position:fixed; bottom:15px; right:20px; font-size:0.9rem; color:inherit; opacity:0.35; z-index:9999; font-weight:700; pointer-events:none; transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.35'">
+  Creado por @laurorobles
+</div>
 </body>
+
 </html>

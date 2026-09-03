@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Ableton 101 — Clase 12: Baterías y Grooves</title>
+  <style>
+    :root { --bg:#F8F9FA; --surface:#fff; --text:#000; --muted:#555; --border:#E5E7EB; --audio:#0055FF; --midi:#FF5500; --play:#00B84D; --danger:#E53E3E; --cc:#8800DD; }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:-apple-system,sans-serif;font-size:18px;line-height:1.6;padding:4rem 5%}
+    h1{font-size:3.5rem;font-weight:900;margin-bottom:1rem;}
+    h2{font-size:2.5rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.8rem}
+    .sub{font-size:1.5rem;color:var(--muted);max-width:900px;margin-bottom:2.5rem;font-weight:500}
+    section{max-width:1000px;margin:0 auto 5rem;padding:4rem 0;border-bottom:1px solid var(--border);}
+    .tag{display:inline-block;font-size:1rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;border-radius:4px;padding:4px 8px;background:#111;color:#fff;}
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;}
+    .panel{background:var(--surface);border:3px solid var(--border);border-radius:20px;padding:2.5rem;box-shadow:0 8px 24px rgba(0,0,0,.04)}
+    header{text-align:center;padding:4rem 2rem;border-radius:24px;border:2px solid var(--border);margin-bottom:4rem;background:var(--surface);}
+    .m-final{background:#111;color:#fff;padding:4rem;border-radius:24px;margin-top:4rem;max-width:1000px;margin:4rem auto;}
+    .m-final h2{color:#fff;}
+    .btn{display:inline-block;background:var(--audio);color:#fff;padding:1rem 2rem;text-decoration:none;border-radius:8px;font-weight:bold;cursor:pointer;border:none;}
+    canvas{width:100%;background:#111;border-radius:12px;margin-top:1.5rem;cursor:crosshair;touch-action:none;}
+  
+    /* Quiz */
+    .quiz-app { background:#222; border:1px solid #333; border-radius:16px; padding:2rem; margin-top:2rem; }
+    .q-text { font-size:1.4rem; color:#fff; margin-bottom:1.5rem; }
+    .q-opt { display:block; width:100%; text-align:left; background:#333; color:#fff; border:2px solid transparent; padding:1.2rem; border-radius:8px; margin-bottom:0.8rem; cursor:pointer; font-size:1.1rem; transition:all 0.2s; }
+    .q-opt:hover { background:#444; border-color:#555; }
+    .q-opt.correct { background:var(--play) !important; color:#fff; border-color:#fff; }
+    .q-opt.wrong { background:var(--danger) !important; color:#fff; }
+    .q-progress { color:var(--muted); margin-bottom:1rem; font-weight:bold; }
+    .q-next { background:var(--audio); color:#fff; padding:1rem 2rem; border:none; border-radius:8px; font-weight:bold; font-size:1.2rem; cursor:pointer; margin-top:1rem; display:none; }
+    .m-final ul { list-style:none; }
+    .m-final li { margin-bottom:1rem; color:#ccc; display:flex; gap:1rem; }
+    .m-final h3 { color:var(--play); border-bottom:1px solid #333; padding-bottom:0.5rem; margin-bottom:1.5rem; margin-top:2rem; }
+    
+  </style>
+</head>
+<body>
+<a href="../index.html" style="position:fixed;top:20px;left:20px;background:var(--surface);color:var(--text);text-decoration:none;padding:10px 15px;border-radius:8px;border:2px solid var(--border);font-weight:bold;z-index:9999;">← Volver</a>
+<header><div class="tag">Soundspace Academy</div><h1>Ableton 101<br>Clase 12: Baterías y Grooves</h1><p class="sub">Construyendo ritmos humanos con Swing y Polirritmias.</p></header>
+
+<section>
+  <div class="tag" style="background:var(--midi)">Módulo 01</div><h2>Anatomía del Drum Rack</h2>
+  <div class="panel">
+    <p>El <strong>Drum Rack</strong> de Ableton no es solo un sampler, es un contenedor de 128 "pads". Cada pad responde a una nota MIDI específica (usualmente empezando en C1 para el bombo).</p>
+    <p>La magia radica en que <em>cada pad tiene su propia cadena de efectos</em> (EQ, Compresión) independiente, permitiendo mezclar el bombo diferente al Hi-Hat, sin salir de la misma pista MIDI.</p>
+  </div>
+</section>
+
+<section>
+  <div class="tag" style="background:var(--play)">Módulo 02</div><h2>Swing: La Cuadrícula Borracha</h2>
+  <div class="split">
+    <div class="panel">
+      <p>La música de computadora suena robótica porque aterriza exactamente en la cuadrícula al 0%. El <span class="tt">Swing</span> (invento heredado de la MPC) soluciona esto <strong>retrasando deliberadamente las notas pares</strong> (los 16vos o corcheas) mientras mantiene los tiempos fuertes en su lugar.</p>
+    </div>
+    <div class="panel">
+      <h3>Simulador de Swing</h3>
+      <p style="font-size:0.9rem; color:var(--muted); margin-bottom:1rem;">Mueve el deslizador y observa cómo las notas naranjas (16vos pares) se retrasan, dándole ese "salto" al ritmo.</p>
+      <input type="range" id="swingSlider" min="0" max="80" value="0" style="width:100%; margin-bottom:1rem;" oninput="updateSwing(this.value)">
+      <div style="display:flex; justify-content:space-between; font-size:0.8rem; font-weight:bold; color:var(--muted)"><span>0% (Robótico)</span><span>80% (Drunk)</span></div>
+      <canvas id="swingCanvas" height="150" style="margin-top:0.5rem;"></canvas>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="tag" style="background:var(--audio)">Módulo 03</div><h2>Polirritmias y Desfase</h2>
+  <div class="panel">
+    <p>Una polirritmia ocurre cuando reproduces patrones con diferentes longitudes de métrica simultáneamente.</p>
+    <p>Por ejemplo, si el Bombo toca un bucle de 4 tiempos (4/4) pero una melodía africana toca un bucle de 3 tiempos (3/4), entrarán y saldrán de sincronía cíclicamente, creando una textura tribal hipnótica típica en el Techno de Berlín.</p>
+  </div>
+</section>
+
+<section>
+  <div class="tag" style="background:var(--danger)">Módulo 04</div><h2>Velocity y Humanización</h2>
+  <div class="panel">
+    <p>En el mundo MIDI, <strong>Velocity</strong> mide qué tan fuerte golpeaste una tecla (0 a 127). Un baterista real NUNCA golpea el platillo con la misma fuerza dos veces.</p>
+    <p>El efecto MIDI "Velocity" en modo "Random" puede añadir variaciones sutiles (±10 de fuerza) a tus platillos automáticamente, dándoles vida al instante.</p>
+  </div>
+</section>
+
+
+<div class="m-final">
+  <div class="tag">Módulo Final</div>
+  <h2>Resumen de Conceptos</h2>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:3rem;">
+    <div>
+      <h3>📚 Conceptos Clave</h3>
+      <ul>
+        <li><span>✅</span> <span>El Drum Rack ofrece 128 pads, cada uno con su propia cadena de efectos y mezcla independiente.</span></li><li><span>✅</span> <span>El Swing le da 'groove' humano a los ritmos al retrasar las notas pares de la cuadrícula.</span></li><li><span>✅</span> <span>Las Polirritmias ocurren cuando dos firmas de tiempo diferentes (ej. 4/4 y 3/4) se reproducen juntas.</span></li>
+      </ul>
+    </div>
+    <div>
+      <h3>⌨️ Shortcuts Aprendidos</h3>
+      <ul>
+        <li><strong>D</strong> <span>Activar el Hot-Swap directo en un pad del Drum Rack.</span></li><li><strong>Shift + Tab</strong> <span>Alternar entre la vista del pad y los efectos del clip.</span></li>
+      </ul>
+    </div>
+  </div>
+  
+  <h3 style="margin-top:4rem; font-size:2rem; text-align:center; border:none">🧠 Evaluador Interactivo</h3>
+  <div class="quiz-app" id="quiz-app-12">
+    <div class="q-progress" id="q-progress-12">Pregunta 1 de 5</div>
+    <div class="q-text" id="q-text-12"></div>
+    <div id="q-opts-12"></div>
+    <button class="q-next" id="q-next-12" onclick="nextQuestion_12()">Siguiente Pregunta ➔</button>
+  </div>
+  
+  <div style="margin-top: 2rem; border-top: 1px solid #333; padding-top: 2rem; text-align:center;">
+    <h3>📖 Bibliografía y Recursos</h3>
+    <ul style="list-style:none; padding:0; margin-top:1rem; line-height:2;">
+      <li><a href="anexo-glosario.html" style="color:var(--audio); text-decoration:none;">➔ Consultar el Glosario Oficial</a></li>
+      <li><a href="examen-final.html" style="color:var(--play); text-decoration:none; font-weight:bold; font-size:1.2rem;">➔ Ir al GRAN EXAMEN FINAL</a></li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  const qData_12 = [{"q":"¿Cuál es la principal ventaja de un Drum Rack?","opts":["No consume RAM","Cada pad puede tener su propio sintetizador, sampler y cadena de efectos independientes","Toca acordes por ti","Solo usa archivos MIDI"],"ans":1},{"q":"¿Qué hace exactamente el parámetro 'Swing' o 'Groove'?","opts":["Sube el volumen del bombo","Acelera el tempo","Retrasa deliberadamente las notas pares (ej. los 16vos) para evitar que suene robótico","Añade reverberación al pad"],"ans":2},{"q":"Una Polirritmia es:","opts":["Muchos ritmos tocados exactamente igual","La superposición de patrones rítmicos que tienen diferentes métricas (ej. 4 vs 3)","Un tipo de platillo","El volumen del sintetizador"],"ans":1},{"q":"¿Qué es el Velocity en programación MIDI?","opts":["La velocidad a la que exportas","La fuerza o intensidad con la que se disparó la nota","El efecto de distorsión","El atajo de teclado"],"ans":1},{"q":"¿Cómo puedes 'humanizar' fácilmente los Hi-hats en Ableton?","opts":["Añadiendo un efecto MIDI de Velocity con aleatoriedad (Random)","Poniéndolos en mono","Borrando la mitad de las notas","Comprimiendo el master"],"ans":0}];
+  let curQ_12 = 0; let score_12 = 0;
+  function renderQ_12() {
+    if(curQ_12 >= qData_12.length) {
+      let p = Math.round((score_12 / qData_12.length) * 100);
+      let msg = p === 100 ? '¡Perfecto!' : (p >= 60 ? '¡Bien hecho!' : 'Repasa la lección.');
+      if (p >= 60) localStorage.setItem('ableton101_c12', score_12);
+      document.getElementById('quiz-app-12').innerHTML = '<div style="text-align:center"><div style="font-size:4rem;margin-bottom:1rem">' + (p>=60?'🏆':'📉') + '</div><h3 style="color:#fff;font-size:2rem;margin-bottom:1rem">Tu Score: ' + score_12 + ' / ' + qData_12.length + ' (' + p + '%)</h3><p style="color:#aaa;font-size:1.2rem">' + msg + '</p></div>';
+      return;
+    }
+    let q = qData_12[curQ_12];
+    document.getElementById('q-progress-12').textContent = 'Pregunta ' + (curQ_12+1) + ' de ' + qData_12.length;
+    document.getElementById('q-text-12').textContent = q.q;
+    let optsHTML = '';
+    q.opts.forEach((opt, idx) => { optsHTML += '<button class="q-opt" onclick="checkQ_12(' + idx + ', ' + q.ans + ', this)">' + opt + '</button>'; });
+    document.getElementById('q-opts-12').innerHTML = optsHTML;
+    document.getElementById('q-next-12').style.display = 'none';
+  }
+  function checkQ_12(sIdx, cIdx, btn) {
+    const btns = document.getElementById('q-opts-12').querySelectorAll('.q-opt');
+    btns.forEach(b => { b.disabled = true; b.style.opacity = '0.7'; });
+    btn.style.opacity = '1';
+    if(sIdx === cIdx) { btn.classList.add('correct'); score_12++; } 
+    else { btn.classList.add('wrong'); btns[cIdx].classList.add('correct'); btns[cIdx].style.opacity = '1'; }
+    document.getElementById('q-next-12').style.display = 'block';
+  }
+  function nextQuestion_12() { curQ_12++; renderQ_12(); }
+  setTimeout(() => renderQ_12(), 100);
+</script>
+  
+<script>
+// Swing Canvas Logic
+const swC = document.getElementById('swingCanvas');
+const swCtx = swC.getContext('2d');
+let swVal = 0;
+function drawSwing() {
+  swCtx.fillStyle='#111'; swCtx.fillRect(0,0,swC.width,swC.height);
+  
+  // Grid lines
+  swCtx.strokeStyle='#333'; swCtx.lineWidth=1;
+  for(let i=1; i<8; i++) {
+     swCtx.beginPath(); swCtx.moveTo(i*50, 0); swCtx.lineTo(i*50, swC.height); swCtx.stroke();
+  }
+  
+  // Beats 1,2,3,4 (On-grid - Green)
+  swCtx.fillStyle='#00B84D';
+  swCtx.fillRect(40, 50, 20, 50);  // 1
+  swCtx.fillRect(140, 50, 20, 50); // 3
+  swCtx.fillRect(240, 50, 20, 50); // 5
+  swCtx.fillRect(340, 50, 20, 50); // 7
+  
+  // Off-beats (Swung - Orange)
+  swCtx.fillStyle='#FF5500';
+  let offset = (swVal/100) * 40; // Max offset 40px right
+  swCtx.fillRect(90 + offset, 50, 20, 50);  // 2
+  swCtx.fillRect(190 + offset, 50, 20, 50); // 4
+  swCtx.fillRect(290 + offset, 50, 20, 50); // 6
+  swCtx.fillRect(390 + offset, 50, 20, 50); // 8 (Offscreen edge)
+}
+function updateSwing(val) { swVal = val; drawSwing(); }
+drawSwing();
+</script>
+<script src="../js/tooltips.js"></script>
+<script>
+  function touchHandler(event) {
+    if(event.target.tagName !== 'CANVAS' && event.target.type !== 'range') return;
+    var touch = event.changedTouches[0];
+    var simulatedEvent = document.createEvent("MouseEvent");
+    simulatedEvent.initMouseEvent({ touchstart:"mousedown", touchmove:"mousemove", touchend:"mouseup" }[event.type], true, true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null);
+    touch.target.dispatchEvent(simulatedEvent);
+    if(event.target.tagName === 'CANVAS') event.preventDefault();
+  }
+  document.addEventListener("touchstart", touchHandler, {passive: false});
+  document.addEventListener("touchmove", touchHandler, {passive: false});
+  document.addEventListener("touchend", touchHandler, {passive: false});
+</script>
+<div style="position:fixed;bottom:15px;right:20px;font-size:0.9rem;opacity:0.35;z-index:9999;font-weight:700;">Creado por @laurorobles</div>
+</body></html>

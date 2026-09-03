@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Ableton 101 — Clase 7: Grabación y Edición Avanzada</title>
+  <style>
+    :root {
+      --bg:#F8F9FA; --surface:#fff; --text:#000; --muted:#555;
+      --border:#E5E7EB; --audio:#0055FF; --midi:#FF5500;
+      --play:#00B84D; --cc:#8800DD; --danger:#E53E3E;
+      --warp-accent:#FFBC00;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:-apple-system,sans-serif;font-size:18px;line-height:1.6;padding:4rem 5%}
+    ::-webkit-scrollbar{width:0;background:transparent}
+    h1 { font-size:3.5rem; font-weight:900; margin-bottom:1rem; }
+    h2{font-size:3rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.8rem}
+    h3{font-size:1.8rem;font-weight:700;margin-bottom:.5rem}
+    .sub{font-size:1.5rem;color:var(--muted);max-width:900px;margin-bottom:2.5rem;font-weight:500}
+    section { max-width:1000px; margin:0 auto 5rem; padding:4rem 0; border-bottom:1px solid var(--border); }
+    .tag{display:inline-block;font-size:1rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem; padding: 4px 12px; border-radius: 4px;}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font-size:1.2rem;font-weight:700;padding:.9rem 1.8rem;border-radius:12px;border:none;cursor:pointer;transition:transform .1s,filter .15s;color:#fff;user-select:none;font-family:inherit}
+    .btn:active{transform:scale(.96)} .btn:hover{filter:brightness(1.1)}
+    .btn-audio{background:var(--audio)} .btn-midi{background:var(--midi)}
+    .btn-play{background:var(--play)} .btn-dark{background:var(--text)}
+    .btn-outline{background:transparent;border:3px solid var(--border);color:var(--text)}
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;width:100%}
+    .panel{background:var(--surface);border:3px solid var(--border);border-radius:20px;padding:2.5rem;box-shadow:0 8px 24px rgba(0,0,0,.04)}
+    .analogy{margin-top:1.5rem;padding:1.2rem 1.5rem;background:#F0F4F8;border-left:6px solid #CBD5E1;font-size:1.2rem;border-radius:0 10px 10px 0}
+    .row{display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
+    .mt1{margin-top:1rem} .mt2{margin-top:2rem}
+    .t-audio{color:var(--audio); background:rgba(0,85,255,0.1)} 
+    .t-midi{color:var(--midi); background:rgba(255,85,0,0.1)} 
+    .t-play{color:var(--play); background:rgba(0,184,77,0.1)} 
+    .t-cc{color:var(--cc); background:rgba(136,0,221,0.1)}
+    
+    #toast{position:fixed;bottom:40px;left:50%;transform:translateX(-50%) translateY(160px);background:var(--text);color:#fff;padding:1.2rem 2.5rem;border-radius:100px;font-size:1.4rem;font-weight:bold;z-index:9999;transition:transform .4s cubic-bezier(.175,.885,.32,1.275);box-shadow:0 20px 40px rgba(0,0,0,.25);max-width:640px;text-align:center}
+    #toast.show{transform:translateX(-50%) translateY(0)}
+
+    header { text-align:center; padding:4rem 2rem; border-radius:24px; border:2px solid var(--border); margin-bottom:4rem; background:var(--text); color:var(--surface); }
+    header h1 { color:var(--surface); }
+    header .sub { color:#bbb; margin:0 auto 2rem; }
+    header .tag { background:#333; color:var(--surface); }
+
+    .m-final { background:#111; color:#fff; padding:4rem; border-radius:24px; margin-top:4rem; max-width:1000px; margin:4rem auto; }
+    .m-final h2 { color:#fff; }
+    .m-final .tag { background:#333; color:#fff; }
+    .m-final h3 { color:var(--play); border-bottom:1px solid #333; padding-bottom:0.5rem; margin-bottom:1.5rem; margin-top:2rem; }
+    .m-final ul { list-style:none; }
+    .m-final li { margin-bottom:1rem; color:#ccc; display:flex; gap:1rem; }
+
+    /* Crossfade specific styles */
+    .crossfade-wrap { position: relative; width: 100%; height: 250px; background: #1c1c1c; border-radius: 12px; margin-top: 1rem; overflow: hidden; padding: 1rem; }
+    canvas { width: 100%; height: 180px; display: block; border-radius: 8px; }
+    .slider-container { display: flex; align-items: center; gap: 1rem; margin-top: 1rem; }
+    input[type=range] { flex: 1; -webkit-appearance: none; background: transparent; }
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 20px; width: 20px; border-radius: 50%; background: var(--surface); cursor: pointer; border: 2px solid var(--border); }
+    input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 8px; cursor: pointer; background: var(--muted); border-radius: 4px; }
+    input[type=range]:focus { outline: none; }
+    
+    .signal-node { text-align: center; font-weight: bold; padding: 1rem; background: var(--surface); border: 2px solid var(--border); border-radius: 8px; }
+    .signal-arrow { text-align: center; font-size: 2rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<a href="../index.html" style="position:fixed; top:20px; left:20px; background:var(--surface); color:var(--text); text-decoration:none; padding:10px 15px; border-radius:8px; border:2px solid var(--border); font-weight:bold; font-size:0.9rem; z-index:9999; box-shadow:0 4px 10px rgba(0,0,0,0.1); transition:transform 0.1s;">
+  ← Volver al Índice
+</a>
+
+<div id="toast"></div>
+
+<header>
+  <div class="tag">Soundspace Academy</div>
+  <h1>Ableton 101<br>Clase 7: Grabación y Edición Avanzada</h1>
+  <p class="sub">Perfeccionando tus tomas y manipulando audio de forma quirúrgica.</p>
+  <div style="display:flex;align-items:center;justify-content:center;gap:1.5rem;margin:0 auto;text-align:left;max-width:800px;background:#222;padding:1.5rem;border-radius:16px;">
+    <img src="../assets/lao_foto.jpg" alt="LAO" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'><rect width=\'100\' height=\'100\' fill=\'%23ccc\'/></svg>'" style="width:100px;height:100px;border-radius:50%;object-fit:cover;">
+    <div>
+      <h3 style="margin-bottom:0.3rem;font-size:1.4rem;color:#fff;">Instructor: LAO (Lauro Robles)</h3>
+      <p style="font-size:1rem;color:#aaa;line-height:1.4;">Grabación limpia, comping, fades y envolventes.</p>
+    </div>
+  </div>
+</header>
+
+<section id="m1">
+  <div class="tag t-audio">Módulo 01</div>
+  <h2>El Flujo de Señal (Signal Flow)</h2>
+  <p class="sub">¿Cómo viaja el sonido desde la voz hasta el disco duro?</p>
+  
+  <div style="display:flex; flex-direction:column; gap:0.5rem; max-width:600px; margin:0 auto;">
+    <div class="signal-node" style="border-color:var(--audio);">🎤 Fuente (Voz/Instrumento) <br><small style="color:var(--muted)">Señal Acústica</small></div>
+    <div class="signal-arrow">↓</div>
+    <div class="signal-node">🎛️ Preamplificador (Interfaz) <br><small style="color:var(--muted)">Sube el nivel de la señal analógica</small></div>
+    <div class="signal-arrow">↓</div>
+    <div class="signal-node" style="border-color:var(--midi);">💻 Conversor A/D <br><small style="color:var(--muted)">Analógico a Digital (unos y ceros)</small></div>
+    <div class="signal-arrow">↓</div>
+    <div class="signal-node" style="background:#222; color:#fff;">🎹 Ableton Live (DAW) <br><small style="color:#aaa">Procesamiento y Grabación en Disco Duro</small></div>
+    <div class="signal-arrow">↓</div>
+    <div class="signal-node" style="border-color:var(--midi);">🎛️ Conversor D/A <br><small style="color:var(--muted)">Digital a Analógico</small></div>
+    <div class="signal-arrow">↓</div>
+    <div class="signal-node" style="border-color:var(--play);">🔊 Monitores/Audífonos <br><small style="color:var(--muted)">Señal Acústica de nuevo</small></div>
+  </div>
+
+  <div class="analogy mt2" style="border-left-color:var(--audio)">
+    <strong>💡 Comprender el flujo es vital para solucionar problemas.</strong><br>
+    Si no escuchas tu micrófono en Ableton, revisa paso a paso: ¿Está conectado? ¿Tiene ganancia el preamp? ¿Está seleccionado el canal de entrada correcto en Ableton?
+  </div>
+</section>
+
+<section id="m2">
+  <div class="tag t-play">Módulo 02</div>
+  <h2>Fades y Crossfades</h2>
+  <p class="sub">Evitando clics y uniendo regiones de audio limpiamente.</p>
+  
+  <div class="split">
+    <div>
+      <p>Cuando cortas un clip de audio, a menudo interrumpes la onda en un punto que no es cero (Zero-Crossing). Esto genera un "clic" audible.</p>
+      <p>Un <strong>Fade</strong> reduce o aumenta gradualmente el volumen al inicio (Fade In) o final (Fade Out) del clip. Un <strong>Crossfade</strong> aplica un fade out al primer clip y un fade in simultáneo al segundo, cruzándolos para una transición invisible.</p>
+    </div>
+    <div class="analogy" style="border-left-color:var(--play); margin-top:0;">
+      <strong>✂️ Atajo Útil:</strong> En Ableton, selecciona el límite entre dos clips y presiona <code>Cmd + Option + F</code> (Mac) o <code>Ctrl + Alt + F</code> (Win) para crear un crossfade rápido.
+    </div>
+  </div>
+
+  <div class="crossfade-wrap">
+    <canvas id="cfCanvas"></canvas>
+    <div class="slider-container">
+      <span style="color:#fff;font-weight:bold;">Posición del Crossfade:</span>
+      <input type="range" id="cfSlider" min="0" max="100" value="50">
+    </div>
+  </div>
+  <p style="text-align:center; font-size:0.9rem; color:var(--muted); margin-top:1rem;">Mueve el deslizador para ver cómo interactúan el volumen del Clip A (azul) y Clip B (naranja).</p>
+</section>
+
+<section id="m3">
+  <div class="tag t-midi">Módulo 03</div>
+  <h2>Comping (Tomas Múltiples)</h2>
+  <p class="sub">Armando la toma perfecta a partir de varias grabaciones.</p>
+
+  <div class="split">
+    <div class="panel">
+      <h3>¿Qué es el Comping?</h3>
+      <p>Es la técnica de grabar una sección varias veces en bucle (loop) y luego seleccionar las mejores frases o palabras de cada toma para armar una única "súper toma".</p>
+      <p style="margin-top:1rem; color:var(--muted);">En Ableton, esto se maneja mediante <strong>Take Lanes</strong> (Carriles de Toma).</p>
+    </div>
+    <div class="panel">
+      <h3>Pasos para Comping:</h3>
+      <ol style="margin-left:1.5rem;">
+        <li>Selecciona un loop en la Vista de Arreglo.</li>
+        <li>Activa el botón de grabar y haz varias tomas.</li>
+        <li>Haz clic derecho en la pista y selecciona <em>Mostrar Carriles de Toma</em>.</li>
+        <li>Subraya las mejores partes con la herramienta lápiz o flecha y presiona <code>Enter</code> para subirlas a la pista principal.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="m4">
+  <div class="tag t-cc">Módulo 04</div>
+  <h2>Envolventes de Clip (Clip Envelopes)</h2>
+  <p class="sub">Automatización destructiva y creativa dentro del propio clip de audio.</p>
+  
+  <p>A diferencia de la automatización normal de pista, las envolventes de clip viven <em>dentro</em> del clip de audio. Si mueves o copias el clip, la envolvente viaja con él.</p>
+  
+  <div class="split mt2">
+    <div class="panel" style="border-color:var(--cc);">
+      <h3>Pitch (Tono)</h3>
+      <p>Dibuja curvas para crear efectos de <em>tape stop</em>, subir el tono de una tarola gradualmente, o hacer que un hi-hat tenga una melodía.</p>
+    </div>
+    <div class="panel" style="border-color:var(--play);">
+      <h3>Gain (Volumen)</h3>
+      <p>Perfecto para atenuar sílabas respiradas muy fuertes en una voz (de-essing manual) o crear efectos de tremolo/stutter rítmico ruteando la envolvente a la rejilla.</p>
+    </div>
+  </div>
+</section>
+
+<div class="m-final">
+  <div class="tag">Módulo Final</div>
+  <h2>Resumen de Conceptos y Test</h2>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:3rem; margin-bottom:3rem;">
+    <div>
+      <h3>📚 Conceptos Clave</h3>
+      <ul>
+        <li><span>✅</span> <span>El Signal Flow sigue la cadena desde la fuente, preamp, A/D, DAW, D/A, hasta monitores.</span></li>
+        <li><span>✅</span> <span>Fades y Crossfades evitan clics digitales al cortar clips.</span></li>
+        <li><span>✅</span> <span>Comping usa Take Lanes para elegir las mejores partes de múltiples tomas.</span></li>
+      </ul>
+    </div>
+  </div>
+  
+  <h3 style="margin-top:2rem; font-size:2rem; text-align:center; border:none">🧠 Evaluador Interactivo</h3>
+  
+  <style>
+    .quiz-app { background:#222; border:1px solid #333; border-radius:16px; padding:2rem; margin-top:2rem; }
+    .q-text { font-size:1.4rem; color:#fff; margin-bottom:1.5rem; }
+    .q-opt { display:block; width:100%; text-align:left; background:#333; color:#fff; border:2px solid transparent; padding:1.2rem; border-radius:8px; margin-bottom:0.8rem; cursor:pointer; font-size:1.1rem; transition:all 0.2s; }
+    .q-opt:hover { background:#444; border-color:#555; }
+    .q-opt.correct { background:var(--play) !important; color:#fff; border-color:#fff; }
+    .q-opt.wrong { background:var(--danger) !important; color:#fff; }
+    .q-progress { color:var(--muted); margin-bottom:1rem; font-weight:bold; }
+    .q-next { background:var(--audio); color:#fff; padding:1rem 2rem; border:none; border-radius:8px; font-weight:bold; font-size:1.2rem; cursor:pointer; margin-top:1rem; display:none; }
+  </style>
+
+  <div class="quiz-app" id="quiz-app">
+    <div class="q-progress" id="q-progress">Pregunta 1 de 5</div>
+    <div class="q-text" id="q-text"></div>
+    <div id="q-opts"></div>
+    <button class="q-next" id="q-next" onclick="nextQuestion()">Siguiente Pregunta ➔</button>
+  </div>
+</div>
+
+<footer>
+  <p style="text-align:center; color:var(--muted); padding:2rem;">&copy; 2026 Ableton 101 — Soundspace Academy</p>
+</footer>
+
+<script>
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  // CROSSFADE CANVAS LOGIC
+  const canvas = document.getElementById('cfCanvas');
+  const ctx = canvas.getContext('2d');
+  const slider = document.getElementById('cfSlider');
+  
+  function drawCrossfade() {
+    const w = canvas.width;
+    const h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+    
+    let fadePoint = slider.value / 100;
+    
+    // Draw base line
+    ctx.beginPath();
+    ctx.moveTo(0, h/2);
+    ctx.lineTo(w, h/2);
+    ctx.strokeStyle = '#333';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Clip A (Blue)
+    ctx.beginPath();
+    for(let x=0; x<w; x++) {
+      let t = x / w;
+      let gain = t < fadePoint ? 1 : Math.max(0, 1 - (t - fadePoint) * 5); // fade out quickly after point
+      let y = h/2 + Math.sin(x * 0.1) * 30 * gain;
+      if(x===0) ctx.moveTo(x,y);
+      else ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle = 'var(--audio)';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    // Clip B (Orange)
+    ctx.beginPath();
+    for(let x=0; x<w; x++) {
+      let t = x / w;
+      let gain = t > fadePoint ? 1 : Math.max(0, 1 - (fadePoint - t) * 5); // fade in quickly before point
+      let y = h/2 + Math.cos(x * 0.15) * 40 * gain;
+      if(x===0) ctx.moveTo(x,y);
+      else ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle = 'var(--midi)';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    
+    // Draw fade envelope line
+    ctx.beginPath();
+    ctx.moveTo(fadePoint * w - 30, h - 20);
+    ctx.lineTo(fadePoint * w, 20);
+    ctx.lineTo(fadePoint * w + 30, h - 20);
+    ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+  
+  slider.addEventListener('input', drawCrossfade);
+  window.addEventListener('resize', () => {
+    canvas.width = canvas.parentElement.clientWidth - 32;
+    drawCrossfade();
+  });
+  
+  // init canvas
+  setTimeout(() => {
+    canvas.width = canvas.parentElement.clientWidth - 32;
+    drawCrossfade();
+  }, 100);
+
+  // QUIZ LOGIC
+  const qData = [
+    {
+      q: "¿Qué es el Flujo de Señal (Signal Flow)?",
+      opts: ["El camino que recorre el audio desde la fuente hasta el disco duro o salida.", "Un efecto de Ableton.", "El volumen de la pista Master.", "La velocidad del metrónomo."],
+      ans: 0
+    },
+    {
+      q: "¿Cuál es el propósito principal de un Crossfade?",
+      opts: ["Hacer que la pista suene más fuerte.", "Convertir MIDI a Audio.", "Evitar clics o pops al unir dos clips de audio.", "Cambiar el tempo de la canción."],
+      ans: 2
+    },
+    {
+      q: "¿Qué es el Comping en Ableton Live?",
+      opts: ["Un compresor para masterizar.", "Una técnica para grabar múltiples tomas y armar una toma perfecta.", "Un tipo de sintetizador.", "El proceso de exportar la canción."],
+      ans: 1
+    },
+    {
+      q: "¿Qué permite hacer una Envolvente de Clip (Clip Envelope)?",
+      opts: ["Borrar el clip permanentemente.", "Automatizar parámetros de forma independiente dentro del propio clip, como el pitch o volumen.", "Crear pistas nuevas automáticamente.", "Cambiar el color del clip."],
+      ans: 1
+    },
+    {
+      q: "En el flujo de señal, ¿qué componente convierte el sonido analógico del micrófono en unos y ceros (digital)?",
+      opts: ["El cable USB.", "El conversor A/D (Analógico a Digital) de la interfaz.", "El disco duro.", "Los monitores/bocinas."],
+      ans: 1
+    }
+  ];
+
+  let curQ = 0; let score = 0;
+  function renderQ() {
+    if(curQ >= qData.length) {
+      let p = Math.round((score / qData.length) * 100);
+      let msg = p === 100 ? '¡Excelente trabajo!' : (p >= 60 ? '¡Bien hecho!' : 'Te sugerimos repasar la clase.');
+      if (p >= 60) {
+        localStorage.setItem('ableton101_c7', p);
+      }
+      document.getElementById('quiz-app').innerHTML = '<div style="text-align:center"><div style="font-size:4rem;margin-bottom:1rem">' + (p>=60?'🏆':'📉') + '</div><h3 style="color:#fff;font-size:2rem;margin-bottom:1rem">Tu Score: ' + score + ' / ' + qData.length + ' (' + p + '%)</h3><p style="color:#aaa;font-size:1.2rem">' + msg + '</p></div>';
+      return;
+    }
+    let q = qData[curQ];
+    document.getElementById('q-progress').textContent = 'Pregunta ' + (curQ+1) + ' de ' + qData.length;
+    document.getElementById('q-text').textContent = q.q;
+    let optsHTML = '';
+    q.opts.forEach((opt, idx) => { optsHTML += '<button class="q-opt" onclick="checkQ(' + idx + ', ' + q.ans + ', this)">' + opt + '</button>'; });
+    document.getElementById('q-opts').innerHTML = optsHTML;
+    document.getElementById('q-next').style.display = 'none';
+  }
+
+  function checkQ(sIdx, cIdx, btn) {
+    const btns = document.getElementById('q-opts').querySelectorAll('.q-opt');
+    btns.forEach(b => { b.disabled = true; b.style.opacity = '0.7'; });
+    btn.style.opacity = '1';
+    if(sIdx === cIdx) { btn.classList.add('correct'); score++; } 
+    else { btn.classList.add('wrong'); btns[cIdx].classList.add('correct'); btns[cIdx].style.opacity = '1'; }
+    document.getElementById('q-next').style.display = 'block';
+  }
+
+  function nextQuestion() { curQ++; renderQ(); }
+  setTimeout(() => renderQ(), 100);
+</script>
+<script src="../js/tooltips.js"></script>
+
+<script>
+  // Global Touch to Mouse mapping for Canvas interactivity on iPads/Mobiles
+  function touchHandler(event) {
+    if(event.target.tagName !== 'CANVAS' && event.target.type !== 'range') return;
+    var touch = event.changedTouches[0];
+    var simulatedEvent = document.createEvent("MouseEvent");
+    simulatedEvent.initMouseEvent({
+        touchstart: "mousedown",
+        touchmove: "mousemove",
+        touchend: "mouseup"
+    }[event.type], true, true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null);
+    touch.target.dispatchEvent(simulatedEvent);
+    if(event.target.tagName === 'CANVAS') event.preventDefault();
+  }
+  document.addEventListener("touchstart", touchHandler, {passive: false});
+  document.addEventListener("touchmove", touchHandler, {passive: false});
+  document.addEventListener("touchend", touchHandler, {passive: false});
+</script>
+</body>
+</html>

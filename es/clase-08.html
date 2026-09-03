@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Ableton 101 — Clase 8: Mezcla I - Balance y Paneo</title>
+  <style>
+    :root {
+      --bg:#F8F9FA; --surface:#fff; --text:#000; --muted:#555;
+      --border:#E5E7EB; --audio:#0055FF; --midi:#FF5500;
+      --play:#00B84D; --cc:#8800DD; --danger:#E53E3E;
+      --warp-accent:#FFBC00;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:-apple-system,sans-serif;font-size:18px;line-height:1.6;padding:4rem 5%}
+    ::-webkit-scrollbar{width:0;background:transparent}
+    h1 { font-size:3.5rem; font-weight:900; margin-bottom:1rem; }
+    h2{font-size:3rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.8rem}
+    h3{font-size:1.8rem;font-weight:700;margin-bottom:.5rem}
+    .sub{font-size:1.5rem;color:var(--muted);max-width:900px;margin-bottom:2.5rem;font-weight:500}
+    section { max-width:1000px; margin:0 auto 5rem; padding:4rem 0; border-bottom:1px solid var(--border); }
+    .tag{display:inline-block;font-size:1rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem; background:var(--text); color:#fff; padding:0.2rem 0.8rem; border-radius:4px;}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font-size:1.2rem;font-weight:700;padding:.9rem 1.8rem;border-radius:12px;border:none;cursor:pointer;transition:transform .1s,filter .15s;color:#fff;user-select:none;font-family:inherit}
+    .btn:active{transform:scale(.96)} .btn:hover{filter:brightness(1.1)}
+    .btn-audio{background:var(--audio)} .btn-midi{background:var(--midi)}
+    .btn-play{background:var(--play)} .btn-dark{background:var(--text)}
+    .btn-outline{background:transparent;border:3px solid var(--border);color:var(--text)}
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;width:100%}
+    .panel{background:var(--surface);border:3px solid var(--border);border-radius:20px;padding:2.5rem;box-shadow:0 8px 24px rgba(0,0,0,.04)}
+    .analogy{margin-top:1.5rem;padding:1.2rem 1.5rem;background:#F0F4F8;border-left:6px solid #CBD5E1;font-size:1.2rem;border-radius:0 10px 10px 0}
+    
+    header { text-align:center; padding:4rem 2rem; border-radius:24px; border:2px solid var(--border); margin-bottom:4rem; background:var(--surface); }
+
+    .m-final { background:#111; color:#fff; padding:4rem; border-radius:24px; margin-top:4rem; max-width:1000px; margin:4rem auto; }
+    .m-final h2 { color:#fff; }
+    .m-final .tag { background:#333; color:#fff; }
+    .m-final h3 { color:var(--play); border-bottom:1px solid #333; padding-bottom:0.5rem; margin-bottom:1.5rem; margin-top:2rem; }
+    .m-final ul { list-style:none; }
+    .m-final li { margin-bottom:1rem; color:#ccc; display:flex; gap:1rem; }
+    
+    .quiz-app { background:#222; border:1px solid #333; border-radius:16px; padding:2rem; margin-top:2rem; }
+    .q-text { font-size:1.4rem; color:#fff; margin-bottom:1.5rem; }
+    .q-opt { display:block; width:100%; text-align:left; background:#333; color:#fff; border:2px solid transparent; padding:1.2rem; border-radius:8px; margin-bottom:0.8rem; cursor:pointer; font-size:1.1rem; transition:all 0.2s; }
+    .q-opt:hover { background:#444; border-color:#555; }
+    .q-opt.correct { background:var(--play) !important; color:#fff; border-color:#fff; }
+    .q-opt.wrong { background:var(--danger) !important; color:#fff; }
+    .q-progress { color:var(--muted); margin-bottom:1rem; font-weight:bold; }
+    .q-next { background:var(--audio); color:#fff; padding:1rem 2rem; border:none; border-radius:8px; font-weight:bold; font-size:1.2rem; cursor:pointer; margin-top:1rem; display:none; }
+
+    /* M2 Meter styles */
+    .mixer-container { display: flex; gap: 2rem; justify-content: center; background: #2c2c2e; padding: 2rem; border-radius: 12px; margin-top: 1.5rem; }
+    .channel { display: flex; flex-direction: column; align-items: center; gap: 1rem; width: 60px; }
+    .meter-bg { width: 30px; height: 200px; background: #111; border-radius: 4px; position: relative; overflow: hidden; border: 1px solid #444; }
+    .meter-fill { width: 100%; position: absolute; bottom: 0; left: 0; background: linear-gradient(to top, #0f0, #ff0, #f00); transition: height 0.1s ease-out; }
+    .fader { -webkit-appearance: none; width: 150px; height: 8px; background: #444; border-radius: 4px; transform: rotate(-90deg); margin: 60px 0; outline: none; }
+    .fader::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 40px; background: #ddd; border-radius: 4px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+    .channel-label { color: #fff; font-weight: bold; font-size: 0.9rem; text-align: center; }
+    
+    .master-channel { border-left: 2px solid #555; padding-left: 2rem; margin-left: 1rem; }
+    
+    .clip-indicator { width: 30px; height: 10px; background: #555; border-radius: 2px; margin-bottom: 5px; }
+    .clip-indicator.clipped { background: #f00; box-shadow: 0 0 10px #f00; }
+  </style>
+</head>
+<body>
+
+<a href="../index.html" style="position:fixed; top:20px; left:20px; background:var(--surface); color:var(--text); text-decoration:none; padding:10px 15px; border-radius:8px; border:2px solid var(--border); font-weight:bold; font-size:0.9rem; z-index:9999; box-shadow:0 4px 10px rgba(0,0,0,0.1); transition:transform 0.1s;">
+  ← Volver al Índice
+</a>
+
+<header>
+  <div class="tag" style="background:var(--audio)">Soundspace Academy</div>
+  <h1>Ableton 101<br>Clase 8: Mezcla I - Niveles y Paneo</h1>
+  <p class="sub" style="margin-bottom:2rem">Equilibrando la energía. Construye la base de tu mezcla antes de usar efectos.</p>
+  <div style="display:flex;align-items:center;justify-content:center;gap:1.5rem;margin:0 auto 2rem;text-align:left;max-width:800px;background:#F0F4F8;padding:1.5rem;border-radius:16px;">
+    <img src="../assets/lao_foto.jpg" alt="LAO" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'><rect width=\'100\' height=\'100\' fill=\'%23ccc\'/></svg>'" style="width:100px;height:100px;border-radius:50%;object-fit:cover;">
+    <div>
+      <h3 style="margin-bottom:0.3rem;font-size:1.4rem;">Instructor: LAO (Lauro Robles)</h3>
+      <p style="font-size:1rem;color:var(--muted);line-height:1.4;">Volumen, Espacio y Headroom. El arte de balancear.</p>
+    </div>
+  </div>
+</header>
+
+<!-- M1: QUÉ ES MEZCLAR -->
+<section id="m1">
+  <div class="tag" style="background:var(--audio)">Módulo 01</div>
+  <h2>¿Qué es Mezclar? La Caja 3D</h2>
+  <p class="sub">Imagina tu canción como una caja de zapatos. Solo cabe cierta cantidad de cosas antes de que se desborde.</p>
+  
+  <div class="split">
+    <div class="panel">
+      <h3>Las Tres Dimensiones</h3>
+      <p>Al mezclar, ubicamos cada elemento en un espacio tridimensional:</p>
+      <ul style="margin-left: 2rem; margin-top: 1rem; margin-bottom: 1rem;">
+        <li><strong>Alto (Frecuencia):</strong> Agudos arriba, Graves abajo. Lo controlamos con la <strong>Ecualización (EQ)</strong>.</li>
+        <li><strong>Ancho (Estéreo):</strong> Izquierda, Centro y Derecha. Lo controlamos con el <strong>Paneo</strong>.</li>
+        <li><strong>Profundidad (Dimensión):</strong> Cerca o Lejos. Lo controlamos con el <strong>Volumen</strong> y efectos como <strong>Reverb y Delay</strong>.</li>
+      </ul>
+      <div class="analogy" style="border-left-color:var(--audio)">
+        <strong>💡 La regla de oro:</strong> Si todo es grande, ruidoso y está al centro, nada destaca. Mezclar es el arte del contraste. Para que algo suene fuerte, otra cosa debe sonar más bajo.
+      </div>
+    </div>
+    
+    <div class="panel" style="display:flex; flex-direction:column; align-items:center; justify-content:center">
+      <div style="position:relative; width: 250px; height: 250px; background: #333; border: 2px solid #555; border-radius: 8px; perspective: 500px;">
+        <div style="position:absolute; bottom: 10px; left: 50%; transform: translateX(-50%); color: #ff5500; font-weight:bold; font-size: 1.2rem">Bajo / Bombo (Centro/Abajo)</div>
+        <div style="position:absolute; top: 30px; left: 10px; color: #00b84d; font-weight:bold">Hi-Hats (Izq/Arriba)</div>
+        <div style="position:absolute; top: 40px; right: 10px; color: #00b84d; font-weight:bold">Guitarras (Der/Medio)</div>
+        <div style="position:absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); color: #fff; font-weight:bold; font-size: 1.5rem; text-shadow: 0 0 10px #fff">Voz (Centro/Frente)</div>
+      </div>
+      <p style="margin-top: 1rem; color:var(--muted); text-align:center">Visualización de un escenario sonoro bien balanceado.</p>
+    </div>
+  </div>
+</section>
+
+<!-- M2: GAIN STAGING Y HEADROOM -->
+<section id="m2">
+  <div class="tag" style="background:var(--danger)">Módulo 02</div>
+  <h2>Gain Staging y Headroom</h2>
+  <p class="sub">En lo digital, superar el 0 dBFS (Decibels Full Scale) resulta en "Clipping" o distorsión digital. Tu misión: dejar espacio de respiro (Headroom).</p>
+
+  <div class="panel">
+    <h3>Simulador de Mezcla: Evita el Clipping</h3>
+    <p>Ajusta los faders. Si la suma total (Master) supera el límite, la luz roja se encenderá. Intenta balancearlos para que todos se escuchen, pero el Master no clipee.</p>
+    
+    <div class="mixer-container">
+      <!-- Canal Kick -->
+      <div class="channel">
+        <div class="channel-label">KICK</div>
+        <div class="meter-bg">
+          <div class="meter-fill" id="meter-kick" style="height: 80%"></div>
+        </div>
+        <input type="range" min="0" max="100" value="80" class="fader" id="fader-kick" oninput="updateMixer()">
+      </div>
+      
+      <!-- Canal Bass -->
+      <div class="channel">
+        <div class="channel-label">BASS</div>
+        <div class="meter-bg">
+          <div class="meter-fill" id="meter-bass" style="height: 70%"></div>
+        </div>
+        <input type="range" min="0" max="100" value="70" class="fader" id="fader-bass" oninput="updateMixer()">
+      </div>
+      
+      <!-- Canal Synth -->
+      <div class="channel">
+        <div class="channel-label">SYNTH</div>
+        <div class="meter-bg">
+          <div class="meter-fill" id="meter-synth" style="height: 60%"></div>
+        </div>
+        <input type="range" min="0" max="100" value="60" class="fader" id="fader-synth" oninput="updateMixer()">
+      </div>
+      
+      <!-- Canal Vocal -->
+      <div class="channel">
+        <div class="channel-label">VOCAL</div>
+        <div class="meter-bg">
+          <div class="meter-fill" id="meter-vocal" style="height: 75%"></div>
+        </div>
+        <input type="range" min="0" max="100" value="75" class="fader" id="fader-vocal" oninput="updateMixer()">
+      </div>
+      
+      <!-- Canal Master -->
+      <div class="channel master-channel">
+        <div class="channel-label">MASTER</div>
+        <div class="clip-indicator" id="clip-master"></div>
+        <div class="meter-bg" style="width:40px">
+          <div class="meter-fill" id="meter-master" style="height: 0%"></div>
+        </div>
+        <div style="font-size:0.8rem; color:#aaa; margin-top:80px">Total</div>
+      </div>
+    </div>
+    
+    <div class="analogy mt2" style="border-left-color:var(--danger)">
+      <strong>🎯 Headroom ideal:</strong> Al mezclar, busca que tu canal Master marque picos máximos entre <strong>-6 dB y -3 dB</strong>. Ese margen vacío es el "Headroom" que el ingeniero de mastering utilizará después. Si el volumen en tu DAW llega a rojo, ¡baja todos los faders!
+    </div>
+  </div>
+</section>
+
+<!-- M3: PANEO -->
+<section id="m3">
+  <div class="tag" style="background:var(--play)">Módulo 03</div>
+  <h2>Paneo (El Campo Estéreo)</h2>
+  <p class="sub">Distribuir el sonido a la izquierda y derecha para evitar colisiones y dar claridad.</p>
+
+  <div class="split">
+    <div class="panel">
+      <h3>Las Leyes del Paneo</h3>
+      <ul style="margin-left: 1.5rem; margin-top:1rem;">
+        <li style="margin-bottom:0.5rem"><strong>El Centro (C):</strong> Elementos fundamentales. <em>Bombo (Kick), Bajo, Voz Principal, Tarola (Snare).</em> Aquí reside el peso y la energía de la canción.</li>
+        <li style="margin-bottom:0.5rem"><strong>Ligeramente Paneo (L/R 10-30):</strong> Toms, percusiones sutiles, guitarras rítmicas secundarias, teclados suaves.</li>
+        <li style="margin-bottom:0.5rem"><strong>Extremos (L/R 50-50):</strong> Guitarras dobladas, sintetizadores anchos, coros, efectos especiales, hi-hats (a veces 30-50%).</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Balance de Frecuencias</h3>
+      <p>Si pones un sintetizador agudo muy a la izquierda, debes balancearlo con otro elemento agudo (como un hi-hat o guitarra) a la derecha.</p>
+      <div class="analogy" style="border-left-color:var(--play)">
+        <strong>🎧 Técnica LCR (Left-Center-Right):</strong> Una técnica clásica donde los elementos se panean <em>exclusivamente</em> al Centro, 100% a la Izquierda o 100% a la Derecha. Ayuda a tomar decisiones rápidas y genera mezclas muy anchas.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- M4: AGRUPACIÓN -->
+<section id="m4">
+  <div class="tag" style="background:var(--cc)">Módulo 04</div>
+  <h2>Agrupación: Buses y Grupos</h2>
+  <p class="sub">El pegamento de la mezcla. Procesar múltiples pistas como si fueran una sola.</p>
+
+  <div class="panel">
+    <h3>Grupos en Ableton (Ctrl/Cmd + G)</h3>
+    <p>En lugar de subir el volumen de 5 pistas de batería por separado, puedes seleccionarlas y <strong>Agruparlas</strong>. Esto crea un "Canal de Grupo" o "Bus".</p>
+    
+    <div style="display:flex; justify-content:center; gap:2rem; margin:2rem 0;">
+      <div style="background:#222; padding:1.5rem; border-radius:8px; color:#fff; text-align:center">
+        <div style="font-weight:bold; color:var(--audio); margin-bottom:1rem">Canales Individuales</div>
+        <div>Kick (Bombo)</div>
+        <div>Snare (Tarola)</div>
+        <div>Hi-Hats</div>
+        <div>Percusión</div>
+      </div>
+      <div style="display:flex; align-items:center; font-size:2rem">➔</div>
+      <div style="background:#333; padding:1.5rem; border-radius:8px; color:#fff; text-align:center; border: 2px solid var(--cc)">
+        <div style="font-weight:bold; color:var(--cc); margin-bottom:1rem">Grupo / Bus</div>
+        <div style="font-size:1.2rem; margin-top:1rem">DRUMS BUS</div>
+        <div style="font-size:0.8rem; color:#aaa; margin-top:0.5rem">Volumen General de Batería</div>
+        <div style="font-size:0.8rem; color:#aaa">Compresión Glue</div>
+      </div>
+    </div>
+    
+    <div class="analogy" style="border-left-color:var(--cc)">
+      <strong>💡 Beneficios:</strong>
+      1. <strong>Organización:</strong> Puedes colapsar el grupo para tener más orden visual.<br>
+      2. <strong>Control de Volumen:</strong> Un solo fader para toda la batería o coros.<br>
+      3. <strong>Procesamiento Conjunto:</strong> Poner un compresor o EQ en el grupo "pega" los sonidos, haciéndolos sonar como una sola entidad (Glue).
+    </div>
+  </div>
+</section>
+
+<!-- M-FINAL -->
+<div class="m-final">
+  <div class="tag">Módulo Final</div>
+  <h2>Resumen de Conceptos</h2>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:3rem;">
+    <div>
+      <h3>📚 Conceptos Clave</h3>
+      <ul>
+        <li><span>✅</span> <span><strong>Headroom:</strong> El espacio seguro que dejas antes del límite de 0 dBFS para evitar distorsión (clipping).</span></li>
+        <li><span>✅</span> <span><strong>Leyes de Paneo:</strong> Bombo, Bajo y Voz van al centro para mantener el peso y fase de la mezcla.</span></li>
+        <li><span>✅</span> <span><strong>Grupos:</strong> Unir múltiples canales (Ej. Baterías) en un Bus para controlarlos y procesarlos juntos.</span></li>
+      </ul>
+    </div>
+    <div>
+      <h3>⌨️ Shortcuts Aprendidos</h3>
+      <ul>
+        <li><strong>Cmd/Ctrl + G</strong> <span>Agrupar canales seleccionados.</span></li>
+        <li><strong>Cmd/Ctrl + Shift + G</strong> <span>Desagrupar.</span></li>
+        <li><strong>Doble Clic en Fader</strong> <span>Regresar el volumen o paneo a 0 (Centro/Default).</span></li>
+      </ul>
+    </div>
+  </div>
+  
+  
+    <div style="margin-top: 2rem; border-top: 1px solid #333; padding-top: 2rem;">
+      <h3>📖 Bibliografía y Recursos</h3>
+      <ul style="list-style:none; padding:0;">
+        <li style="margin-bottom:0.5rem;"><a href="anexo-glosario.html" style="color:var(--audio); text-decoration:none;">➔ Consultar el Glosario Oficial</a></li>
+        <li style="margin-bottom:0.5rem;"><a href="anexo-documentales.html" style="color:var(--audio); text-decoration:none;">➔ Ver Documentales Recomendados</a></li>
+        <li style="margin-bottom:0.5rem;"><a href="https://learningmusic.ableton.com/es/" target="_blank" style="color:var(--audio); text-decoration:none;">➔ Ableton Learning Music (Práctica Externa)</a></li>
+      </ul>
+    </div>
+            <h3 style="margin-top:4rem; font-size:2rem; text-align:center; border:none">🧠 Evaluador Interactivo</h3>
+  
+  <div class="quiz-app" id="quiz-app-8">
+    <div class="q-progress" id="q-progress-8">Pregunta 1 de 5</div>
+    <div class="q-text" id="q-text-8"></div>
+    <div id="q-opts-8"></div>
+    <button class="q-next" id="q-next-8" onclick="nextQuestion_8()">Siguiente Pregunta ➔</button>
+  </div>
+</div>
+
+<footer style="text-align:center; padding:2rem; color:var(--muted); font-size:0.9rem;">
+  Ableton 101 — Soundspace Academy by LAO
+</footer>
+
+<script>
+  // Mixer Logic
+  function updateMixer() {
+    let k = parseFloat(document.getElementById('fader-kick').value);
+    let b = parseFloat(document.getElementById('fader-bass').value);
+    let s = parseFloat(document.getElementById('fader-synth').value);
+    let v = parseFloat(document.getElementById('fader-vocal').value);
+    
+    document.getElementById('meter-kick').style.height = k + '%';
+    document.getElementById('meter-bass').style.height = b + '%';
+    document.getElementById('meter-synth').style.height = s + '%';
+    document.getElementById('meter-vocal').style.height = v + '%';
+    
+    // Sum emulation (non-linear for effect)
+    let total = (k + b + s + v) / 4 * 1.5; 
+    
+    let masterMeter = document.getElementById('meter-master');
+    let clipInd = document.getElementById('clip-master');
+    
+    if (total > 100) {
+      masterMeter.style.height = '100%';
+      clipInd.classList.add('clipped');
+    } else {
+      masterMeter.style.height = total + '%';
+      clipInd.classList.remove('clipped');
+    }
+  }
+  
+  // Init mixer
+  updateMixer();
+
+  // Quiz Logic
+  const qData_8 = [
+    {
+      "q":"¿Qué es el 'Headroom' en el contexto de una mezcla digital?",
+      "opts":["El margen de seguridad de volumen que dejamos antes de llegar a 0 dBFS para evitar distorsión.","El eco que se genera en una habitación grande.","La frecuencia más aguda que puede escuchar un humano.","Un plugin para ecualizar baterías."],
+      "ans":0
+    },
+    {
+      "q":"Al panear los elementos de una mezcla, ¿cuáles de estos instrumentos suelen dejarse estrictamente en el Centro?",
+      "opts":["Hi-Hats, Coros y Sintetizadores.","Guitarras secundarias y efectos de sonido.","Bombo (Kick), Bajo y Voz Principal.","No hay reglas, todo debe ir a los lados."],
+      "ans":2
+    },
+    {
+      "q":"¿Qué ocurre si el canal Master de tu DAW sobrepasa los 0 dBFS y llega a la zona roja?",
+      "opts":["La mezcla sonará más cálida como en la cinta analógica.","Se produce 'clipping' o distorsión digital indeseada.","La canción se exportará en mayor calidad.","Ableton se cerrará automáticamente."],
+      "ans":1
+    },
+    {
+      "q":"¿Para qué es útil la agrupación (Grupos o Buses) en Ableton?",
+      "opts":["Para borrar pistas más rápido.","Para cambiar el color de todos los clips al mismo tiempo.","Para controlar el volumen y aplicar efectos a varias pistas como si fueran una sola (Ej. todas las baterías).","Solo sirve para ocultar pistas y ahorrar memoria RAM."],
+      "ans":2
+    },
+    {
+      "q":"Según la regla de oro y la analogía de la caja 3D en la mezcla...",
+      "opts":["Todo debe sonar al volumen máximo y en el centro.","Si todo es grande, ruidoso y está al centro, nada destaca. Se requiere contraste.","Solo se puede usar reverb si no hay bajo.","Las voces deben ir paneadas totalmente a la izquierda o derecha."],
+      "ans":1
+    }
+  ];
+  
+  let curQ_8 = 0; let score_8 = 0;
+  function renderQ_8() {
+    if(curQ_8 >= qData_8.length) {
+      let p = Math.round((score_8 / qData_8.length) * 100);
+      let msg = p === 100 ? '¡Perfecto! Eres un experto en balance.' : (p >= 60 ? '¡Bien hecho! Aprobaste.' : 'Necesitas repasar los niveles.');
+      
+      if (p >= 60) {
+        localStorage.setItem('ableton101_c8', p);
+      }
+      
+      document.getElementById('quiz-app-8').innerHTML = '<div style="text-align:center"><div style="font-size:4rem;margin-bottom:1rem">' + (p>=60?'🏆':'📉') + '</div><h3 style="color:#fff;font-size:2rem;margin-bottom:1rem">Tu Score: ' + score_8 + ' / ' + qData_8.length + ' (' + p + '%)</h3><p style="color:#aaa;font-size:1.2rem">' + msg + '</p></div>';
+      return;
+    }
+    let q = qData_8[curQ_8];
+    document.getElementById('q-progress-8').textContent = 'Pregunta ' + (curQ_8+1) + ' de ' + qData_8.length;
+    document.getElementById('q-text-8').textContent = q.q;
+    let optsHTML = '';
+    q.opts.forEach((opt, idx) => { optsHTML += '<button class="q-opt" onclick="checkQ_8(' + idx + ', ' + q.ans + ', this)">' + opt + '</button>'; });
+    document.getElementById('q-opts-8').innerHTML = optsHTML;
+    document.getElementById('q-next-8').style.display = 'none';
+  }
+  
+  function checkQ_8(sIdx, cIdx, btn) {
+    const btns = document.getElementById('q-opts-8').querySelectorAll('.q-opt');
+    btns.forEach(b => { b.disabled = true; b.style.opacity = '0.7'; });
+    btn.style.opacity = '1';
+    if(sIdx === cIdx) { btn.classList.add('correct'); score_8++; } 
+    else { btn.classList.add('wrong'); btns[cIdx].classList.add('correct'); btns[cIdx].style.opacity = '1'; }
+    document.getElementById('q-next-8').style.display = 'block';
+  }
+  
+  function nextQuestion_8() { curQ_8++; renderQ_8(); }
+  
+  setTimeout(() => renderQ_8(), 100);
+</script>
+
+<script src="../js/tooltips.js"></script>
+
+<script>
+  // Global Touch to Mouse mapping for Canvas interactivity on iPads/Mobiles
+  function touchHandler(event) {
+    if(event.target.tagName !== 'CANVAS' && event.target.type !== 'range') return;
+    var touch = event.changedTouches[0];
+    var simulatedEvent = document.createEvent("MouseEvent");
+    simulatedEvent.initMouseEvent({
+        touchstart: "mousedown",
+        touchmove: "mousemove",
+        touchend: "mouseup"
+    }[event.type], true, true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null);
+    touch.target.dispatchEvent(simulatedEvent);
+    if(event.target.tagName === 'CANVAS') event.preventDefault();
+  }
+  document.addEventListener("touchstart", touchHandler, {passive: false});
+  document.addEventListener("touchmove", touchHandler, {passive: false});
+  document.addEventListener("touchend", touchHandler, {passive: false});
+</script>
+</body>
+</html>

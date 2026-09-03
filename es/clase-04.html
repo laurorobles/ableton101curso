@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Ableton 101 — Clase 4: Armonía, MIDI y Síntesis</title>
+  <style>
+    :root { --bg:#F8F9FA; --surface:#fff; --text:#000; --muted:#555; --border:#E5E7EB; --audio:#0055FF; --play:#00B84D; --midi:#FF5500; --danger:#E53E3E; }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:18px;line-height:1.6;padding:4rem 5%}
+    .btn-back { position:fixed; top:20px; left:20px; background:var(--surface); color:var(--text); text-decoration:none; padding:10px 15px; border-radius:8px; border:2px solid var(--border); font-weight:bold; font-size:0.9rem; z-index:9999; box-shadow:0 4px 10px rgba(0,0,0,0.1); transition:transform 0.1s; }
+    .btn-back:hover { transform:scale(1.05); }
+    
+    /* Layout unificado */
+    header { text-align:center; padding-bottom:3rem; margin-bottom:3rem; border-bottom:1px solid var(--border); }
+    section { max-width:1000px; margin:0 auto 5rem; padding:4rem 0; border-bottom:1px solid var(--border); }
+    section:last-of-type { border-bottom:none; }
+    h1 { font-size:3.5rem; font-weight:900; margin-bottom:1rem; letter-spacing:-0.03em; }
+    h2 { font-size:2.5rem; margin-bottom:1.5rem; }
+    h3 { font-size:1.5rem; margin-bottom:1rem; }
+    p.sub { font-size:1.4rem; color:var(--muted); max-width:800px; margin:0 auto; }
+    .tag { display:inline-block; font-size:0.9rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; background:#E5E7EB; padding:0.4rem 1rem; border-radius:8px; margin-bottom:1rem; }
+    
+    .panel { background:var(--surface); border:2px solid var(--border); border-radius:16px; padding:2rem; box-shadow:0 10px 30px rgba(0,0,0,0.03); }
+    .btn { padding:1rem 2rem; border-radius:8px; border:none; font-weight:bold; font-size:1.2rem; cursor:pointer; color:#fff; transition:transform 0.1s; }
+    .btn:active { transform:scale(0.95); }
+    
+    /* M-FINAL */
+    .m-final { background:#111; color:#fff; padding:4rem; border-radius:24px; margin-top:4rem; }
+    .m-final h2 { color:#fff; }
+    .m-final .tag { background:#333; color:#fff; }
+    .m-final h3 { color:var(--play); border-bottom:1px solid #333; padding-bottom:0.5rem; margin-bottom:1.5rem; margin-top:2rem; }
+    .m-final ul { list-style:none; }
+    .m-final li { margin-bottom:1rem; color:#ccc; display:flex; gap:1rem; align-items:flex-start; }
+    .m-final li strong { color:#fff; min-width:120px; }
+    .quiz-card { background:#222; padding:2rem; border-radius:12px; margin-top:1rem; border:1px solid #333; }
+    .q-opt { display:block; width:100%; text-align:left; background:#333; color:#fff; border:1px solid #444; padding:1rem; border-radius:8px; margin-bottom:0.5rem; cursor:pointer; font-size:1rem; transition:background 0.2s; }
+    .q-opt:hover { background:#444; }
+    .q-opt.correct { background:var(--play); border-color:var(--play); }
+    .q-opt.wrong { background:var(--danger); border-color:var(--danger); }
+  
+    /* Quiz */
+    .quiz-app { background:#222; border:1px solid #333; border-radius:16px; padding:2rem; margin-top:2rem; }
+    .q-text { font-size:1.4rem; color:#fff; margin-bottom:1.5rem; }
+    .q-opt { display:block; width:100%; text-align:left; background:#333; color:#fff; border:2px solid transparent; padding:1.2rem; border-radius:8px; margin-bottom:0.8rem; cursor:pointer; font-size:1.1rem; transition:all 0.2s; }
+    .q-opt:hover { background:#444; border-color:#555; }
+    .q-opt.correct { background:var(--play) !important; color:#fff; border-color:#fff; }
+    .q-opt.wrong { background:var(--danger) !important; color:#fff; }
+    .q-progress { color:var(--muted); margin-bottom:1rem; font-weight:bold; }
+    .q-next { background:var(--audio); color:#fff; padding:1rem 2rem; border:none; border-radius:8px; font-weight:bold; font-size:1.2rem; cursor:pointer; margin-top:1rem; display:none; }
+    .m-final { background:#111; color:#fff; padding:4rem; border-radius:24px; margin-top:4rem; max-width:1000px; margin:4rem auto; }
+    .m-final h2 { color:#fff; }
+    .m-final .tag { background:#333; color:#fff; }
+    .m-final ul { list-style:none; }
+    .m-final li { margin-bottom:1rem; color:#ccc; display:flex; gap:1rem; }
+    .m-final h3 { color:var(--play); border-bottom:1px solid #333; padding-bottom:0.5rem; margin-bottom:1.5rem; margin-top:2rem; }
+  
+  </style>
+</head>
+<body>
+<a href="../index.html" class="btn-back">← Volver al Índice</a>
+
+<!-- HERO ESTANDARIZADO -->
+<header style="background:var(--surface); padding:4rem 2rem; border-radius:24px; border:2px solid var(--border); margin-bottom:4rem;">
+  <div class="tag">Soundspace Academy</div>
+  <h1>Ableton 101<br>Clase 4: Armonía, MIDI y Síntesis</h1>
+  <p class="sub" style="margin-bottom:2rem">Efectos MIDI (Chord, Scale, Arpeggiator) y el poder del Piano Roll.</p>
+
+  <div style="display:flex;align-items:center;justify-content:center;gap:1.5rem;margin:0 auto 2rem;text-align:left;max-width:800px;background:#F0F4F8;padding:1.5rem;border-radius:16px;">
+    <img src="../assets/lao_foto.jpg" alt="LAO" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'><rect width=\'100\' height=\'100\' fill=\'%23ccc\'/></svg>'" style="width:100px;height:100px;border-radius:50%;object-fit:cover;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+    <div>
+      <h3 style="margin-bottom:0.3rem;font-size:1.4rem;">Instructor: LAO (Lauro Robles)</h3>
+      <p style="font-size:1rem;color:var(--muted);line-height:1.4;">Bienvenido a la Clase 4. Efectos MIDI • Teoría Musical • Piano Roll</p>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="tag" style="background:var(--midi);color:#fff">Módulo 01</div>
+  <h2>El Cuantizador de Escalas (Scale)</h2>
+  <p class="sub">El efecto Scale fuerza cualquier nota MIDI incorrecta hacia la nota correcta más cercana dentro de una escala. Es imposible desafinar.</p>
+  
+  <div class="panel" style="margin-top:2rem; text-align:center; background:#111">
+    <h3 style="color:#fff">Toca cualquier tecla (Filtro: Do Menor)</h3>
+    <div style="display:flex; justify-content:center; gap:0.5rem; margin-top:2rem; padding:2rem" id="keyboard">
+      <!-- Generado por JS -->
+    </div>
+    <p id="scale-msg" style="color:var(--play); font-size:1.5rem; margin-top:1rem; height:2rem"></p>
+  </div>
+</section>
+
+<section>
+  <div class="tag" style="background:var(--audio);color:#fff">Módulo 02</div>
+  <h2>El Generador de Acordes (Chord)</h2>
+  <p class="sub">Un acorde son 3 o más notas sonando al mismo tiempo. El efecto Chord de Ableton clona tu nota original y le suma semitonos (+3, +7) matemáticamente.</p>
+  
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin-top:2rem">
+    <div class="panel" style="text-align:center; cursor:pointer; transition:transform 0.2s" onclick="playChord('major')" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">
+      <div style="font-size:4rem">☀️</div>
+      <h3 style="margin:1rem 0">Acorde Mayor</h3>
+      <p style="color:var(--muted)">Sonido brillante, alegre o épico.</p>
+      <p style="font-weight:bold; color:var(--audio); margin-top:1rem">Fórmula: 0, +4, +7</p>
+    </div>
+    <div class="panel" style="text-align:center; cursor:pointer; transition:transform 0.2s" onclick="playChord('minor')" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">
+      <div style="font-size:4rem">🌧️</div>
+      <h3 style="margin:1rem 0">Acorde Menor</h3>
+      <p style="color:var(--muted)">Sonido triste, melancólico u oscuro.</p>
+      <p style="font-weight:bold; color:var(--midi); margin-top:1rem">Fórmula: 0, +3, +7</p>
+    </div>
+  </div>
+</section>
+
+<!-- MÓDULO FINAL ESTANDARIZADO -->
+
+
+<section id="m3">
+  <div class="tag" style="background:#FFBC00;color:#000">Módulo 03</div>
+  <h2>El Piano Roll 2.0 (Secuenciador)</h2>
+  <p class="sub">Dibuja tus notas. El eje vertical simula un teclado real (tono) y el horizontal representa la cuadrícula de tiempo (Grid). Ajusta el BPM y dale Play.</p>
+  
+  <div class="panel" style="margin-top:2rem; background:#222; padding:1.5rem; border-radius:12px; border:2px solid #333; position:relative;">
+    
+    <div style="display:flex; justify-content:space-between; margin-bottom:1.5rem; align-items:center; flex-wrap:wrap; gap:1rem">
+      <div style="display:flex; gap:1rem">
+        <button class="btn" id="btnPrPlay" style="background:var(--play); padding:0.6rem 1.5rem; font-size:1rem" onclick="togglePrPlay()">▶ Play</button>
+        <button class="btn" style="background:#444; padding:0.6rem 1.5rem; font-size:1rem" onclick="clearPr()">🗑️ Borrar</button>
+      </div>
+      <div style="color:#fff; display:flex; align-items:center; gap:1rem">
+        <label>BPM: <span id="bpmVal">120</span></label>
+        <input type="range" id="prBpm" min="60" max="180" value="120" style="accent-color:var(--play)" oninput="document.getElementById('bpmVal').innerText=this.value">
+      </div>
+    </div>
+    
+    <div style="display:flex; border:1px solid #111; border-radius:4px; overflow:hidden; background:#111; position:relative">
+      
+      <!-- Teclado Y-Axis -->
+      <div style="width:60px; display:flex; flex-direction:column; background:#fff">
+        <div class="piano-key white">C5</div>
+        <div class="piano-key black">B4</div>
+        <div class="piano-key white">A4</div>
+        <div class="piano-key black">G4</div>
+        <div class="piano-key white">F4</div>
+        <div class="piano-key white">E4</div>
+        <div class="piano-key black">D4</div>
+        <div class="piano-key white">C4</div>
+      </div>
+      
+      <!-- Grid X-Axis -->
+      <div id="prGrid" style="flex:1; display:grid; grid-template-columns:repeat(16, 1fr); gap:1px; background:#444; padding:1px; position:relative">
+        <!-- Playhead -->
+        <div id="playhead" style="position:absolute; top:0; left:0; width:6.25%; height:100%; background:rgba(255,255,255,0.15); pointer-events:none; border-left:2px solid var(--play); z-index:10; display:none;"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- GIF Placeholder -->
+  <div class="gif-placeholder" style="margin-top:2rem; padding:2rem; background:#F0F4F8; border:2px dashed #CBD5E1; border-radius:12px; text-align:center;">
+    <h4 style="color:var(--muted); margin-bottom:0.5rem">🖼️ Espacio para GIF: Clip MIDI en Ableton</h4>
+    <p style="font-size:0.9rem; color:#888">Guarda un GIF dibujando notas en el Piano Roll real de Ableton en <code>assets/gifs/piano_roll.gif</code> y colócalo aquí para el puente visual.</p>
+  </div>
+</section>
+
+<style>
+  .piano-key { height: 32px; display:flex; align-items:center; justify-content:flex-end; padding-right:5px; font-size:10px; font-weight:bold; border-bottom:1px solid #ccc; box-sizing:border-box; }
+  .piano-key.white { background: #fff; color: #333; }
+  .piano-key.black { background: #222; color: #fff; height:24px; margin-top:-12px; margin-bottom:-12px; z-index:2; border:1px solid #000; border-right:none; }
+  .pr-cell { height:32px; background:#2c2c2e; cursor:pointer; transition:background 0.1s; }
+  .pr-cell:hover { background:#3a3a3c; }
+  .pr-cell.active { background:var(--audio); box-shadow:inset 0 0 10px rgba(0,0,0,0.5); border:1px solid #88b3ff; }
+  .pr-cell.black-row { background:#1e1e1e; }
+  .pr-cell.black-row.active { background:var(--audio); }
+</style>
+
+<script>
+  // C5, B4, A4, G4, F4, E4, D4, C4
+  const prFreqs = [523.25, 493.88, 440.00, 392.00, 349.23, 329.63, 293.66, 261.63]; 
+  const isBlack = [false, true, false, true, false, false, true, false]; // true if it aligns with a black key visually in this fake layout
+  const grid = document.getElementById('prGrid');
+  let prData = Array(8).fill(0).map(() => Array(16).fill(false));
+  
+  // Render grid
+  function renderPr() {
+    grid.innerHTML = '<div id="playhead" style="position:absolute; top:0; left:0; width:6.25%; height:100%; background:rgba(255,255,255,0.15); pointer-events:none; border-left:2px solid var(--play); z-index:10; display:none;"></div>';
+    
+    for(let r=0; r<8; r++) {
+      for(let c=0; c<16; c++) {
+        let isAct = prData[r][c];
+        let cClass = isBlack[r] ? 'pr-cell black-row' : 'pr-cell';
+        if(isAct) cClass += ' active';
+        let bgExtra = (c%4===0) ? 'border-left:1px solid #666;' : '';
+        grid.innerHTML += `<div class="${cClass}" style="${bgExtra}" id="cell-${r}-${c}" onclick="toggleCell(${r},${c})"></div>`;
+      }
+    }
+  }
+  
+  function toggleCell(r, c) {
+    prData[r][c] = !prData[r][c];
+    document.getElementById(`cell-${r}-${c}`).classList.toggle('active');
+  }
+  
+  function clearPr() {
+    prData = Array(8).fill(0).map(() => Array(16).fill(false));
+    renderPr();
+  }
+  
+  let prAc, prInterval, prStep = 0, nextNoteTime = 0;
+  
+  function togglePrPlay() {
+    const btn = document.getElementById('btnPrPlay');
+    if(prInterval) {
+      clearInterval(prInterval); prInterval = null; 
+      btn.innerHTML = "▶ Play"; btn.style.background = "var(--play)";
+      document.getElementById('playhead').style.display = 'none';
+      return;
+    }
+    
+    if(!prAc) prAc = new (window.AudioContext || window.webkitAudioContext)();
+    if(prAc.state === 'suspended') prAc.resume();
+    btn.innerHTML = "⏹ Stop"; btn.style.background = "var(--danger)";
+    document.getElementById('playhead').style.display = 'block';
+    
+    prStep = 0;
+    nextNoteTime = prAc.currentTime + 0.1;
+    scheduler();
+    prInterval = setInterval(scheduler, 25); // lookahead loop
+  }
+
+  function playSynthNote(freq, time, dur) {
+    let o = prAc.createOscillator(), g = prAc.createGain();
+    o.type = 'square'; // Classic synth
+    
+    // Lowpass filter to make it sound like a nice pluck
+    let f = prAc.createBiquadFilter();
+    f.type = 'lowpass';
+    f.frequency.setValueAtTime(2000, time);
+    f.frequency.exponentialRampToValueAtTime(100, time + dur);
+    
+    o.frequency.value = freq;
+    o.connect(f); f.connect(g); g.connect(prAc.destination);
+    
+    // ADSR Envelope
+    g.gain.setValueAtTime(0, time);
+    g.gain.linearRampToValueAtTime(0.3, time + 0.02); // Attack
+    g.gain.exponentialRampToValueAtTime(0.001, time + dur); // Decay/Release
+    
+    o.start(time); o.stop(time + dur + 0.1);
+  }
+
+  function scheduler() {
+    while(nextNoteTime < prAc.currentTime + 0.1) {
+      // Move playhead visually
+      document.getElementById('playhead').style.left = (prStep * 6.25) + '%';
+      
+      // Calculate beat duration based on BPM
+      const bpm = parseInt(document.getElementById('prBpm').value);
+      const beatDur = 60 / bpm; // duration of a quarter note
+      const stepDur = beatDur / 4; // duration of a 16th note
+      
+      // Play active notes
+      for(let r=0; r<8; r++) {
+        if(prData[r][prStep]) {
+          playSynthNote(prFreqs[r], nextNoteTime, stepDur * 1.5);
+        }
+      }
+      
+      prStep = (prStep + 1) % 16;
+      nextNoteTime += stepDur;
+    }
+  }
+  
+  renderPr();
+</script>
+
+
+<style>
+  .pr-cell { height:30px; background:#2c2c2e; border:1px solid #111; cursor:pointer; border-radius:3px; transition:background 0.1s; }
+  .pr-cell:hover { background:#3a3a3c; }
+  .pr-cell.active { background:var(--audio); box-shadow:0 0 10px var(--audio); }
+  .pr-cell.playing { border: 2px solid #fff; }
+  .pr-label { color:#fff; font-size:0.8rem; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; font-family:monospace; }
+</style>
+
+<script>
+  const prFrequencies = [523.25, 493.88, 440.00, 392.00, 349.23, 329.63, 293.66, 261.63]; // C5 to C4
+  const prNotes = ["C5", "B4", "A4", "G4", "F4", "E4", "D4", "C4"];
+  const grid = document.getElementById('prGrid');
+  let prData = Array(8).fill(0).map(() => Array(16).fill(false));
+  
+  // Render grid
+  function renderPr() {
+    grid.innerHTML = '';
+    // Header row (beats)
+    grid.innerHTML += '<div></div>';
+    for(let c=0; c<16; c++) grid.innerHTML += `<div style="color:#666; font-size:0.7rem; text-align:center">${(c%4)+1}</div>`;
+    
+    for(let r=0; r<8; r++) {
+      grid.innerHTML += `<div class="pr-label">${prNotes[r]}</div>`;
+      for(let c=0; c<16; c++) {
+        let isAct = prData[r][c];
+        grid.innerHTML += `<div class="pr-cell ${isAct ? 'active' : ''}" id="cell-${r}-${c}" onclick="toggleCell(${r},${c})"></div>`;
+      }
+    }
+  }
+  
+  function toggleCell(r, c) {
+    prData[r][c] = !prData[r][c];
+    document.getElementById(`cell-${r}-${c}`).classList.toggle('active');
+  }
+  
+  function clearPr() {
+    prData = Array(8).fill(0).map(() => Array(16).fill(false));
+    renderPr();
+  }
+  
+  let prAc, prInterval, prStep = 0;
+  function togglePrPlay() {
+    const btn = document.getElementById('btnPrPlay');
+    if(prInterval) {
+      clearInterval(prInterval); prInterval = null; btn.innerHTML = "▶ Play"; btn.style.background = "var(--play)";
+      document.querySelectorAll('.pr-cell').forEach(el => el.classList.remove('playing'));
+      return;
+    }
+    
+    if(!prAc) prAc = new (window.AudioContext || window.webkitAudioContext)();
+    if(prAc.state === 'suspended') prAc.resume();
+    btn.innerHTML = "⏹ Stop"; btn.style.background = "var(--danger)";
+    
+    prStep = 0;
+    prInterval = setInterval(() => {
+      // Visually highlight column
+      document.querySelectorAll('.pr-cell').forEach(el => el.classList.remove('playing'));
+      for(let r=0; r<8; r++) document.getElementById(`cell-${r}-${prStep}`).classList.add('playing');
+      
+      // Play notes
+      for(let r=0; r<8; r++) {
+        if(prData[r][prStep]) {
+          let o = prAc.createOscillator(), g = prAc.createGain();
+          o.type = 'triangle'; o.frequency.value = prFrequencies[r];
+          o.connect(g); g.connect(prAc.destination);
+          g.gain.setValueAtTime(0, prAc.currentTime);
+          g.gain.linearRampToValueAtTime(0.3, prAc.currentTime + 0.02);
+          g.gain.exponentialRampToValueAtTime(0.001, prAc.currentTime + 0.3);
+          o.start(); o.stop(prAc.currentTime + 0.35);
+        }
+      }
+      prStep = (prStep + 1) % 16;
+    }, 150);
+  }
+  
+  renderPr();
+</script>
+
+
+<div class="m-final">
+  <div class="tag">Módulo Final</div>
+  <h2>Resumen de Conceptos</h2>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:3rem;">
+    <div>
+      <h3>📚 Conceptos Clave</h3>
+      <ul><li><span>✅</span> <span>Los Efectos MIDI se colocan ANTES del instrumento para alterar las notas que recibe (ej. Arpeggiator).</span></li><li><span>✅</span> <span>Scale fuerza las notas para evitar que toques fuera de tono.</span></li><li><span>✅</span> <span>El Piano Roll es tu lienzo cuadriculado para escribir o corregir notas MIDI con precisión.</span></li></ul>
+    </div>
+    <div>
+      <h3>⌨️ Shortcuts Aprendidos</h3>
+      <ul><li><strong>Cmd/Ctrl + Shift + M</strong> <span>Insertar un Clip MIDI vacío.</span></li><li><strong>B</strong> <span>Activar el modo Dibujo (Lápiz).</span></li></ul>
+    </div>
+  </div>
+  
+  <h3 style="margin-top:4rem; font-size:2rem; text-align:center; border:none">🧠 Evaluador Interactivo</h3>
+  <div class="quiz-app" id="quiz-app-4">
+    <div class="q-progress" id="q-progress-4">Pregunta 1 de 5</div>
+    <div class="q-text" id="q-text-4"></div>
+    <div id="q-opts-4"></div>
+    <button class="q-next" id="q-next-4" onclick="nextQuestion_4()">Siguiente Pregunta ➔</button>
+  </div>
+  
+  <div style="margin-top: 2rem; border-top: 1px solid #333; padding-top: 2rem; text-align:center;">
+    <h3>📖 Bibliografía y Recursos</h3>
+    <ul style="list-style:none; padding:0; margin-top:1rem; line-height:2;">
+      <li><a href="anexo-glosario.html" style="color:var(--audio); text-decoration:none;">➔ Consultar el Glosario Oficial</a></li>
+      <li><a href="examen-final.html" style="color:var(--play); text-decoration:none; font-weight:bold; font-size:1.2rem;">➔ Ir al GRAN EXAMEN FINAL</a></li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  const qData_4 = [{"q":"¿Dónde se debe colocar un Efecto MIDI (como el Arpeggiator)?","opts":["En el canal Master","Después del instrumento virtual","Antes del instrumento virtual para alterar la información MIDI que entra","En la pista de retorno"],"ans":2},{"q":"¿Qué hace el efecto MIDI 'Chord'?","opts":["Añade eco","Suma notas adicionales (intervalos) a cada tecla presionada, creando acordes instantáneos","Afina la voz","Separa las notas"],"ans":1},{"q":"El efecto 'Scale' es útil porque:","opts":["Fuerza todas las notas a encajar en una escala musical (ej. Do Menor), previniendo notas falsas","Aumenta la velocidad","Reduce el consumo de CPU","Crea una escala de volumen"],"ans":0},{"q":"¿Qué modo te permite dibujar notas fácilmente en el Piano Roll como si fuera una cuadrícula de bloques?","opts":["Modo Arreglo","Modo Dibujo (Lápiz / Tecla B)","Modo Warp","Modo Solo"],"ans":1},{"q":"¿Qué hace el Arpeggiator?","opts":["Toca acordes muy fuerte","Toma un acorde simultáneo y reproduce sus notas una a la vez en una secuencia rítmica","Comprime el audio","Baja el tempo"],"ans":1}];
+  let curQ_4 = 0; let score_4 = 0;
+  function renderQ_4() {
+    if(curQ_4 >= qData_4.length) {
+      let p = Math.round((score_4 / qData_4.length) * 100);
+      let msg = p === 100 ? '¡Perfecto!' : (p >= 60 ? '¡Bien hecho!' : 'Repasa la lección.');
+      if (p >= 60) localStorage.setItem('ableton101_c4', score_4);
+      document.getElementById('quiz-app-4').innerHTML = '<div style="text-align:center"><div style="font-size:4rem;margin-bottom:1rem">' + (p>=60?'🏆':'📉') + '</div><h3 style="color:#fff;font-size:2rem;margin-bottom:1rem">Tu Score: ' + score_4 + ' / ' + qData_4.length + ' (' + p + '%)</h3><p style="color:#aaa;font-size:1.2rem">' + msg + '</p></div>';
+      return;
+    }
+    let q = qData_4[curQ_4];
+    document.getElementById('q-progress-4').textContent = 'Pregunta ' + (curQ_4+1) + ' de ' + qData_4.length;
+    document.getElementById('q-text-4').textContent = q.q;
+    let optsHTML = '';
+    q.opts.forEach((opt, idx) => { optsHTML += '<button class="q-opt" onclick="checkQ_4(' + idx + ', ' + q.ans + ', this)">' + opt + '</button>'; });
+    document.getElementById('q-opts-4').innerHTML = optsHTML;
+    document.getElementById('q-next-4').style.display = 'none';
+  }
+  function checkQ_4(sIdx, cIdx, btn) {
+    const btns = document.getElementById('q-opts-4').querySelectorAll('.q-opt');
+    btns.forEach(b => { b.disabled = true; b.style.opacity = '0.7'; });
+    btn.style.opacity = '1';
+    if(sIdx === cIdx) { btn.classList.add('correct'); score_4++; } 
+    else { btn.classList.add('wrong'); btns[cIdx].classList.add('correct'); btns[cIdx].style.opacity = '1'; }
+    document.getElementById('q-next-4').style.display = 'block';
+  }
+  function nextQuestion_4() { curQ_4++; renderQ_4(); }
+  setTimeout(() => renderQ_4(), 100);
+</script>
+
+<script src="../js/tooltips.js"></script>
+<script>
+  function touchHandler(event) {
+    if(event.target.tagName !== 'CANVAS' && event.target.type !== 'range') return;
+    var touch = event.changedTouches[0];
+    var simulatedEvent = document.createEvent("MouseEvent");
+    simulatedEvent.initMouseEvent({ touchstart:"mousedown", touchmove:"mousemove", touchend:"mouseup" }[event.type], true, true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null);
+    touch.target.dispatchEvent(simulatedEvent);
+    if(event.target.tagName === 'CANVAS') event.preventDefault();
+  }
+  document.addEventListener("touchstart", touchHandler, {passive: false});
+  document.addEventListener("touchmove", touchHandler, {passive: false});
+  document.addEventListener("touchend", touchHandler, {passive: false});
+</script>
+<div style="position:fixed;bottom:15px;right:20px;font-size:0.9rem;opacity:0.35;z-index:9999;font-weight:700;">Creado por @laurorobles</div>
+</body></html>

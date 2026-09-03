@@ -13,13 +13,13 @@
     }
     *{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
-    body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:22px;line-height:1.5;-webkit-font-smoothing:antialiased}
+    body{background:var(--bg);color:var(--text);font-family:-apple-system,sans-serif;font-size:18px;line-height:1.6;padding:4rem 5%}
     ::-webkit-scrollbar{width:0;background:transparent}
-    h1{font-size:4.5rem;font-weight:900;letter-spacing:-.04em;line-height:1.05;margin-bottom:1rem}
+    h1 { font-size:3.5rem; font-weight:900; margin-bottom:1rem; }
     h2{font-size:3rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.8rem}
     h3{font-size:1.8rem;font-weight:700;margin-bottom:.5rem}
     .sub{font-size:1.5rem;color:var(--muted);max-width:900px;margin-bottom:2.5rem;font-weight:500}
-    section{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:5rem 5%;border-bottom:2px solid var(--border);overflow:visible}
+    section { max-width:1000px; margin:0 auto 5rem; padding:4rem 0; border-bottom:1px solid var(--border); }
     .tag{display:inline-block;font-size:1rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
     .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font-size:1.2rem;font-weight:700;padding:.9rem 1.8rem;border-radius:12px;border:none;cursor:pointer;transition:transform .1s,filter .15s;color:#fff;user-select:none;font-family:inherit}
     .btn:active{transform:scale(.96)} .btn:hover{filter:brightness(1.1)}
@@ -63,30 +63,57 @@
     .control-group { display:flex; flex-direction:column; gap:0.5rem; flex:1; }
     select, input[type="range"] { padding:0.8rem; background:var(--surface); color:var(--text); border:2px solid var(--border); border-radius:8px; font-size:1.2rem; outline:none; }
     select:focus { border-color:var(--play); }
+    header { text-align:center; padding:4rem 2rem; border-radius:24px; border:2px solid var(--border); margin-bottom:4rem; background:var(--surface); }
+
+    .m-final { background:#111; color:#fff; padding:4rem; border-radius:24px; margin-top:4rem; max-width:1000px; margin:4rem auto; }
+    .m-final h2 { color:#fff; }
+    .m-final .tag { background:#333; color:#fff; }
+    .m-final h3 { color:var(--play); border-bottom:1px solid #333; padding-bottom:0.5rem; margin-bottom:1.5rem; margin-top:2rem; }
+    .m-final ul { list-style:none; }
+    .m-final li { margin-bottom:1rem; color:#ccc; display:flex; gap:1rem; }
+  
+    /* Quiz */
+    .quiz-app { background:#222; border:1px solid #333; border-radius:16px; padding:2rem; margin-top:2rem; }
+    .q-text { font-size:1.4rem; color:#fff; margin-bottom:1.5rem; }
+    .q-opt { display:block; width:100%; text-align:left; background:#333; color:#fff; border:2px solid transparent; padding:1.2rem; border-radius:8px; margin-bottom:0.8rem; cursor:pointer; font-size:1.1rem; transition:all 0.2s; }
+    .q-opt:hover { background:#444; border-color:#555; }
+    .q-opt.correct { background:var(--play) !important; color:#fff; border-color:#fff; }
+    .q-opt.wrong { background:var(--danger) !important; color:#fff; }
+    .q-progress { color:var(--muted); margin-bottom:1rem; font-weight:bold; }
+    .q-next { background:var(--audio); color:#fff; padding:1rem 2rem; border:none; border-radius:8px; font-weight:bold; font-size:1.2rem; cursor:pointer; margin-top:1rem; display:none; }
+    .m-final { background:#111; color:#fff; padding:4rem; border-radius:24px; margin-top:4rem; max-width:1000px; margin:4rem auto; }
+    .m-final h2 { color:#fff; }
+    .m-final .tag { background:#333; color:#fff; }
+    .m-final ul { list-style:none; }
+    .m-final li { margin-bottom:1rem; color:#ccc; display:flex; gap:1rem; }
+    .m-final h3 { color:var(--play); border-bottom:1px solid #333; padding-bottom:0.5rem; margin-bottom:1.5rem; margin-top:2rem; }
+  
   </style>
   <script src="../assets/amen.js" onerror="window.amenBase64 = null;"></script>
   <script src="../assets/tone.min.js"></script>
 </head>
 <body>
+<!-- Botón de Navegación -->
+<a href="../index.html" style="position:fixed; top:20px; left:20px; background:var(--surface); color:var(--text); text-decoration:none; padding:10px 15px; border-radius:8px; border:2px solid var(--border); font-weight:bold; font-size:0.9rem; z-index:9999; box-shadow:0 4px 10px rgba(0,0,0,0.1); transition:transform 0.1s;">
+  ← Volver al Índice
+</a>
+
 
 <div id="toast"></div>
 
-<!-- HERO -->
-<section style="background:var(--surface);align-items:center;text-align:center">
-  <div class="tag" style="background:#E5E7EB;padding:.4rem 1rem;border-radius:8px;color:var(--text)">Soundspace Academy</div>
+<!-- HERO ESTANDARIZADO -->
+<header>
+  <div class="tag">Soundspace Academy</div>
   <h1>Ableton 101<br>Clase 2: El Arte del Warping</h1>
-  <p class="sub" style="font-size:1.8rem;text-align:center;margin:0 auto 1.5rem">Manipulación de tiempo y tempo.</p>
-  
-  <div style="display:flex;align-items:center;justify-content:center;gap:1.5rem;margin-bottom:2.5rem;text-align:left;max-width:800px;background:#F0F4F8;padding:1.5rem;border-radius:16px;">
-    <img src="../assets/lao_foto.jpg" alt="LAO" style="width:100px;height:100px;border-radius:50%;object-fit:cover;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+  <p class="sub" style="margin-bottom:2rem">Manipulación de tiempo y tempo.</p>
+  <div style="display:flex;align-items:center;justify-content:center;gap:1.5rem;margin:0 auto 2rem;text-align:left;max-width:800px;background:#F0F4F8;padding:1.5rem;border-radius:16px;">
+    <img src="../assets/lao_foto.jpg" alt="LAO" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'><rect width=\'100\' height=\'100\' fill=\'%23ccc\'/></svg>'" style="width:100px;height:100px;border-radius:50%;object-fit:cover;">
     <div>
-      <h3 style="margin-bottom:0.3rem;font-size:1.4rem;">Creado por LAO (Lauro Robles)</h3>
-      <p style="font-size:1rem;color:var(--muted);line-height:1.4;">El "Warping" es lo que hizo famoso a Ableton Live. Aprende a manipular el tiempo como si fuera plastilina.</p>
+      <h3 style="margin-bottom:0.3rem;font-size:1.4rem;">Instructor: LAO (Lauro Robles)</h3>
+      <p style="font-size:1rem;color:var(--muted);line-height:1.4;">Bienvenido a la Clase 2. Warping • BPM • Algoritmos</p>
     </div>
   </div>
-
-  <a href="#m1" class="btn btn-dark" style="text-decoration:none;padding:1.3rem 3rem;font-size:1.7rem">Comenzar Clase ↓</a>
-</section>
+</header>
 
 <!-- M1: QUE ES EL WARPING -->
 <section id="m1">
@@ -101,7 +128,7 @@
       <div class="warp-marker" id="m1-marker"></div>
     </div>
     <div class="analogy" style="border-left-color:var(--warp-accent)">
-      <strong id="m1-message" style="color:var(--text);">Arrastra el marcador amarillo (Warp Marker) hacia la derecha para sincronizar el Snare con la línea del Grid (75%).</strong>
+      <strong id="m1-message" style=\"color:var(--text);">Arrastra el marcador amarillo (Warp Marker) hacia la derecha para sincronizar el Snare con la línea del Grid (75%).</strong>
     </div>
   </div>
 </section>
@@ -116,7 +143,7 @@
     <!-- Pista A -->
     <div class="row" style="margin-bottom:1rem;">
       <button class="btn btn-outline" style="border-color:var(--warp-accent)" onclick="warpFromHere()">📌 Warp from Here</button>
-      <span style="color:var(--muted);font-size:1rem;">Ideal para bateristas humanos o grabaciones sueltas.</span>
+      <span style=\"color:var(--muted);font-size:1rem;">Ideal para bateristas humanos o grabaciones sueltas.</span>
     </div>
     <div class="m2-track" id="trackA">
       <div class="m2-track-title">Baterista Humano</div>
@@ -126,7 +153,7 @@
     <!-- Pista B -->
     <div class="row" style="margin-top:2.5rem; margin-bottom:1rem;">
       <button class="btn btn-outline" style="border-color:var(--play)" onclick="warpStraight()">📏 Warp Straight</button>
-      <span style="color:var(--muted);font-size:1rem;">Ideal para acapellas electrónicas y stems a un tempo constante.</span>
+      <span style=\"color:var(--muted);font-size:1rem;">Ideal para acapellas electrónicas y stems a un tempo constante.</span>
     </div>
     <div class="m2-track" id="trackB">
       <div class="m2-track-title">Drum Machine</div>
@@ -157,11 +184,11 @@
       </div>
 
       <div class="control-group">
-        <label for="tempo-slider" style="font-weight:bold; color:var(--muted)">Tempo: <span id="tempo-val" style="color:var(--play)">120</span> BPM</label>
+        <label for="tempo-slider" style="font-weight:bold; color:var(--muted)">Tempo: <span id="tempo-val" style=\"color:var(--play)">120</span> BPM</label>
         <input type="range" id="tempo-slider" min="50" max="150" value="120" oninput="updateTempo(this.value)" style="accent-color:var(--play)">
       </div>
       <div class="control-group">
-        <label for="pitch-slider" style="font-weight:bold; color:var(--muted)">Pitch: <span id="pitch-val" style="color:var(--cc)">0</span> st</label>
+        <label for="pitch-slider" style="font-weight:bold; color:var(--muted)">Pitch: <span id="pitch-val" style=\"color:var(--cc)">0</span> st</label>
         <input type="range" id="pitch-slider" min="-12" max="12" value="0" oninput="updatePitch(this.value)" style="accent-color:var(--cc)">
       </div>
     </div>
@@ -180,24 +207,24 @@
 <!-- MÓDULO FINAL: RESUMEN Y TEST -->
 <section id="m-final" style="background:#111; color:#fff">
   <div class="tag" style="background:var(--cc); color:#fff">Módulo Final</div>
-  <h2 style="color:#fff">Resumen de Conceptos</h2>
-  <p class="sub" style="color:#aaa">Conceptos, Atajos de Teclado y Referencias.</p>
+  <h2 style=\"color:#fff">Resumen de Conceptos</h2>
+  <p class="sub" style=\"color:#aaa">Conceptos, Atajos de Teclado y Referencias.</p>
   
   <div class="split" style="margin-bottom:3rem">
     <div class="panel" style="background:#222; border-color:#333; color:#fff">
-      <h3 style="color:var(--audio); margin-bottom:1rem">🧠 Resumen de Conceptos por Clase</h3>
+      <h3 style=\"color:var(--audio); margin-bottom:1rem">🧠 Resumen de Conceptos por Clase</h3>
       <ul style="margin-left:1.5rem; line-height:1.8; font-size:1.1rem; color:#ddd" id="res-conceptos">
       </ul>
     </div>
     <div class="panel" style="background:#222; border-color:#333; color:#fff">
-      <h3 style="color:var(--play); margin-bottom:1rem">⌨️ Shortcuts de Teclado</h3>
+      <h3 style=\"color:var(--play); margin-bottom:1rem">⌨️ Shortcuts de Teclado</h3>
       <ul style="margin-left:1.5rem; line-height:1.8; font-size:1.1rem; color:#ddd" id="res-shortcuts">
       </ul>
     </div>
   </div>
   
   <div class="panel" style="background:#222; border-color:#333; color:#fff; margin-bottom:4rem">
-    <h3 style="color:var(--warp-accent); margin-bottom:1rem">📚 Bibliografía Sugerida y Concepto</h3>
+    <h3 style=\"color:var(--warp-accent); margin-bottom:1rem">📚 Bibliografía Sugerida y Concepto</h3>
     <p id="res-ref" style="font-size:1.1rem; line-height:1.6; color:#ddd; margin-top:1rem"></p>
   </div>
 
@@ -211,307 +238,84 @@
   </div>
 </section>
 
+
+<!-- MÓDULO FINAL ESTANDARIZADO -->
+
+<div class="m-final">
+  <div class="tag">Módulo Final</div>
+  <h2>Resumen de Conceptos</h2>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:3rem;">
+    <div>
+      <h3>📚 Conceptos Clave</h3>
+      <ul><li><span>✅</span> <span>Warping es la tecnología central de Ableton para alterar el tiempo sin afectar el tono (Pitch).</span></li><li><span>✅</span> <span>El algoritmo 'Beats' está diseñado para mantener los golpes fuertes (Transitorios) intactos en baterías.</span></li><li><span>✅</span> <span>El algoritmo 'Complex Pro' es ideal para preservar la calidad en canciones completas y voces.</span></li></ul>
+    </div>
+    <div>
+      <h3>⌨️ Shortcuts Aprendidos</h3>
+      <ul><li><strong>Doble Clic</strong> <span>Crea o elimina un marcador de Warp (Warp Marker).</span></li></ul>
+    </div>
+  </div>
+  
+  <h3 style="margin-top:4rem; font-size:2rem; text-align:center; border:none">🧠 Evaluador Interactivo</h3>
+  <div class="quiz-app" id="quiz-app-2">
+    <div class="q-progress" id="q-progress-2">Pregunta 1 de 5</div>
+    <div class="q-text" id="q-text-2"></div>
+    <div id="q-opts-2"></div>
+    <button class="q-next" id="q-next-2" onclick="nextQuestion_2()">Siguiente Pregunta ➔</button>
+  </div>
+  
+  <div style="margin-top: 2rem; border-top: 1px solid #333; padding-top: 2rem; text-align:center;">
+    <h3>📖 Bibliografía y Recursos</h3>
+    <ul style="list-style:none; padding:0; margin-top:1rem; line-height:2;">
+      <li><a href="anexo-glosario.html" style="color:var(--audio); text-decoration:none;">➔ Consultar el Glosario Oficial</a></li>
+      <li><a href="examen-final.html" style="color:var(--play); text-decoration:none; font-weight:bold; font-size:1.2rem;">➔ Ir al GRAN EXAMEN FINAL</a></li>
+    </ul>
+  </div>
+</div>
+
 <script>
-const classData = {
-      conceptos: [
-        "<b>Warping:</b> La habilidad de Ableton para estirar o encoger el audio sin cambiar su afinación, adaptándolo al Tempo (BPM) del proyecto.",
-        "<b>Algoritmo Beats:</b> Ideal para baterías y percusiones. Conserva los transitorios rítmicos.",
-        "<b>Algoritmo Complex / Pro:</b> Ideal para canciones completas o acapellas complejas."
-      ],
-      shortcuts: [
-        "<b>Doble Clic:</b> Crear o eliminar un marcador Warp.",
-        "<b>Shift + Clic en Marcador:</b> Mover un marcador sin afectar a los marcadores adyacentes."
-      ],
-      referencia: "<b>Referencia Histórica:</b> El \"Amen Break\" (The Winstons - Amen, Brother).<br><br><b>Concepto Explicado:</b> Es el sample de batería más importante de la historia. Al ser estirado, encogido, acelerado y repitcheado usando técnicas tempranas de Warping y samplers, formó la base de géneros enteros como el Jungle y el Drum & Bass en los 90s.",
-      quiz: [
-        { q: "Si quieres warpear un loop de batería (kick, snare, hats), ¿qué algoritmo es mejor?", opts: ["Tones", "Beats", "Texture", "Complex"], ans: 1 },
-        { q: "¿Qué sucede si subes los BPMs en Ableton y un clip de audio NO tiene el Warp activado?", opts: ["Se acelera y se hace más agudo", "Se adapta perfectamente al nuevo tempo", "No le pasa absolutamente nada (se desincroniza)", "Se borra el clip"], ans: 2 },
-        { q: "¿Qué hace el algoritmo Re-Pitch?", opts: ["Preserva la afinación al 100%", "Vincula la velocidad con la afinación (estilo tocadiscos)", "Añade grano y ruido", "Analiza armonías complejas"], ans: 1 }
-      ]
-    };
-
-// --- LOGICA TEST INTERACTIVO ---
-let currentQ = 0;
-function initQuiz() {
-  document.getElementById('res-conceptos').innerHTML = classData.conceptos.map(c => `<li>${c}</li>`).join('');
-  document.getElementById('res-shortcuts').innerHTML = classData.shortcuts.map(s => `<li>${s}</li>`).join('');
-  document.getElementById('res-ref').innerHTML = classData.referencia;
-  loadQuestion();
-}
-
-function loadQuestion() {
-  if (currentQ >= classData.quiz.length) {
-    document.getElementById('quiz-progress').textContent = "¡Test Completado!";
-    document.getElementById('quiz-q').textContent = "🎉 Has terminado el repaso de esta clase.";
-    document.getElementById('quiz-opts').innerHTML = "<button class='btn btn-play' onclick='currentQ=0;loadQuestion()'>🔄 Repetir Test</button>";
-    document.getElementById('quiz-feedback').textContent = "";
-    return;
-  }
-  const q = classData.quiz[currentQ];
-  document.getElementById('quiz-progress').textContent = `Pregunta ${currentQ + 1} de ${classData.quiz.length}`;
-  document.getElementById('quiz-q').textContent = q.q;
-  document.getElementById('quiz-opts').innerHTML = q.opts.map((opt, i) => 
-    `<button class="btn btn-outline" style="width:100%; max-width:500px; color:#fff; border-color:#555" onclick="checkAnswer(${i})">${opt}</button>`
-  ).join('');
-  document.getElementById('quiz-feedback').textContent = "";
-}
-
-function checkAnswer(idx) {
-  const q = classData.quiz[currentQ];
-  const btns = document.getElementById('quiz-opts').querySelectorAll('button');
-  if (idx === q.ans) {
-    btns[idx].style.background = "var(--play)";
-    btns[idx].style.borderColor = "var(--play)";
-    document.getElementById('quiz-feedback').innerHTML = "✅ ¡Correcto!";
-    document.getElementById('quiz-feedback').style.color = "var(--play)";
-    setTimeout(() => { currentQ++; loadQuestion(); }, 1500);
-  } else {
-    btns[idx].style.background = "var(--danger)";
-    btns[idx].style.borderColor = "var(--danger)";
-    document.getElementById('quiz-feedback').innerHTML = "❌ Incorrecto. Intenta de nuevo.";
-    document.getElementById('quiz-feedback').style.color = "var(--danger)";
-  }
-}
-window.addEventListener('DOMContentLoaded', initQuiz);
-
-
-  function msg(text, bg, fg) {
-    const t = document.getElementById('toast');
-    t.innerHTML = text;
-    t.style.background = bg || '#000';
-    t.style.color = fg || '#fff';
-    t.classList.add('show');
-    clearTimeout(window._tt);
-    window._tt = setTimeout(() => t.classList.remove('show'), 4500);
-  }
-
-  // M1
-  const container = document.getElementById('m1-container');
-  const marker = document.getElementById('m1-marker');
-  const wave = document.getElementById('m1-wave');
-  const m1msg = document.getElementById('m1-message');
-  let isDragging = false;
-
-  marker.addEventListener('mousedown', () => isDragging = true);
-  
-  // Usar window events para que no se congele si el mouse sale del elemento
-  window.addEventListener('mouseup', () => { if(isDragging) checkSnap(); isDragging = false; });
-  window.addEventListener('mousemove', (e) => {
-    if (!isDragging) return;
-    const rect = container.getBoundingClientRect();
-    let x = e.clientX - rect.left;
-    if (x < 20) x = 20;
-    if (x > rect.width - 20) x = rect.width - 20;
-    marker.style.left = x + 'px';
-    const originalWidth = rect.width * 0.5;
-    wave.style.transform = `scaleX(${x / originalWidth})`;
-    m1msg.textContent = "Estirando onda...";
-    m1msg.style.color = "var(--muted)";
-  });
-
-  function checkSnap() {
-    const rect = container.getBoundingClientRect();
-    const markerX = parseFloat(marker.style.left);
-    const targetX = rect.width * 0.75; 
-    if (Math.abs(markerX - targetX) < 30) {
-      marker.style.left = targetX + 'px';
-      wave.style.transform = `scaleX(${targetX / (rect.width * 0.5)})`;
-      m1msg.textContent = "¡Perfecto! El golpe de tarola (snare) ahora está sincronizado al tempo del proyecto en la marca del 75%.";
-      m1msg.style.color = "var(--play)";
-      msg("✅ ¡Audio sincronizado con éxito!", "var(--play)");
-    } else {
-      m1msg.textContent = "Suelta el marcador cerca de la última línea oscura (75%) para cuadrarlo.";
-      m1msg.style.color = "var(--text)";
+  const qData_2 = [{"q":"¿Cuál es el propósito principal del Warping?","opts":["Cortar graves","Ajustar la velocidad de un clip de audio al BPM del proyecto sin cambiar su tono (Pitch)","Borrar la pista","Hacer que el sonido rebote"],"ans":1},{"q":"¿Qué algoritmo de Warp debes usar para un loop de Hi-Hats y Bombos?","opts":["Complex","Tones","Beats","Texture"],"ans":2},{"q":"¿Qué hace un Warp Marker?","opts":["Pone un efecto","Ancla una parte específica del audio al tiempo (grid) para poder estirarlo desde ahí","Sube el volumen","Hace fade out"],"ans":1},{"q":"Si un vocal importado suena como las ardillas (más agudo), es porque:","opts":["Se le aplicó Warping correctamente","Ableton aceleró el audio sin el Warping activado (como un tocadiscos rápido)","Tiene mucho delay","Es de mala calidad"],"ans":1},{"q":"El algoritmo 'Tones' se recomienda especialmente para:","opts":["Baterías complejas","Voces completas","Sintetizadores, bajos y notas sostenidas claras","Pistas de ruido"],"ans":2}];
+  let curQ_2 = 0; let score_2 = 0;
+  function renderQ_2() {
+    if(curQ_2 >= qData_2.length) {
+      let p = Math.round((score_2 / qData_2.length) * 100);
+      let msg = p === 100 ? '¡Perfecto!' : (p >= 60 ? '¡Bien hecho!' : 'Repasa la lección.');
+      if (p >= 60) localStorage.setItem('ableton101_c2', score_2);
+      document.getElementById('quiz-app-2').innerHTML = '<div style="text-align:center"><div style="font-size:4rem;margin-bottom:1rem">' + (p>=60?'🏆':'📉') + '</div><h3 style="color:#fff;font-size:2rem;margin-bottom:1rem">Tu Score: ' + score_2 + ' / ' + qData_2.length + ' (' + p + '%)</h3><p style="color:#aaa;font-size:1.2rem">' + msg + '</p></div>';
+      return;
     }
+    let q = qData_2[curQ_2];
+    document.getElementById('q-progress-2').textContent = 'Pregunta ' + (curQ_2+1) + ' de ' + qData_2.length;
+    document.getElementById('q-text-2').textContent = q.q;
+    let optsHTML = '';
+    q.opts.forEach((opt, idx) => { optsHTML += '<button class="q-opt" onclick="checkQ_2(' + idx + ', ' + q.ans + ', this)">' + opt + '</button>'; });
+    document.getElementById('q-opts-2').innerHTML = optsHTML;
+    document.getElementById('q-next-2').style.display = 'none';
   }
-
-  // M2
-  function warpFromHere() {
-    const track = document.getElementById('trackA');
-    track.querySelectorAll('.m2-marker').forEach(e => e.remove());
-    for(let i=0; i<15; i++) {
-      setTimeout(() => {
-        const m = document.createElement('div');
-        m.className = 'm2-marker';
-        const offset = 180 + Math.random() * (track.offsetWidth - 200);
-        m.style.left = offset + 'px';
-        m.style.display = 'block';
-        track.appendChild(m);
-      }, i * 80);
-    }
-    msg("📌 Ableton ha creado múltiples marcadores para ajustar las imperfecciones del humano.", "var(--warp-accent)", "#000");
+  function checkQ_2(sIdx, cIdx, btn) {
+    const btns = document.getElementById('q-opts-2').querySelectorAll('.q-opt');
+    btns.forEach(b => { b.disabled = true; b.style.opacity = '0.7'; });
+    btn.style.opacity = '1';
+    if(sIdx === cIdx) { btn.classList.add('correct'); score_2++; } 
+    else { btn.classList.add('wrong'); btns[cIdx].classList.add('correct'); btns[cIdx].style.opacity = '1'; }
+    document.getElementById('q-next-2').style.display = 'block';
   }
-
-  function warpStraight() {
-    const track = document.getElementById('trackB');
-    track.querySelectorAll('.m2-marker').forEach(e => e.remove());
-    const m = document.createElement('div');
-    m.className = 'm2-marker';
-    m.style.left = '180px';
-    m.style.display = 'block';
-    track.appendChild(m);
-    const w = track.querySelector('.m2-wave');
-    w.style.transition = 'background-position 0.5s';
-    w.style.backgroundPosition = '10px 0';
-    msg("📏 Un solo marcador. Audio electrónico cuadrado instantáneamente.", "var(--play)");
-  }
-
-  // M3
-  let isPlaying = false;
-  let baseTempo = 120;
-  let player = null;
-  let pitchShift = null;
-  let tremolo = null;
-  let stutterLoop = null;
-
-  const descriptions = {
-    beats: "<strong>Beats:</strong> El modo por defecto. Especializado en percusión. Mantiene el tono original y usa un algoritmo rítmico para ajustar el tiempo (simulado aquí con tartamudeo).",
-    tones: "<strong>Tones:</strong> Para voces, bajos o sintes solistas. Intenta mantener el tono original estirando fragmentos vocales (simulado con trémolo rápido).",
-    texture: "<strong>Texture:</strong> Para sintes atmosféricos o ruido. Genera una sensación 'arenosa' o reverberante al bajar la velocidad agregando granulidad extrema.",
-    repitch: "<strong>Re-Pitch:</strong> Como una tornamesa de DJ. El tiempo y el tono están enlazados. Si subes el tempo, el tono sube. El slider de Pitch añade transposición extra.",
-    complex: "<strong>Complex:</strong> El algoritmo más avanzado. Identifica características rítmicas y tonales para estirar audios manteniendo el tono original. Ideal para pistas completas."
-  };
-
-    function base64ToArrayBuffer(base64) {
-    const binary_string = window.atob(base64);
-    const len = binary_string.length;
-    const bytes = new Uint8Array(len);
-    for (let i = 0; i < len; i++) {
-        bytes[i] = binary_string.charCodeAt(i);
-    }
-    return bytes.buffer;
-  }
-
-  async function initTone() {
-    await Tone.start();
-    if (!player && window.amenBase64) {
-      return new Promise((resolve) => {
-        try {
-          const arrayBuf = base64ToArrayBuffer(window.amenBase64.replace(/^data:audio\/wav;base64,/, ''));
-          Tone.context.decodeAudioData(arrayBuf).then(buffer => {
-            player = new Tone.Player(buffer);
-            player.loop = true;
-            
-            pitchShift = new Tone.PitchShift(0);
-            tremolo = new Tone.Tremolo(9, 0).start();
-            tremolo.depth.value = 0; // Initialize at 0
-            
-            player.chain(tremolo, pitchShift, Tone.Destination);
-            document.getElementById('audio-status').style.display = 'none';
-            resolve(true);
-          }).catch(e => {
-            console.error("Decode error", e);
-            resolve(false);
-          });
-        } catch (e) {
-          console.error("Base64 error", e);
-          resolve(false);
-        }
-      });
-    }
-    return !!player;
-  }
-
-  function updateMode() {
-    const mode = document.getElementById('warp-mode').value;
-    document.getElementById('m3-desc').innerHTML = descriptions[mode];
-    applyWarpAlgorithm();
-    const modeNames = {beats:"Beats", tones:"Tones", texture:"Texture", repitch:"Re-Pitch", complex:"Complex"};
-    msg("🎛 Modo Warp: " + modeNames[mode], "var(--audio)");
-  }
-
-  function updateTempo(val) {
-    document.getElementById('tempo-val').innerText = val;
-    applyWarpAlgorithm();
-  }
-  
-  function updatePitch(val) {
-    let sign = val > 0 ? "+" : "";
-    document.getElementById('pitch-val').innerText = sign + val;
-    applyWarpAlgorithm();
-  }
-
-  async function toggleAudio() {
-    const btn = document.getElementById('btn-play');
-    if (isPlaying) {
-      if(player) player.stop();
-      if(stutterLoop) { clearInterval(stutterLoop); stutterLoop = null; }
-      btn.textContent = "▶ Reproducir (Amen Break)";
-      btn.style.background = "var(--play)";
-      isPlaying = false;
-      msg("⏹ Audio detenido.", "var(--text)");
-    } else {
-      btn.textContent = "⏳ Cargando...";
-      const success = await initTone();
-      if(!success) {
-        document.getElementById('audio-status').style.display = 'block';
-        btn.textContent = "▶ Reproducir (Falló)";
-        msg("❌ Error al cargar el audio.", "var(--danger)");
-        return;
-      }
-      player.start();
-      btn.textContent = "⏹ Detener Audio";
-      btn.style.background = "var(--danger)";
-      isPlaying = true;
-      applyWarpAlgorithm();
-      msg("▶ Reproduciendo Amen Break...", "var(--play)");
-    }
-  }
-
-  function applyWarpAlgorithm() {
-    if(!isPlaying || !player) return;
-    
-    const mode = document.getElementById('warp-mode').value;
-    const currentTempo = parseFloat(document.getElementById('tempo-slider').value);
-    const userPitch = parseFloat(document.getElementById('pitch-slider').value);
-    const ratio = currentTempo / baseTempo;
-    
-    // Reset effects
-    if(stutterLoop) { clearInterval(stutterLoop); stutterLoop = null; }
-    tremolo.depth.value = 0;
-    player.mute = false;
-
-    // Time stretching in Tone.Player naturally changes pitch (like vinyl)
-    player.playbackRate = ratio;
-    
-    // Calculate how many semitones the playbackRate shifted the audio
-    const naturalPitchShift = 12 * Math.log2(ratio);
-
-    if (mode === 'repitch') {
-      // In Re-Pitch, we WANT the natural pitch shift, plus whatever the user added
-      pitchShift.pitch = userPitch;
-    } else {
-      // In Complex/Beats/Tones/Texture, we MUST counteract the natural pitch shift
-      // to keep the audio at its original pitch, then add the user's transposition.
-      pitchShift.pitch = userPitch - naturalPitchShift;
-      
-      // Simulate artifacts of different modes
-      if (mode === 'beats' && ratio < 1) {
-        // Stutter effect for Beats mode when slowed down
-        const beatDur = (60 / currentTempo) * 1000;
-        stutterLoop = setInterval(() => {
-          player.mute = false;
-          const hold = beatDur * ratio;
-          setTimeout(() => { if(isPlaying) player.mute = true; }, hold);
-        }, beatDur);
-      } else if (mode === 'texture' && ratio < 1) {
-        // Texture creates a grainy/smudged sound. We use extreme pitch shift window size.
-        pitchShift.windowSize = 0.01; // Grainy
-      } else if (mode === 'tones' && ratio < 1) {
-        // Tones stretches grains cleanly. We simulate with tremolo.
-        pitchShift.windowSize = 0.05;
-        tremolo.depth.value = 0.8;
-        tremolo.frequency.value = 8 * ratio;
-      }
-      
-      // Reset window size for non-texture modes
-      if (mode !== 'texture' && mode !== 'tones') {
-        pitchShift.windowSize = 0.1;
-      }
-    }
-  }
+  function nextQuestion_2() { curQ_2++; renderQ_2(); }
+  setTimeout(() => renderQ_2(), 100);
 </script>
 
-
-</body>
-</html>
+<script src="../js/tooltips.js"></script>
+<script>
+  function touchHandler(event) {
+    if(event.target.tagName !== 'CANVAS' && event.target.type !== 'range') return;
+    var touch = event.changedTouches[0];
+    var simulatedEvent = document.createEvent("MouseEvent");
+    simulatedEvent.initMouseEvent({ touchstart:"mousedown", touchmove:"mousemove", touchend:"mouseup" }[event.type], true, true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null);
+    touch.target.dispatchEvent(simulatedEvent);
+    if(event.target.tagName === 'CANVAS') event.preventDefault();
+  }
+  document.addEventListener("touchstart", touchHandler, {passive: false});
+  document.addEventListener("touchmove", touchHandler, {passive: false});
+  document.addEventListener("touchend", touchHandler, {passive: false});
+</script>
+<div style="position:fixed;bottom:15px;right:20px;font-size:0.9rem;opacity:0.35;z-index:9999;font-weight:700;">Creado por @laurorobles</div>
+</body></html>

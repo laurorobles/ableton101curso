@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Ableton 101 — Clase 14: Teoría del Mastering</title>
+  <style>
+    :root { --bg:#F8F9FA; --surface:#fff; --text:#000; --muted:#555; --border:#E5E7EB; --audio:#0055FF; --midi:#FF5500; --play:#00B84D; --danger:#E53E3E; --cc:#8800DD; }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:-apple-system,sans-serif;font-size:18px;line-height:1.6;padding:4rem 5%}
+    h1{font-size:3.5rem;font-weight:900;margin-bottom:1rem;}
+    h2{font-size:2.5rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.8rem}
+    .sub{font-size:1.5rem;color:var(--muted);max-width:900px;margin-bottom:2.5rem;font-weight:500}
+    section{max-width:1000px;margin:0 auto 5rem;padding:4rem 0;border-bottom:1px solid var(--border);}
+    .tag{display:inline-block;font-size:1rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;border-radius:4px;padding:4px 8px;background:#111;color:#fff;}
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;}
+    .panel{background:var(--surface);border:3px solid var(--border);border-radius:20px;padding:2.5rem;box-shadow:0 8px 24px rgba(0,0,0,.04)}
+    header{text-align:center;padding:4rem 2rem;border-radius:24px;border:2px solid var(--border);margin-bottom:4rem;background:var(--surface);}
+    .m-final{background:#111;color:#fff;padding:4rem;border-radius:24px;margin-top:4rem;max-width:1000px;margin:4rem auto;}
+    .m-final h2{color:#fff;}
+    .btn{display:inline-block;background:var(--audio);color:#fff;padding:1rem 2rem;text-decoration:none;border-radius:8px;font-weight:bold;cursor:pointer;border:none;}
+    canvas{width:100%;background:#111;border-radius:12px;margin-top:1.5rem;cursor:crosshair;touch-action:none;}
+  
+    /* Quiz */
+    .quiz-app { background:#222; border:1px solid #333; border-radius:16px; padding:2rem; margin-top:2rem; }
+    .q-text { font-size:1.4rem; color:#fff; margin-bottom:1.5rem; }
+    .q-opt { display:block; width:100%; text-align:left; background:#333; color:#fff; border:2px solid transparent; padding:1.2rem; border-radius:8px; margin-bottom:0.8rem; cursor:pointer; font-size:1.1rem; transition:all 0.2s; }
+    .q-opt:hover { background:#444; border-color:#555; }
+    .q-opt.correct { background:var(--play) !important; color:#fff; border-color:#fff; }
+    .q-opt.wrong { background:var(--danger) !important; color:#fff; }
+    .q-progress { color:var(--muted); margin-bottom:1rem; font-weight:bold; }
+    .q-next { background:var(--audio); color:#fff; padding:1rem 2rem; border:none; border-radius:8px; font-weight:bold; font-size:1.2rem; cursor:pointer; margin-top:1rem; display:none; }
+    .m-final ul { list-style:none; }
+    .m-final li { margin-bottom:1rem; color:#ccc; display:flex; gap:1rem; }
+    .m-final h3 { color:var(--play); border-bottom:1px solid #333; padding-bottom:0.5rem; margin-bottom:1.5rem; margin-top:2rem; }
+    
+  </style>
+</head>
+<body>
+<a href="../index.html" style="position:fixed;top:20px;left:20px;background:var(--surface);color:var(--text);text-decoration:none;padding:10px 15px;border-radius:8px;border:2px solid var(--border);font-weight:bold;z-index:9999;">← Volver</a>
+<header><div class="tag">Soundspace Academy</div><h1>Ableton 101<br>Clase 14: Teoría del Mastering</h1><p class="sub">Llevando tu mezcla al nivel comercial.</p></header>
+
+<section>
+  <div class="tag" style="background:var(--midi)">Módulo 01</div><h2>¿Qué es el Mastering?</h2>
+  <div class="panel">
+    <p>La <strong>Mezcla</strong> balancea los instrumentos individuales. El <strong>Mastering</strong> toma esa mezcla final (1 pista estéreo) y la pule para que suene consistente en CUALQUIER sistema: el estéreo de tu coche, unos AirPods o un club masivo.</p>
+    <p>También se encarga de subir el volumen general a estándares comerciales competitivos sin destruir la dinámica.</p>
+  </div>
+</section>
+
+<section>
+  <div class="tag" style="background:var(--play)">Módulo 02</div><h2>LUFS vs True Peak</h2>
+  <div class="split">
+    <div class="panel">
+      <p>El medidor verde clásico solo mide <em>Peak</em> (volumen eléctrico instantáneo). Para el mastering usamos <span class="tt" data-term="LUFS">LUFS</span> (Loudness Units relative to Full Scale).</p>
+      <p>Los LUFS miden el volumen PERCIBIDO humano promedio a lo largo de la canción. Spotify penaliza y baja el volumen de tu canción si supera los <strong>-14 LUFS</strong>, mientras que los DJs en el club exigen <strong>-6 LUFS</strong> (extremadamente fuerte).</p>
+    </div>
+    <div class="panel">
+      <h3>Medidor LUFS Interactivo</h3>
+      <p style="font-size:0.9rem; color:var(--muted); margin-bottom:1rem;">Arrastra el control de Ganancia (Input) y observa cómo suben los LUFS hasta ser "aplastados" por el Ceiling (techo) de -1.0 True Peak.</p>
+      <input type="range" id="lufsSlider" min="-30" max="0" value="-20" style="width:100%; margin-bottom:0.5rem;" oninput="updateLUFS(this.value)">
+      <canvas id="lufsCanvas" height="100" style="margin-top:0;"></canvas>
+      <p id="lufsReadout" style="text-align:center; font-weight:bold; font-size:1.5rem; margin-top:0.5rem;">-20.0 LUFS</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="tag" style="background:var(--danger)">Módulo 03</div><h2>El Muro de Ladrillos (Limiter)</h2>
+  <div class="panel">
+    <p>Un Limitador es simplemente un compresor con un <em>Ratio Infinito</em>. Funciona como un techo o muro de ladrillos (Brickwall).</p>
+    <p>El parámetro <strong>Ceiling</strong> (ej. -1.0 dB) es el límite absoluto. Ningún pico pasará de ahí. Luego, subes la <strong>Ganancia</strong> de tu canción, estrellándola contra el techo; esto reduce la dinámica general pero hace que la canción suene increíblemente fuerte.</p>
+  </div>
+</section>
+
+<section>
+  <div class="tag" style="background:var(--audio)">Módulo 04</div><h2>EQ Mid/Side</h2>
+  <div class="panel">
+    <p>En el mastering no ecualizamos instrumentos sueltos, ecualizamos todo el paquete. El procesamiento <strong>Mid/Side</strong> nos permite un nivel forense de edición:</p>
+    <ul style="margin-left:2rem; line-height:2; margin-top:1rem;">
+      <li><strong>MID (Centro):</strong> Cortas graves o subes brillo solo a lo que está en el centro (Bombo, Bajo, Voz).</li>
+      <li><strong>SIDE (Lados):</strong> Subes el volumen solo de los instrumentos paneados a los lados (guitarras, platillos, reverbs) haciendo que la canción se perciba inmensamente ancha.</li>
+    </ul>
+  </div>
+</section>
+
+
+<div class="m-final">
+  <div class="tag">Módulo Final</div>
+  <h2>Resumen de Conceptos</h2>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:3rem;">
+    <div>
+      <h3>📚 Conceptos Clave</h3>
+      <ul>
+        <li><span>✅</span> <span>El Mastering pule y prepara la pista final para que suene consistente en todos los dispositivos comerciales.</span></li><li><span>✅</span> <span>Se debe medir en LUFS (Loudness Units) para evitar penalizaciones por plataformas de streaming (Objetivo: -14 LUFS).</span></li><li><span>✅</span> <span>El EQ Mid/Side permite alterar el centro (Bombo/Voz) sin afectar los laterales (Estéreo/Reverbs).</span></li>
+      </ul>
+    </div>
+    <div>
+      <h3>⌨️ Shortcuts Aprendidos</h3>
+      <ul>
+        <li><strong>A</strong> <span>Activa el modo de automatización (ideal para dibujar el Fade Out final).</span></li>
+      </ul>
+    </div>
+  </div>
+  
+  <h3 style="margin-top:4rem; font-size:2rem; text-align:center; border:none">🧠 Evaluador Interactivo</h3>
+  <div class="quiz-app" id="quiz-app-14">
+    <div class="q-progress" id="q-progress-14">Pregunta 1 de 5</div>
+    <div class="q-text" id="q-text-14"></div>
+    <div id="q-opts-14"></div>
+    <button class="q-next" id="q-next-14" onclick="nextQuestion_14()">Siguiente Pregunta ➔</button>
+  </div>
+  
+  <div style="margin-top: 2rem; border-top: 1px solid #333; padding-top: 2rem; text-align:center;">
+    <h3>📖 Bibliografía y Recursos</h3>
+    <ul style="list-style:none; padding:0; margin-top:1rem; line-height:2;">
+      <li><a href="anexo-glosario.html" style="color:var(--audio); text-decoration:none;">➔ Consultar el Glosario Oficial</a></li>
+      <li><a href="examen-final.html" style="color:var(--play); text-decoration:none; font-weight:bold; font-size:1.2rem;">➔ Ir al GRAN EXAMEN FINAL</a></li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  const qData_14 = [{"q":"¿Cuál es el objetivo principal del Mastering?","opts":["Mezclar volúmenes de instrumentos","Componer acordes","Lograr que la canción suene competitiva, con volumen comercial estándar y consistente en cualquier sistema de sonido","Subir el bajo al máximo"],"ans":2},{"q":"¿Qué significan las siglas LUFS?","opts":["Level Upon Frequency Scale","Loudness Units relative to Full Scale (Miden el volumen percibido humano a lo largo del tiempo)","Large Unit File System","Low Utility Frequency System"],"ans":1},{"q":"Si envías tu canción a Spotify a -4 LUFS (extremadamente fuerte), ¿qué hará la plataforma?","opts":["La reproducirá mejor","Le bajará el volumen automáticamente con normalización para que coincida con -14 LUFS, matando su impacto","La borrará","Le pondrá más bajos"],"ans":1},{"q":"Un Limitador de mastering (Brickwall Limiter) funciona asegurando que:","opts":["Ningún pico pase del nivel del Ceiling (techo) establecido, evitando la distorsión final","Se escuche más ancho","Se corten los graves","Se borre el ruido blanco"],"ans":0},{"q":"¿Qué beneficio te da el procesamiento Mid/Side?","opts":["Te permite guardar el proyecto a la mitad","Permite ecualizar la información mono del centro independientemente de la información de los extremos laterales del estéreo","Sube el volumen un 50%","Aplica reverb al bajo"],"ans":1}];
+  let curQ_14 = 0; let score_14 = 0;
+  function renderQ_14() {
+    if(curQ_14 >= qData_14.length) {
+      let p = Math.round((score_14 / qData_14.length) * 100);
+      let msg = p === 100 ? '¡Perfecto!' : (p >= 60 ? '¡Bien hecho!' : 'Repasa la lección.');
+      if (p >= 60) localStorage.setItem('ableton101_c14', score_14);
+      document.getElementById('quiz-app-14').innerHTML = '<div style="text-align:center"><div style="font-size:4rem;margin-bottom:1rem">' + (p>=60?'🏆':'📉') + '</div><h3 style="color:#fff;font-size:2rem;margin-bottom:1rem">Tu Score: ' + score_14 + ' / ' + qData_14.length + ' (' + p + '%)</h3><p style="color:#aaa;font-size:1.2rem">' + msg + '</p></div>';
+      return;
+    }
+    let q = qData_14[curQ_14];
+    document.getElementById('q-progress-14').textContent = 'Pregunta ' + (curQ_14+1) + ' de ' + qData_14.length;
+    document.getElementById('q-text-14').textContent = q.q;
+    let optsHTML = '';
+    q.opts.forEach((opt, idx) => { optsHTML += '<button class="q-opt" onclick="checkQ_14(' + idx + ', ' + q.ans + ', this)">' + opt + '</button>'; });
+    document.getElementById('q-opts-14').innerHTML = optsHTML;
+    document.getElementById('q-next-14').style.display = 'none';
+  }
+  function checkQ_14(sIdx, cIdx, btn) {
+    const btns = document.getElementById('q-opts-14').querySelectorAll('.q-opt');
+    btns.forEach(b => { b.disabled = true; b.style.opacity = '0.7'; });
+    btn.style.opacity = '1';
+    if(sIdx === cIdx) { btn.classList.add('correct'); score_14++; } 
+    else { btn.classList.add('wrong'); btns[cIdx].classList.add('correct'); btns[cIdx].style.opacity = '1'; }
+    document.getElementById('q-next-14').style.display = 'block';
+  }
+  function nextQuestion_14() { curQ_14++; renderQ_14(); }
+  setTimeout(() => renderQ_14(), 100);
+</script>
+  
+<script>
+const lufsC = document.getElementById('lufsCanvas');
+const lufsCtx = lufsC.getContext('2d');
+let lVal = -20;
+function drawLUFS() {
+  lufsCtx.fillStyle='#111'; lufsCtx.fillRect(0,0,lufsC.width,lufsC.height);
+  
+  // Calculate width mapping (0 to width) for -30 to 0 LUFS
+  let w = Math.max(0, ((lVal + 30) / 30) * lufsC.width);
+  
+  // Gradient green to red
+  let grad = lufsCtx.createLinearGradient(0,0,lufsC.width,0);
+  grad.addColorStop(0, '#00B84D');
+  grad.addColorStop(0.6, '#FFBC00'); // -12 LUFS approx
+  grad.addColorStop(0.8, '#E53E3E'); // -6 LUFS approx
+  
+  lufsCtx.fillStyle = grad;
+  lufsCtx.fillRect(0, 20, w, 60);
+  
+  // Draw Target Lines
+  lufsCtx.fillStyle='#fff';
+  // Spotify -14 (approx half)
+  lufsCtx.fillRect(lufsC.width*0.53, 10, 2, 80);
+  lufsCtx.font='12px sans-serif'; lufsCtx.fillText('Spotify', lufsC.width*0.53 - 15, 10);
+  
+  // Club -6
+  lufsCtx.fillRect(lufsC.width*0.8, 10, 2, 80);
+  lufsCtx.fillText('Club', lufsC.width*0.8 - 10, 10);
+}
+function updateLUFS(v) { 
+  lVal = parseFloat(v); 
+  document.getElementById('lufsReadout').innerText = lVal.toFixed(1) + ' LUFS';
+  if(lVal > -14 && lVal <= -9) document.getElementById('lufsReadout').style.color = '#FFBC00';
+  else if(lVal > -9) document.getElementById('lufsReadout').style.color = '#E53E3E';
+  else document.getElementById('lufsReadout').style.color = '#00B84D';
+  drawLUFS(); 
+}
+drawLUFS();
+</script>
+<script src="../js/tooltips.js"></script>
+<script>
+  function touchHandler(event) {
+    if(event.target.tagName !== 'CANVAS' && event.target.type !== 'range') return;
+    var touch = event.changedTouches[0];
+    var simulatedEvent = document.createEvent("MouseEvent");
+    simulatedEvent.initMouseEvent({ touchstart:"mousedown", touchmove:"mousemove", touchend:"mouseup" }[event.type], true, true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null);
+    touch.target.dispatchEvent(simulatedEvent);
+    if(event.target.tagName === 'CANVAS') event.preventDefault();
+  }
+  document.addEventListener("touchstart", touchHandler, {passive: false});
+  document.addEventListener("touchmove", touchHandler, {passive: false});
+  document.addEventListener("touchend", touchHandler, {passive: false});
+</script>
+<div style="position:fixed;bottom:15px;right:20px;font-size:0.9rem;opacity:0.35;z-index:9999;font-weight:700;">Creado por @laurorobles</div>
+</body></html>

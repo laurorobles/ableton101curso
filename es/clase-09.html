@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Ableton 101 — Clase 9: Mezcla II - Ecualización y Dinámica</title>
+  <style>
+    :root {
+      --bg: #F8F9FA; --surface: #fff; --text: #000; --muted: #555;
+      --border: #E5E7EB; --audio: #0055FF; --midi: #FF5500;
+      --play: #00B84D; --cc: #8800DD; --danger: #E53E3E;
+      --warp-accent: #FFBC00;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; font-size: 18px; line-height: 1.6; padding: 4rem 5%; }
+    ::-webkit-scrollbar { width: 0; background: transparent; }
+    h1 { font-size: 3.5rem; font-weight: 900; margin-bottom: 1rem; }
+    h2 { font-size: 3rem; font-weight: 800; letter-spacing: -.03em; margin-bottom: .8rem; }
+    h3 { font-size: 1.8rem; font-weight: 700; margin-bottom: .5rem; }
+    .sub { font-size: 1.5rem; color: var(--muted); max-width: 900px; margin-bottom: 2.5rem; font-weight: 500; }
+    section { max-width: 1000px; margin: 0 auto 5rem; padding: 4rem 0; border-bottom: 1px solid var(--border); }
+    .tag { display: inline-block; font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 1rem; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; font-size: 1.2rem; font-weight: 700; padding: .9rem 1.8rem; border-radius: 12px; border: none; cursor: pointer; transition: transform .1s, filter .15s; color: #fff; user-select: none; font-family: inherit; }
+    .btn:active { transform: scale(.96); } .btn:hover { filter: brightness(1.1); }
+    .btn-audio { background: var(--audio); } .btn-midi { background: var(--midi); }
+    .btn-play { background: var(--play); } .btn-dark { background: var(--text); }
+    .btn-outline { background: transparent; border: 3px solid var(--border); color: var(--text); }
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; width: 100%; }
+    .panel { background: var(--surface); border: 3px solid var(--border); border-radius: 20px; padding: 2.5rem; box-shadow: 0 8px 24px rgba(0,0,0,.04); }
+    .analogy { margin-top: 1.5rem; padding: 1.2rem 1.5rem; background: #F0F4F8; border-left: 6px solid #CBD5E1; font-size: 1.2rem; border-radius: 0 10px 10px 0; }
+    
+    header { text-align: center; padding: 4rem 2rem; border-radius: 24px; border: 2px solid var(--border); margin-bottom: 4rem; background: var(--surface); }
+    
+    .m-final { background: #111; color: #fff; padding: 4rem; border-radius: 24px; margin-top: 4rem; max-width: 1000px; margin: 4rem auto; }
+    .m-final h2 { color: #fff; }
+    .m-final .tag { background: #333; color: #fff; }
+    .m-final h3 { color: var(--play); border-bottom: 1px solid #333; padding-bottom: 0.5rem; margin-bottom: 1.5rem; margin-top: 2rem; }
+    .m-final ul { list-style: none; }
+    .m-final li { margin-bottom: 1rem; color: #ccc; display: flex; gap: 1rem; }
+
+    /* Canvas EQ */
+    #eqCanvas { width: 100%; height: 250px; background: #1c1c1c; border-radius: 12px; display: block; margin-bottom: 1rem; }
+    .slider-wrap { display: flex; flex-direction: column; gap: 10px; margin-top: 1rem; }
+    .slider-wrap input { width: 100%; accent-color: var(--audio); }
+
+    /* Compressor */
+    .comp-box { background: #222; border-radius: 16px; padding: 2rem; color: white; display: flex; flex-direction: column; gap: 1.5rem; }
+    .comp-meter { width: 100%; height: 30px; background: #111; border-radius: 8px; overflow: hidden; position: relative; }
+    .comp-level { height: 100%; background: var(--play); width: 0%; transition: width 0.1s linear; }
+    .comp-threshold { position: absolute; top: 0; bottom: 0; width: 4px; background: var(--danger); left: 80%; }
+    .comp-gr { position: absolute; top: 0; bottom: 0; right: 0; background: var(--warp-accent); width: 0%; transition: width 0.1s linear; opacity: 0.8; }
+
+    .ducking-viz { width: 100%; height: 150px; background: #111; border-radius: 12px; position: relative; overflow: hidden; margin-top: 1rem; }
+    
+    .quiz-app { background: #222; border: 1px solid #333; border-radius: 16px; padding: 2rem; margin-top: 2rem; }
+    .q-text { font-size: 1.4rem; color: #fff; margin-bottom: 1.5rem; }
+    .q-opt { display: block; width: 100%; text-align: left; background: #333; color: #fff; border: 2px solid transparent; padding: 1.2rem; border-radius: 8px; margin-bottom: 0.8rem; cursor: pointer; font-size: 1.1rem; transition: all 0.2s; }
+    .q-opt:hover { background: #444; border-color: #555; }
+    .q-opt.correct { background: var(--play) !important; color: #fff; border-color: #fff; }
+    .q-opt.wrong { background: var(--danger) !important; color: #fff; }
+    .q-progress { color: var(--muted); margin-bottom: 1rem; font-weight: bold; }
+    .q-next { background: var(--audio); color: #fff; padding: 1rem 2rem; border: none; border-radius: 8px; font-weight: bold; font-size: 1.2rem; cursor: pointer; margin-top: 1rem; display: none; }
+  </style>
+</head>
+<body>
+
+<a href="../index.html" style="position:fixed; top:20px; left:20px; background:var(--surface); color:var(--text); text-decoration:none; padding:10px 15px; border-radius:8px; border:2px solid var(--border); font-weight:bold; font-size:0.9rem; z-index:9999; box-shadow:0 4px 10px rgba(0,0,0,0.1); transition:transform 0.1s;">
+  ← Volver al Índice
+</a>
+
+<header>
+  <div class="tag">Soundspace Academy</div>
+  <h1>Ableton 101<br>Clase 9: Mezcla II - Ecualización y Dinámica</h1>
+  <p class="sub" style="margin-bottom:2rem">Esculpiendo el sonido y controlando su energía.</p>
+</header>
+
+<section id="m1">
+  <div class="tag" style="color:var(--audio)">Módulo 01</div>
+  <h2>El Espectro de Frecuencias</h2>
+  <p class="sub">Desde 20 Hz (Subgraves) hasta 20 kHz (Brillo y Aire).</p>
+  <div class="panel">
+    <div style="display: flex; height: 100px; border-radius: 8px; overflow: hidden; color: white; font-weight: bold; text-align: center;">
+      <div style="flex: 1; background: #8B5CF6; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+        <span>Graves</span><span style="font-size: 0.8em; font-weight: normal;">20 - 250 Hz</span>
+      </div>
+      <div style="flex: 1; background: #3B82F6; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+        <span>Medios Graves</span><span style="font-size: 0.8em; font-weight: normal;">250 - 2000 Hz</span>
+      </div>
+      <div style="flex: 1; background: #10B981; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+        <span>Medios Altos</span><span style="font-size: 0.8em; font-weight: normal;">2 - 6 kHz</span>
+      </div>
+      <div style="flex: 1; background: #F59E0B; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+        <span>Agudos</span><span style="font-size: 0.8em; font-weight: normal;">6 - 20 kHz</span>
+      </div>
+    </div>
+    <div class="analogy">
+      <strong>💡 La analogía del espectro:</strong><br>
+      Imagina el espectro de frecuencias como el espacio en un lienzo. Si tienes muchos instrumentos tocando en los Graves al mismo tiempo, el lienzo se satura y se vuelve borroso (Enmascaramiento).
+    </div>
+  </div>
+</section>
+
+<section id="m2">
+  <div class="tag" style="color:var(--midi)">Módulo 02</div>
+  <h2>EQ Sustractiva vs Aditiva</h2>
+  <p class="sub">Experimenta cortando graves para hacer espacio en la mezcla.</p>
+  
+  <div class="split">
+    <div class="panel">
+      <h3>🎨 EQ Paramétrico (High Pass)</h3>
+      <p style="color:var(--muted)">Desliza para cortar las bajas frecuencias de un Sintetizador y dejar espacio para el Bajo.</p>
+      
+      <canvas id="eqCanvas" width="400" height="250"></canvas>
+      
+      <div class="slider-wrap">
+        <label for="freqCut"><strong>Frecuencia de Corte (Hz):</strong> <span id="freqVal">50</span> Hz</label>
+        <input type="range" id="freqCut" min="20" max="1000" value="50">
+      </div>
+      
+      <div style="margin-top: 1rem; display: flex; gap: 1rem;">
+        <button class="btn btn-audio" id="playEqBtn">▶ Escuchar Synth</button>
+      </div>
+    </div>
+    
+    <div>
+      <div class="analogy" style="border-left-color: var(--danger)">
+        <strong>✂️ EQ Sustractiva:</strong><br>
+        Es el acto de <strong>reducir</strong> (cortar) frecuencias problemáticas o innecesarias. Ejemplo: Poner un High Pass Filter en voces, guitarras o synths para que no choquen con el bajo y el bombo.
+      </div>
+      <div class="analogy mt2" style="border-left-color: var(--play)">
+        <strong>✨ EQ Aditiva:</strong><br>
+        Es el acto de <strong>aumentar</strong> (realzar) frecuencias para dar carácter o presencia. Ejemplo: Darle un poco de brillo (10 kHz) a una voz para que suene más nítida.
+      </div>
+      <div class="analogy mt2" style="border-left-color: var(--warp-accent)">
+        <strong>⚠️ Regla de Oro:</strong><br>
+        Corta para arreglar, aumenta para colorear. Generalmente es mejor cortar lo que sobra que subir lo que falta.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="m3">
+  <div class="tag" style="color:var(--cc)">Módulo 03</div>
+  <h2>Anatomía del Compresor</h2>
+  <p class="sub">Controlando el rango dinámico de una señal.</p>
+  
+  <div class="comp-box">
+    <h3>🗜️ Simulación de Compresión</h3>
+    <p>Observa cómo la señal se reduce (Gain Reduction) cuando supera el Threshold.</p>
+    
+    <div>
+      <label>Señal de Entrada (Simulada)</label>
+      <div class="comp-meter">
+        <div class="comp-level" id="compLevel"></div>
+        <div class="comp-threshold" id="compThreshLine"></div>
+        <div class="comp-gr" id="compGrLevel"></div>
+      </div>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem;">
+      <div class="slider-wrap">
+        <label><strong>Threshold:</strong> <span id="threshVal">-10</span> dB</label>
+        <input type="range" id="threshSlide" min="-40" max="0" value="-10">
+      </div>
+      <div class="slider-wrap">
+        <label><strong>Ratio:</strong> <span id="ratioVal">4</span>:1</label>
+        <input type="range" id="ratioSlide" min="1" max="20" value="4">
+      </div>
+    </div>
+    
+    <button class="btn btn-play" id="playCompBtn">▶ Iniciar Simulación</button>
+  </div>
+  
+  <div class="split mt2">
+    <div class="analogy">
+      <strong>Threshold (Umbral):</strong><br>
+      El volumen límite. A partir de este nivel, el compresor empieza a actuar. Si la señal no llega al umbral, el compresor no hace nada.
+    </div>
+    <div class="analogy">
+      <strong>Ratio (Proporción):</strong><br>
+      Qué tan fuerte aplasta la señal una vez que pasa el umbral. Un ratio de 4:1 significa que por cada 4 dB que la señal intente pasar el umbral, solo se le permitirá pasar 1 dB.
+    </div>
+    <div class="analogy">
+      <strong>Attack (Ataque):</strong><br>
+      Qué tan rápido actúa el compresor <em>después</em> de que la señal supera el umbral.
+    </div>
+    <div class="analogy">
+      <strong>Release (Relajación):</strong><br>
+      Qué tan rápido deja de comprimir el compresor cuando la señal cae por debajo del umbral.
+    </div>
+  </div>
+</section>
+
+<section id="m4">
+  <div class="tag" style="color:var(--danger)">Módulo 04</div>
+  <h2>Sidechain Avanzado (Ducking)</h2>
+  <p class="sub">El latido de la música electrónica.</p>
+  
+  <div class="panel">
+    <h3>El Efecto de "Bombeo"</h3>
+    <p>El Sidechain Compression (Ducking) hace que el volumen de un sonido (ej. Bajo o Synth) baje automáticamente cada vez que suena otro sonido (ej. Bombo / Kick). Esto evita enmascaramiento en frecuencias graves y crea ritmo.</p>
+    
+    <div class="ducking-viz">
+      <!-- Representación visual estática pero con animación CSS -->
+      <div class="kick-trigger" style="position: absolute; bottom: 0; left: 10%; width: 20px; height: 100%; background: rgba(255, 85, 0, 0.5);"></div>
+      <div class="kick-trigger" style="position: absolute; bottom: 0; left: 35%; width: 20px; height: 100%; background: rgba(255, 85, 0, 0.5);"></div>
+      <div class="kick-trigger" style="position: absolute; bottom: 0; left: 60%; width: 20px; height: 100%; background: rgba(255, 85, 0, 0.5);"></div>
+      <div class="kick-trigger" style="position: absolute; bottom: 0; left: 85%; width: 20px; height: 100%; background: rgba(255, 85, 0, 0.5);"></div>
+      
+      <svg width="100%" height="150" style="position: absolute; top:0; left:0;">
+        <path d="M 0 40 L 40 40 L 60 120 L 100 40 L 140 40 L 160 120 L 200 40 L 240 40 L 260 120 L 300 40 L 340 40 L 360 120 L 400 40" 
+              fill="none" stroke="var(--audio)" stroke-width="6" id="duckPath" />
+      </svg>
+    </div>
+    
+    <div class="analogy mt2" style="border-left-color: var(--danger)">
+      <strong>🛠 Cómo configurarlo en Ableton:</strong><br>
+      1. Pon un Compressor en la pista del Bajo.<br>
+      2. Abre la flechita (triángulo) en la esquina superior izquierda del Compressor.<br>
+      3. Activa el botón <strong>Sidechain</strong>.<br>
+      4. En <strong>Audio From</strong>, selecciona la pista del Drum Rack o el Kick.<br>
+      5. Baja el Threshold hasta que notes el efecto de succión.
+    </div>
+  </div>
+</section>
+
+<!-- MÓDULO FINAL ESTANDARIZADO -->
+<div class="m-final">
+  <div class="tag">Módulo Final</div>
+  <h2>Resumen de Conceptos</h2>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:3rem;">
+    <div>
+      <h3>📚 Conceptos Clave</h3>
+      <ul>
+        <li><span>✅</span> <span><strong>EQ Sustractiva:</strong> Cortar frecuencias molestas (mejor práctica).</span></li>
+        <li><span>✅</span> <span><strong>Enmascaramiento:</strong> Cuando dos sonidos chocan en la misma frecuencia, se cancelan o ensucian.</span></li>
+        <li><span>✅</span> <span><strong>Compresor:</strong> Controla la dinámica. Reduce los picos altos.</span></li>
+        <li><span>✅</span> <span><strong>Sidechain:</strong> Permite usar la señal de un canal para activar el compresor de otro canal.</span></li>
+      </ul>
+    </div>
+    <div>
+      <h3>⌨️ Shortcuts Aprendidos (Repaso)</h3>
+      <ul>
+        <li><strong>Cmd/Ctrl + G</strong> <span>Agrupar Pistas</span></li>
+        <li><strong>A</strong> <span>Mostrar/Ocultar Automatizaciones</span></li>
+      </ul>
+    </div>
+  </div>
+  
+  
+    <div style="margin-top: 2rem; border-top: 1px solid #333; padding-top: 2rem;">
+      <h3>📖 Bibliografía y Recursos</h3>
+      <ul style="list-style:none; padding:0;">
+        <li style="margin-bottom:0.5rem;"><a href="anexo-glosario.html" style="color:var(--audio); text-decoration:none;">➔ Consultar el Glosario Oficial</a></li>
+        <li style="margin-bottom:0.5rem;"><a href="anexo-documentales.html" style="color:var(--audio); text-decoration:none;">➔ Ver Documentales Recomendados</a></li>
+        <li style="margin-bottom:0.5rem;"><a href="https://learningmusic.ableton.com/es/" target="_blank" style="color:var(--audio); text-decoration:none;">➔ Ableton Learning Music (Práctica Externa)</a></li>
+      </ul>
+    </div>
+            <h3 style="margin-top:4rem; font-size:2rem; text-align:center; border:none">🧠 Evaluador Interactivo</h3>
+  
+  <div class="quiz-app" id="quiz-app-9">
+    <div class="q-progress" id="q-progress-9">Pregunta 1 de 5</div>
+    <div class="q-text" id="q-text-9"></div>
+    <div id="q-opts-9"></div>
+    <button class="q-next" id="q-next-9" onclick="nextQuestion_9()">Siguiente Pregunta ➔</button>
+  </div>
+</div>
+
+<!-- AUTHOR CREDIT -->
+<div style="position:fixed; bottom:15px; right:20px; font-size:0.9rem; color:inherit; opacity:0.35; z-index:9999; font-weight:700; pointer-events:none; transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.35'">
+  Creado por @laurorobles
+</div>
+
+<script>
+  // -- EQ Canvas --
+  const canvas = document.getElementById('eqCanvas');
+  const ctx = canvas.getContext('2d');
+  const freqSlider = document.getElementById('freqCut');
+  const freqVal = document.getElementById('freqVal');
+  let audioCtx, synth, filter;
+  let isPlaying = false;
+
+  function drawEQ(cutoff) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Draw Grid
+    ctx.strokeStyle = '#333';
+    ctx.lineWidth = 1;
+    for(let i=1; i<10; i++) {
+      ctx.beginPath();
+      ctx.moveTo((canvas.width/10)*i, 0);
+      ctx.lineTo((canvas.width/10)*i, canvas.height);
+      ctx.stroke();
+    }
+    
+    // Draw Curve (High pass approximation)
+    ctx.beginPath();
+    let cutX = (cutoff / 1000) * (canvas.width * 0.8); 
+    
+    ctx.moveTo(0, canvas.height);
+    ctx.lineTo(cutX - 20, canvas.height);
+    ctx.bezierCurveTo(cutX, canvas.height, cutX, 50, cutX + 40, 50);
+    ctx.lineTo(canvas.width, 50);
+    
+    ctx.strokeStyle = '#0055FF';
+    ctx.lineWidth = 4;
+    ctx.stroke();
+    
+    ctx.fillStyle = 'rgba(0, 85, 255, 0.2)';
+    ctx.lineTo(canvas.width, canvas.height);
+    ctx.lineTo(0, canvas.height);
+    ctx.fill();
+    
+    // Draw Text
+    ctx.fillStyle = '#fff';
+    ctx.font = '14px Arial';
+    ctx.fillText('20 Hz', 10, canvas.height - 10);
+    ctx.fillText('1000 Hz', canvas.width - 60, canvas.height - 10);
+  }
+  
+  drawEQ(50);
+  
+  freqSlider.addEventListener('input', (e) => {
+    let val = e.target.value;
+    freqVal.textContent = val;
+    drawEQ(val);
+    if(filter) {
+      filter.frequency.setTargetAtTime(val, audioCtx.currentTime, 0.05);
+    }
+  });
+
+  document.getElementById('playEqBtn').addEventListener('click', function() {
+    if(!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if(!isPlaying) {
+      synth = audioCtx.createOscillator();
+      synth.type = 'sawtooth';
+      synth.frequency.value = 110; 
+      
+      filter = audioCtx.createBiquadFilter();
+      filter.type = 'highpass';
+      filter.frequency.value = freqSlider.value;
+      
+      let gainNode = audioCtx.createGain();
+      gainNode.gain.value = 0.2;
+      
+      synth.connect(filter);
+      filter.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      
+      synth.start();
+      isPlaying = true;
+      this.textContent = '⏹ Detener Synth';
+      this.classList.replace('btn-audio', 'btn-danger');
+      this.style.background = 'var(--danger)';
+    } else {
+      synth.stop();
+      synth.disconnect();
+      isPlaying = false;
+      this.textContent = '▶ Escuchar Synth';
+      this.style.background = 'var(--audio)';
+    }
+  });
+
+
+  // -- Compresor Simulación --
+  const threshSlide = document.getElementById('threshSlide');
+  const ratioSlide = document.getElementById('ratioSlide');
+  const compThreshLine = document.getElementById('compThreshLine');
+  let compInt;
+  let compActive = false;
+
+  threshSlide.addEventListener('input', (e) => {
+    document.getElementById('threshVal').textContent = e.target.value;
+    let p = ((parseInt(e.target.value) + 40) / 40) * 100;
+    compThreshLine.style.left = p + '%';
+  });
+
+  ratioSlide.addEventListener('input', (e) => {
+    document.getElementById('ratioVal').textContent = e.target.value;
+  });
+
+  document.getElementById('playCompBtn').addEventListener('click', function() {
+    if(compActive) {
+      clearInterval(compInt);
+      document.getElementById('compLevel').style.width = '0%';
+      document.getElementById('compGrLevel').style.width = '0%';
+      this.textContent = '▶ Iniciar Simulación';
+      compActive = false;
+    } else {
+      this.textContent = '⏹ Detener Simulación';
+      compActive = true;
+      compInt = setInterval(() => {
+        let inputLevel = Math.random() * 40; 
+        let thresh = parseInt(threshSlide.value) + 40; 
+        let ratio = parseInt(ratioSlide.value);
+        
+        let visualIn = (inputLevel / 40) * 100;
+        document.getElementById('compLevel').style.width = visualIn + '%';
+        
+        if(inputLevel > thresh) {
+          let over = inputLevel - thresh;
+          let allowed = over / ratio;
+          let reduction = over - allowed;
+          let grVisual = (reduction / 40) * 100;
+          document.getElementById('compGrLevel').style.width = grVisual + '%';
+        } else {
+          document.getElementById('compGrLevel').style.width = '0%';
+        }
+      }, 300);
+    }
+  });
+
+
+  // -- Quiz --
+  const qData_9 = [
+    {"q":"¿Cuál es el rango de frecuencias audible por el ser humano promedio?","opts":["20 Hz a 20 kHz","10 Hz a 100 kHz","0 Hz a 500 Hz","50 Hz a 15 kHz"],"ans":0},
+    {"q":"La Ecualización Sustractiva se refiere a...","opts":["Subir los graves para que suene más fuerte","Cortar frecuencias problemáticas para limpiar la mezcla","Añadir distorsión","Poner un delay en el canal del bajo"],"ans":1},
+    {"q":"Si un sonido supera el 'Threshold' en un compresor con un Ratio de 4:1, ¿qué sucede?","opts":["El sonido se mutea","Por cada 4 dB que pasa, solo sale 1 dB","El sonido aumenta 4 dB","El compresor añade reverberación"],"ans":1},
+    {"q":"El parámetro 'Attack' en un compresor controla:","opts":["Qué tan rápido actúa el compresor tras pasar el umbral","El volumen de salida","La frecuencia que se va a comprimir","El tiempo que tarda en soltar el sonido"],"ans":0},
+    {"q":"El efecto 'Ducking' o Sidechain (común entre bombo y bajo) sirve principalmente para:","opts":["Hacer que el bajo suene más agudo","Evitar el enmascaramiento en frecuencias graves y dar ritmo","Afinar el bombo","Reducir el ruido de fondo"],"ans":1}
+  ];
+  let curQ_9 = 0; let score_9 = 0;
+
+  function renderQ_9() {
+    if(curQ_9 >= qData_9.length) {
+      let p = Math.round((score_9 / qData_9.length) * 100);
+      let msg = p === 100 ? '¡Perfecto! Eres un maestro del control dinámico.' : (p >= 60 ? '¡Bien hecho! Aprobaste.' : 'Necesitas repasar la clase de EQ y Dinámica.');
+      
+      if (p >= 60) {
+        localStorage.setItem('ableton101_c9', p);
+      }
+      
+      document.getElementById('quiz-app-9').innerHTML = '<div style="text-align:center"><div style="font-size:4rem;margin-bottom:1rem">' + (p>=60?'🏆':'📉') + '</div><h3 style="color:#fff;font-size:2rem;margin-bottom:1rem">Tu Score: ' + score_9 + ' / ' + qData_9.length + ' (' + p + '%)</h3><p style="color:#aaa;font-size:1.2rem">' + msg + '</p></div>';
+      return;
+    }
+    let q = qData_9[curQ_9];
+    document.getElementById('q-progress-9').textContent = 'Pregunta ' + (curQ_9+1) + ' de ' + qData_9.length;
+    document.getElementById('q-text-9').textContent = q.q;
+    let optsHTML = '';
+    q.opts.forEach((opt, idx) => { optsHTML += '<button class="q-opt" onclick="checkQ_9(' + idx + ', ' + q.ans + ', this)">' + opt + '</button>'; });
+    document.getElementById('q-opts-9').innerHTML = optsHTML;
+    document.getElementById('q-next-9').style.display = 'none';
+  }
+  
+  function checkQ_9(sIdx, cIdx, btn) {
+    const btns = document.getElementById('q-opts-9').querySelectorAll('.q-opt');
+    btns.forEach(b => { b.disabled = true; b.style.opacity = '0.7'; });
+    btn.style.opacity = '1';
+    if(sIdx === cIdx) { btn.classList.add('correct'); score_9++; } 
+    else { btn.classList.add('wrong'); btns[cIdx].classList.add('correct'); btns[cIdx].style.opacity = '1'; }
+    document.getElementById('q-next-9').style.display = 'block';
+  }
+  
+  function nextQuestion_9() { curQ_9++; renderQ_9(); }
+  
+  setTimeout(() => renderQ_9(), 100);
+</script>
+
+<script src="../js/tooltips.js"></script>
+
+<script>
+  // Global Touch to Mouse mapping for Canvas interactivity on iPads/Mobiles
+  function touchHandler(event) {
+    if(event.target.tagName !== 'CANVAS' && event.target.type !== 'range') return;
+    var touch = event.changedTouches[0];
+    var simulatedEvent = document.createEvent("MouseEvent");
+    simulatedEvent.initMouseEvent({
+        touchstart: "mousedown",
+        touchmove: "mousemove",
+        touchend: "mouseup"
+    }[event.type], true, true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null);
+    touch.target.dispatchEvent(simulatedEvent);
+    if(event.target.tagName === 'CANVAS') event.preventDefault();
+  }
+  document.addEventListener("touchstart", touchHandler, {passive: false});
+  document.addEventListener("touchmove", touchHandler, {passive: false});
+  document.addEventListener("touchend", touchHandler, {passive: false});
+</script>
+</body>
+</html>

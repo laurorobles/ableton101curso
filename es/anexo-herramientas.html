@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Ableton 101 — Herramientas y Plataformas</title>
+  <style>
+    :root { 
+      --bg:#F8F9FA; --surface:#fff; --text:#000; --muted:#555;
+      --border:#E5E7EB; --audio:#0055FF; --play:#00B84D; --cine:#E53E3E;
+    }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
+    body { background:var(--bg); color:var(--text); font-family:-apple-system,sans-serif; font-size:18px; line-height:1.6; padding:4rem 5%; }
+    
+    .btn-back { position:fixed; top:20px; left:20px; background:#fff; color:#000; text-decoration:none; padding:10px 15px; border-radius:8px; border:2px solid var(--border); font-weight:bold; z-index:9999; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
+    
+    header { text-align:center; padding:4rem 2rem; border-radius:24px; border:none; margin-bottom:4rem; background:#111; color:#fff; }
+    h1 { font-size:3.5rem; font-weight:900; margin-bottom:1rem; }
+    p.sub { font-size:1.3rem; color:#aaa; max-width:800px; margin:0 auto; }
+    
+    .controls { background:var(--surface); padding:2rem; border-radius:16px; border:1px solid var(--border); margin-bottom:3rem; }
+    .filter-group { margin-bottom:1.5rem; }
+    .filter-group h3 { font-size:1rem; color:var(--muted); margin-bottom:0.5rem; text-transform:uppercase; letter-spacing:1px; font-weight:800; }
+    .filter-row { display:flex; gap:0.5rem; flex-wrap:wrap; }
+    
+    .btn-filter { background:#fff; color:#555; border:1px solid var(--border); padding:0.4rem 1rem; border-radius:20px; cursor:pointer; font-weight:bold; transition:all 0.2s; font-size:0.9rem; }
+    .btn-filter:hover { border-color:var(--audio); color:#fff; }
+    .btn-filter.active { background:var(--audio); color:#fff; border-color:var(--audio); }
+
+    .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:2rem; }
+    
+    .tool-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:2rem; transition:transform 0.2s; display:flex; flex-direction:column; box-shadow:0 4px 15px rgba(0,0,0,0.03); }
+    .tool-card:hover { border-color:#aaa; transform:translateY(-5px); box-shadow:0 8px 25px rgba(0,0,0,0.1); }
+    
+    .tool-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1rem; }
+    .tool-title { font-size:1.8rem; color:#000; font-weight:900; }
+    .tag-cat { font-size:0.75rem; background:#f0f0f0; color:#555; padding:0.3rem 0.8rem; border-radius:4px; text-transform:uppercase; font-weight:bold; border:1px solid #ddd; }
+    
+    .tool-desc { font-size:1.05rem; margin-bottom:1.5rem; flex:1; color:#333; }
+    
+    .tool-link { display:inline-block; color:#fff; text-decoration:none; padding:0.8rem 1.5rem; border-radius:8px; font-weight:bold; text-align:center; transition:filter 0.2s; }
+    .tool-link:hover { filter:brightness(1.2); }
+    .tool-link.free { background:var(--play); }
+    .tool-link.paid { background:#FF5500; }
+
+  </style>
+</head>
+<body>
+
+<a href="../index.html" class="btn-back">← Volver al Índice</a>
+
+<header>
+  <div style="font-size:4rem; margin-bottom:1rem">🚀</div>
+  <h1>Ecosistema Digital del Productor</h1>
+  <p class="sub">No basta con hacer buena música, debes saber qué hacer con ella. Explora más de 25 plataformas maestras para Plugins, Samples, IA, Distribución, Regalías y Promoción.</p>
+</header>
+
+<div class="controls">
+  <div class="filter-group" style="margin-bottom:0">
+    <h3>📂 Filtrar por Categoría</h3>
+    <div class="filter-row" id="catFilters">
+      <button class="btn-filter active" data-cat="all" onclick="setCatFilter('all', this)">Todo el Ecosistema</button>
+      <button class="btn-filter" data-cat="plugins" onclick="setCatFilter('plugins', this)">Plugins y VSTs</button>
+      <button class="btn-filter" data-cat="samples" onclick="setCatFilter('samples', this)">Samples y Sonidos</button>
+      <button class="btn-filter" data-cat="entrenamiento" onclick="setCatFilter('entrenamiento', this)">Entrenamiento</button>
+      <button class="btn-filter" data-cat="distribucion" onclick="setCatFilter('distribucion', this)">Distribución</button>
+      <button class="btn-filter" data-cat="business" onclick="setCatFilter('business', this)">Business/Regalías</button>
+      <button class="btn-filter" data-cat="mastering" onclick="setCatFilter('mastering', this)">Mastering</button>
+      <button class="btn-filter" data-cat="comunidad" onclick="setCatFilter('comunidad', this)">Comunidad</button>
+      <button class="btn-filter" data-cat="ia" onclick="setCatFilter('ia', this)">Separación / IA</button>
+      <button class="btn-filter" data-cat="colaboracion" onclick="setCatFilter('colaboracion', this)">Colaboración</button>
+      <button class="btn-filter" data-cat="promo" onclick="setCatFilter('promo', this)">Promoción</button>
+    </div>
+  </div>
+</div>
+
+<div class="grid" id="toolGrid">
+  
+  <div class="tool-card" data-cat="samples">
+    <div class="tool-header">
+      <h2 class="tool-title">Splice</h2>
+      <span class="tag-cat">Samples</span>
+    </div>
+    <p class="tool-desc">La biblioteca estándar de la industria. Paga una suscripción por créditos y descarga millones de samples libres de regalías.</p>
+    <a href="https://splice.com" target="_blank" class="tool-link paid">Visitar Sitio ↗</a>
+  </div>
+  <div class="tool-card" data-cat="samples">
+    <div class="tool-header">
+      <h2 class="tool-title">Tracklib</h2>
+      <span class="tag-cat">Samples</span>
+    </div>
+    <p class="tool-desc">El paraíso del sampling. Descarga canciones reales (soul, disco, funk) y legaliza los derechos para usarlas en tus beats comerciales.</p>
+    <a href="https://www.tracklib.com" target="_blank" class="tool-link paid">Visitar Sitio ↗</a>
+  </div>
+  <div class="tool-card" data-cat="samples">
+    <div class="tool-header">
+      <h2 class="tool-title">Freesound.org</h2>
+      <span class="tag-cat">Samples</span>
+    </div>
+    <p class="tool-desc">Base de datos colaborativa gigante de sonidos gratuitos (foley, ambientes, ruidos extraños). Excelente para diseño sonoro.</p>
+    <a href="https://freesound.org" target="_blank" class="tool-link free">Visitar (Gratis) ↗</a>
+  </div>
+  <div class="tool-card" data-cat="samples">
+    <div class="tool-header">
+      <h2 class="tool-title">Loopcloud</h2>
+      <span class="tag-cat">Samples</span>
+    </div>
+    <p class="tool-desc">Competencia directa de Splice. Ofrece un plugin excelente que te permite modificar el sample (tono y tempo) antes de comprarlo.</p>
+    <a href="https://www.loopcloud.com" target="_blank" class="tool-link paid">Visitar Sitio ↗</a>
+  </div>
+  <div class="tool-card" data-cat="plugins">
+    <div class="tool-header">
+      <h2 class="tool-title">Plugin Boutique</h2>
+      <span class="tag-cat">Plugins</span>
+    </div>
+    <p class="tool-desc">La tienda de VSTs más grande del mundo. Excelentes ofertas semanales y siempre regalan un plugin con cada compra.</p>
+    <a href="https://www.pluginboutique.com" target="_blank" class="tool-link paid">Visitar Sitio ↗</a>
+  </div>
+  <div class="tool-card" data-cat="plugins">
+    <div class="tool-header">
+      <h2 class="tool-title">Vital</h2>
+      <span class="tag-cat">Sintetizador</span>
+    </div>
+    <p class="tool-desc">Sintetizador Wavetable visual. Es la competencia gratuita directa del famosísimo Xfer Serum. Descarga obligatoria.</p>
+    <a href="https://vital.audio" target="_blank" class="tool-link free">Visitar (Gratis) ↗</a>
+  </div>
+  <div class="tool-card" data-cat="plugins">
+    <div class="tool-header">
+      <h2 class="tool-title">Spitfire Audio LABS</h2>
+      <span class="tag-cat">Instrumentos</span>
+    </div>
+    <p class="tool-desc">La mejor biblioteca gratuita del mundo para pianos orgánicos, cuerdas, guitarras y texturas cinemáticas. Sonido de primer nivel.</p>
+    <a href="https://labs.spitfireaudio.com" target="_blank" class="tool-link free">Visitar (Gratis) ↗</a>
+  </div>
+  <div class="tool-card" data-cat="plugins">
+    <div class="tool-header">
+      <h2 class="tool-title">KVR Audio</h2>
+      <span class="tag-cat">Foro / DB</span>
+    </div>
+    <p class="tool-desc">Base de datos y foro gigantesco. Si existe un plugin (gratis o de pago), alguien ya lo reseñó aquí.</p>
+    <a href="https://www.kvraudio.com" target="_blank" class="tool-link free">Visitar (Gratis) ↗</a>
+  </div>
+  <div class="tool-card" data-cat="distribucion">
+    <div class="tool-header">
+      <h2 class="tool-title">DistroKid</h2>
+      <span class="tag-cat">Distribución</span>
+    </div>
+    <p class="tool-desc">Sube canciones ilimitadas a Spotify, Apple Music, etc., por una tarifa plana anual. Te quedas con el 100% de regalías.</p>
+    <a href="https://distrokid.com" target="_blank" class="tool-link paid">Visitar Sitio ↗</a>
+  </div>
+  <div class="tool-card" data-cat="distribucion">
+    <div class="tool-header">
+      <h2 class="tool-title">TuneCore</h2>
+      <span class="tag-cat">Distribución</span>
+    </div>
+    <p class="tool-desc">Agregador muy respetado. Ahora ofrecen planes para música ilimitada y grandes herramientas de monetización en redes sociales.</p>
+    <a href="https://www.tunecore.com" target="_blank" class="tool-link paid">Visitar Sitio ↗</a>
+  </div>
+  <div class="tool-card" data-cat="business">
+    <div class="tool-header">
+      <h2 class="tool-title">Songtrust</h2>
+      <span class="tag-cat">Regalías</span>
+    </div>
+    <p class="tool-desc">Plataforma de Publishing. Recolecta el dinero que generan tus canciones cuando suenan en radio, TV o streaming a nivel global.</p>
+    <a href="https://www.songtrust.com" target="_blank" class="tool-link paid">Visitar Sitio ↗</a>
+  </div>
+  <div class="tool-card" data-cat="business">
+    <div class="tool-header">
+      <h2 class="tool-title">Chartmetric</h2>
+      <span class="tag-cat">Data Analytics</span>
+    </div>
+    <p class="tool-desc">Analítica musical avanzada. Descubre en qué playlists de Spotify fuiste agregado y monitorea tus estadísticas mundiales.</p>
+    <a href="https://chartmetric.com" target="_blank" class="tool-link paid">Visitar Sitio ↗</a>
+  </div>
+  <div class="tool-card" data-cat="mastering">
+    <div class="tool-header">
+      <h2 class="tool-title">LANDR</h2>
+      <span class="tag-cat">IA Mastering</span>
+    </div>
+    <p class="tool-desc">El pionero en masterización automatizada con Inteligencia Artificial. Ideal si no puedes pagar a un ingeniero humano.</p>
+    <a href="https://www.landr.com" target="_blank" class="tool-link paid">Visitar Sitio ↗</a>
+  </div>
+  <div class="tool-card" data-cat="mastering">
+    <div class="tool-header">
+      <h2 class="tool-title">BandLab Mastering</h2>
+      <span class="tag-cat">IA Mastering</span>
+    </div>
+    <p class="tool-desc">Alternativa 100% gratuita y online impulsada por IA para masterizar tus pistas rápidamente. Resultados sorprendentes.</p>
+    <a href="https://www.bandlab.com/mastering" target="_blank" class="tool-link free">Visitar (Gratis) ↗</a>
+  </div>
+  <div class="tool-card" data-cat="comunidad">
+    <div class="tool-header">
+      <h2 class="tool-title">Bandcamp</h2>
+      <span class="tag-cat">Venta Directa</span>
+    </div>
+    <p class="tool-desc">Vende música y merch directamente a tus fans. Tú pones el precio, es el hogar de la música electrónica underground.</p>
+    <a href="https://bandcamp.com" target="_blank" class="tool-link free">Visitar (Gratis) ↗</a>
+  </div>
+  <div class="tool-card" data-cat="comunidad">
+    <div class="tool-header">
+      <h2 class="tool-title">SoundCloud</h2>
+      <span class="tag-cat">Comunidad</span>
+    </div>
+    <p class="tool-desc">El Instagram de los productores. Sube maquetas (WIPs), sets de DJ o remixes informales y conecta comentando en las ondas de audio.</p>
+    <a href="https://soundcloud.com" target="_blank" class="tool-link free">Visitar (Gratis) ↗</a>
+  </div>
+  <div class="tool-card" data-cat="comunidad">
+    <div class="tool-header">
+      <h2 class="tool-title">Patreon</h2>
+      <span class="tag-cat">Membresías</span>
+    </div>
+    <p class="tool-desc">Tus fans más leales pueden pagarte una suscripción mensual a cambio de acceso anticipado a tracks o tutoriales.</p>
+    <a href="https://www.patreon.com" target="_blank" class="tool-link free">Visitar (Gratis) ↗</a>
+  </div>
+  <div class="tool-card" data-cat="ia">
+    <div class="tool-header">
+      <h2 class="tool-title">LALAL.AI</h2>
+      <span class="tag-cat">Stems / AI</span>
+    </div>
+    <p class="tool-desc">Potente herramienta IA que extrae voces, baterías y bajos de CUALQUIER canción existente. Increíble para hacer remixes.</p>
+    <a href="https://www.lalal.ai" target="_blank" class="tool-link paid">Visitar Sitio ↗</a>
+  </div>
+  <div class="tool-card" data-cat="ia">
+    <div class="tool-header">
+      <h2 class="tool-title">Moises.ai</h2>
+      <span class="tag-cat">Stems / AI</span>
+    </div>
+    <p class="tool-desc">App y plataforma que separa pistas, detecta BPM y extrae los acordes de la canción que subas mágicamente.</p>
+    <a href="https://moises.ai" target="_blank" class="tool-link free">Visitar (Gratis) ↗</a>
+  </div>
+  <div class="tool-card" data-cat="entrenamiento">
+    <div class="tool-header">
+      <h2 class="tool-title">SoundGym</h2>
+      <span class="tag-cat">Entrenamiento Auditivo</span>
+    </div>
+    <p class="tool-desc">Gimnasio para los oídos. Juegos diarios para aprender a detectar cortes de EQ, compresión y paneos.</p>
+    <a href="https://www.soundgym.co" target="_blank" class="tool-link paid">Visitar Sitio ↗</a>
+  </div>
+  <div class="tool-card" data-cat="entrenamiento">
+    <div class="tool-header">
+      <h2 class="tool-title">Syntorial</h2>
+      <span class="tag-cat">Aprende Síntesis</span>
+    </div>
+    <p class="tool-desc">Videojuego/Software interactivo que te enseña a programar sintetizadores paso a paso escuchando el resultado.</p>
+    <a href="https://www.syntorial.com" target="_blank" class="tool-link paid">Visitar Sitio ↗</a>
+  </div>
+  <div class="tool-card" data-cat="entrenamiento">
+    <div class="tool-header">
+      <h2 class="tool-title">Equipboard</h2>
+      <span class="tag-cat">Referencias</span>
+    </div>
+    <p class="tool-desc">Enciclopedia de hardware. Busca a tu artista favorito (ej. Daft Punk) y ve exactamente qué sintes o monitores usan.</p>
+    <a href="https://equipboard.com" target="_blank" class="tool-link free">Visitar (Gratis) ↗</a>
+  </div>
+  <div class="tool-card" data-cat="promo">
+    <div class="tool-header">
+      <h2 class="tool-title">SubmitHub</h2>
+      <span class="tag-cat">Promoción</span>
+    </div>
+    <p class="tool-desc">Plataforma de pitching. Le pagas a curadores de Playlists o disqueras para que escuchen tu track. Si les gusta, lo promocionan.</p>
+    <a href="https://www.submithub.com" target="_blank" class="tool-link paid">Visitar Sitio ↗</a>
+  </div>
+  <div class="tool-card" data-cat="promo">
+    <div class="tool-header">
+      <h2 class="tool-title">Groover</h2>
+      <span class="tag-cat">Promoción</span>
+    </div>
+    <p class="tool-desc">Alternativa europea a SubmitHub. Garantiza retroalimentación escrita de profesionales en menos de 7 días.</p>
+    <a href="https://groover.co" target="_blank" class="tool-link paid">Visitar Sitio ↗</a>
+  </div>
+  <div class="tool-card" data-cat="promo">
+    <div class="tool-header">
+      <h2 class="tool-title">Linktree</h2>
+      <span class="tag-cat">Promoción</span>
+    </div>
+    <p class="tool-desc">Crea una página de destino para tu biografía de Instagram/TikTok agrupando los links de Spotify, Apple y tus redes.</p>
+    <a href="https://linktr.ee" target="_blank" class="tool-link free">Visitar (Gratis) ↗</a>
+  </div>
+  <div class="tool-card" data-cat="colaboracion">
+    <div class="tool-header">
+      <h2 class="tool-title">Audiomovers</h2>
+      <span class="tag-cat">Streaming DAW</span>
+    </div>
+    <p class="tool-desc">El estándar de industria para transmitir el audio HQ de tu Ableton en tiempo real a clientes u otros productores remotamente.</p>
+    <a href="https://audiomovers.com" target="_blank" class="tool-link paid">Visitar Sitio ↗</a>
+  </div>
+  <div class="tool-card" data-cat="colaboracion">
+    <div class="tool-header">
+      <h2 class="tool-title">WeTransfer</h2>
+      <span class="tag-cat">Transferencia</span>
+    </div>
+    <p class="tool-desc">La regla de oro para enviar Stems pesados o proyectos comprimidos sin perder calidad de audio.</p>
+    <a href="https://wetransfer.com" target="_blank" class="tool-link free">Visitar (Gratis) ↗</a>
+  </div>
+</div>
+
+<script>
+  function setCatFilter(cat, btn) {
+    document.querySelectorAll('#catFilters .btn-filter').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    
+    const cards = document.querySelectorAll('.tool-card');
+    cards.forEach(card => {
+      const cardCat = card.getAttribute('data-cat');
+      if (cat === 'all' || cardCat === cat) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+</script>
+
+<!-- AUTHOR CREDIT -->
+<div style="position:fixed; bottom:15px; right:20px; font-size:0.9rem; color:inherit; opacity:0.35; z-index:9999; font-weight:700; pointer-events:none; transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.35'">
+  Creado por @laurorobles
+</div>
+</body>
+</html>

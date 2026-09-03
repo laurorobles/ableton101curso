@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Ableton 101 — Clase 10: Síntesis I - Fundamentos</title>
+  <style>
+    :root { --bg:#F8F9FA; --surface:#fff; --text:#000; --muted:#555; --border:#E5E7EB; --audio:#0055FF; --midi:#FF5500; --play:#00B84D; --danger:#E53E3E; }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:-apple-system,sans-serif;font-size:18px;line-height:1.6;padding:4rem 5%}
+    h1{font-size:3.5rem;font-weight:900;margin-bottom:1rem;}
+    h2{font-size:2.5rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.8rem}
+    .sub{font-size:1.5rem;color:var(--muted);max-width:900px;margin-bottom:2.5rem;font-weight:500}
+    section{max-width:1000px;margin:0 auto 5rem;padding:4rem 0;border-bottom:1px solid var(--border);}
+    .tag{display:inline-block;font-size:1rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;border-radius:4px;padding:4px 8px;background:#111;color:#fff;}
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;}
+    .panel{background:var(--surface);border:3px solid var(--border);border-radius:20px;padding:2.5rem;box-shadow:0 8px 24px rgba(0,0,0,.04)}
+    header{text-align:center;padding:4rem 2rem;border-radius:24px;border:2px solid var(--border);margin-bottom:4rem;background:var(--surface);}
+    .m-final{background:#111;color:#fff;padding:4rem;border-radius:24px;margin-top:4rem;max-width:1000px;margin:4rem auto;}
+    .m-final h2{color:#fff;}
+    .btn{display:inline-block;background:var(--audio);color:#fff;padding:1rem 2rem;text-decoration:none;border-radius:8px;font-weight:bold;cursor:pointer;border:none;}
+    canvas{width:100%;background:#111;border-radius:12px;margin-top:1.5rem;cursor:crosshair;touch-action:none;}
+  
+    /* Quiz */
+    .quiz-app { background:#222; border:1px solid #333; border-radius:16px; padding:2rem; margin-top:2rem; }
+    .q-text { font-size:1.4rem; color:#fff; margin-bottom:1.5rem; }
+    .q-opt { display:block; width:100%; text-align:left; background:#333; color:#fff; border:2px solid transparent; padding:1.2rem; border-radius:8px; margin-bottom:0.8rem; cursor:pointer; font-size:1.1rem; transition:all 0.2s; }
+    .q-opt:hover { background:#444; border-color:#555; }
+    .q-opt.correct { background:var(--play) !important; color:#fff; border-color:#fff; }
+    .q-opt.wrong { background:var(--danger) !important; color:#fff; }
+    .q-progress { color:var(--muted); margin-bottom:1rem; font-weight:bold; }
+    .q-next { background:var(--audio); color:#fff; padding:1rem 2rem; border:none; border-radius:8px; font-weight:bold; font-size:1.2rem; cursor:pointer; margin-top:1rem; display:none; }
+    .m-final ul { list-style:none; }
+    .m-final li { margin-bottom:1rem; color:#ccc; display:flex; gap:1rem; }
+    .m-final h3 { color:var(--play); border-bottom:1px solid #333; padding-bottom:0.5rem; margin-bottom:1.5rem; margin-top:2rem; }
+    
+  </style>
+</head>
+<body>
+<a href="../index.html" style="position:fixed;top:20px;left:20px;background:var(--surface);color:var(--text);text-decoration:none;padding:10px 15px;border-radius:8px;border:2px solid var(--border);font-weight:bold;z-index:9999;">← Volver</a>
+<header><div class="tag">Soundspace Academy</div><h1>Ableton 101<br>Clase 10: Síntesis I - Fundamentos</h1><p class="sub">El ADN del sonido: Osciladores, Filtros y Envolventes ADSR.</p></header>
+
+<section>
+  <div class="tag" style="background:var(--midi)">Módulo 01</div><h2>El Oscilador (VCO)</h2>
+  <div class="split">
+    <div class="panel">
+      <p>Todo sintetizador analógico o digital comienza con un <strong>Oscilador</strong>. Su trabajo es generar una onda de sonido cruda que repetirá cientos de veces por segundo.</p><br>
+      <ul style="list-style:none; line-height:2;">
+        <li>〰️ <strong>Senoidal (Sine):</strong> Pura, sin armónicos. Suena a un pitido suave (o un Sub-Bajo masivo).</li>
+        <li>⛰️ <strong>Triangular:</strong> Más brillante que la seno, ideal para flautas.</li>
+        <li>🔪 <strong>Sierra (Saw):</strong> Llena de armónicos. Suena agresiva, ideal para leads de trance y bajos EDM.</li>
+        <li>🧱 <strong>Cuadrada (Square):</strong> Sonido "hueco" tipo Nintendo de 8 bits o clarinetes.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Prueba los Osciladores</h3>
+      <p style="color:var(--muted)">Usa la API Web Audio para escuchar las ondas puras.</p>
+      <div style="display:flex; flex-direction:column; gap:1rem; margin-top:1rem;">
+        <button class="btn" onclick="playOsc('sine')">〰️ Senoidal (Sub)</button>
+        <button class="btn" onclick="playOsc('sawtooth')" style="background:#FF5500">🔪 Sierra (Lead)</button>
+        <button class="btn" onclick="playOsc('square')" style="background:#8800DD">🧱 Cuadrada (8-bit)</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="tag" style="background:var(--play)">Módulo 02</div><h2>El Filtro (VCF)</h2>
+  <div class="panel">
+    <p>La síntesis que usamos en Ableton (Analog, Wavetable) se llama <strong>Síntesis Sustractiva</strong>. Empezamos con una onda rica (como la Sierra) y le *restamos* frecuencias usando un <span class="tt" data-term="Filtro LP">Filtro LP</span>.</p>
+    <br>
+    <p><strong>El Cutoff (Corte):</strong> Es la perilla que decide en qué frecuencia empieza a cortar. Si la bajas, el sonido se oscurece y pierde agudos.</p>
+    <p><strong>La Resonancia (Q):</strong> Es un aumento drástico justo en el punto de corte. Crea ese sonido de "láser" o "wub-wub" clásico.</p>
+  </div>
+</section>
+
+<section>
+  <div class="tag" style="background:var(--danger)">Módulo 03</div><h2>La Envolvente Interactiva (ADSR)</h2>
+  <div class="panel">
+    <p>El sonido cambia con el tiempo. Un piano suena fuerte de golpe y luego se apaga. Un violín entra lentamente. Eso lo define la envolvente <span class="tt">ADSR</span>.</p>
+    <br>
+    <div style="display:flex; gap:1rem; font-size:0.9rem; font-weight:bold;">
+      <span style="color:red">Attack (A)</span> | <span style="color:orange">Decay (D)</span> | <span style="color:green">Sustain (S)</span> | <span style="color:blue">Release (R)</span>
+    </div>
+    <canvas id="adsrCanvas" height="250"></canvas>
+    <p style="text-align:center; margin-top:1rem; color:var(--muted)">Arrastra los puntos rojos para esculpir el sonido.</p>
+    <div style="text-align:center; margin-top:1rem;"><button class="btn" onclick="triggerADSR()">▶ Tocar Nota</button></div>
+  </div>
+</section>
+
+<section>
+  <div class="tag" style="background:var(--cc)">Módulo 04</div><h2>LFO: El Movimiento Invisible</h2>
+  <div class="panel">
+    <p>Un <span class="tt">LFO</span> (Low Frequency Oscillator) es un oscilador tan grave que los humanos no lo podemos escuchar (ej. 2 ciclos por segundo). No se usa para emitir sonido, sino como una <strong>mano invisible</strong> que mueve perillas automáticamente.</p>
+    <br>
+    <p>Si conectas un LFO al Tono del oscilador, obtienes <em>Vibrato</em>.<br>Si lo conectas al Filtro, obtienes el clásico <em>Wub-Wub</em> del Dubstep.</p>
+  </div>
+</section>
+
+
+<div class="m-final">
+  <div class="tag">Módulo Final</div>
+  <h2>Resumen de Conceptos</h2>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:3rem;">
+    <div>
+      <h3>📚 Conceptos Clave</h3>
+      <ul>
+        <li><span>✅</span> <span>El Oscilador (VCO) genera el sonido base (Senoidal, Sierra, Cuadrada).</span></li><li><span>✅</span> <span>El Filtro (VCF) recorta las frecuencias no deseadas (Cutoff) y las acentúa (Resonance).</span></li><li><span>✅</span> <span>La Envolvente ADSR da forma al volumen o filtro en el tiempo (Ataque, Decaimiento, Sostenimiento, Relajación).</span></li>
+      </ul>
+    </div>
+    <div>
+      <h3>⌨️ Shortcuts Aprendidos</h3>
+      <ul>
+        <li><strong>Q</strong> <span>Activar el modo Hot-Swap para cambiar de preset de sintetizador.</span></li><li><strong>Cmd/Ctrl + F</strong> <span>Buscar rápidamente un efecto o sinte en el navegador.</span></li>
+      </ul>
+    </div>
+  </div>
+  
+  <h3 style="margin-top:4rem; font-size:2rem; text-align:center; border:none">🧠 Evaluador Interactivo</h3>
+  <div class="quiz-app" id="quiz-app-10">
+    <div class="q-progress" id="q-progress-10">Pregunta 1 de 5</div>
+    <div class="q-text" id="q-text-10"></div>
+    <div id="q-opts-10"></div>
+    <button class="q-next" id="q-next-10" onclick="nextQuestion_10()">Siguiente Pregunta ➔</button>
+  </div>
+  
+  <div style="margin-top: 2rem; border-top: 1px solid #333; padding-top: 2rem; text-align:center;">
+    <h3>📖 Bibliografía y Recursos</h3>
+    <ul style="list-style:none; padding:0; margin-top:1rem; line-height:2;">
+      <li><a href="anexo-glosario.html" style="color:var(--audio); text-decoration:none;">➔ Consultar el Glosario Oficial</a></li>
+      <li><a href="examen-final.html" style="color:var(--play); text-decoration:none; font-weight:bold; font-size:1.2rem;">➔ Ir al GRAN EXAMEN FINAL</a></li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  const qData_10 = [{"q":"¿Qué tipo de oscilador es ideal para un bajo profundo sin armónicos?","opts":["Sierra","Cuadrada","Senoidal","Triangular"],"ans":2},{"q":"¿Qué hace el parámetro Cutoff en un filtro Low Pass?","opts":["Aumenta los agudos","Corta las frecuencias altas a partir del punto elegido","Añade reverberación","Cambia el volumen general"],"ans":1},{"q":"En la envolvente ADSR, ¿qué parámetro se mide en Nivel (volumen) y no en Tiempo?","opts":["Attack","Decay","Sustain","Release"],"ans":2},{"q":"¿Qué significa LFO?","opts":["Low Frequency Oscillator","Large Format Object","Linear Filter Option","Live Frequency Operation"],"ans":0},{"q":"¿Qué es la Síntesis Sustractiva?","opts":["Añadir ruido blanco","Comenzar con una onda rica en armónicos y usar un filtro para restarle frecuencias","Multiplicar dos osciladores","Samplear un vinilo"],"ans":1}];
+  let curQ_10 = 0; let score_10 = 0;
+  function renderQ_10() {
+    if(curQ_10 >= qData_10.length) {
+      let p = Math.round((score_10 / qData_10.length) * 100);
+      let msg = p === 100 ? '¡Perfecto!' : (p >= 60 ? '¡Bien hecho!' : 'Repasa la lección.');
+      if (p >= 60) localStorage.setItem('ableton101_c10', score_10);
+      document.getElementById('quiz-app-10').innerHTML = '<div style="text-align:center"><div style="font-size:4rem;margin-bottom:1rem">' + (p>=60?'🏆':'📉') + '</div><h3 style="color:#fff;font-size:2rem;margin-bottom:1rem">Tu Score: ' + score_10 + ' / ' + qData_10.length + ' (' + p + '%)</h3><p style="color:#aaa;font-size:1.2rem">' + msg + '</p></div>';
+      return;
+    }
+    let q = qData_10[curQ_10];
+    document.getElementById('q-progress-10').textContent = 'Pregunta ' + (curQ_10+1) + ' de ' + qData_10.length;
+    document.getElementById('q-text-10').textContent = q.q;
+    let optsHTML = '';
+    q.opts.forEach((opt, idx) => { optsHTML += '<button class="q-opt" onclick="checkQ_10(' + idx + ', ' + q.ans + ', this)">' + opt + '</button>'; });
+    document.getElementById('q-opts-10').innerHTML = optsHTML;
+    document.getElementById('q-next-10').style.display = 'none';
+  }
+  function checkQ_10(sIdx, cIdx, btn) {
+    const btns = document.getElementById('q-opts-10').querySelectorAll('.q-opt');
+    btns.forEach(b => { b.disabled = true; b.style.opacity = '0.7'; });
+    btn.style.opacity = '1';
+    if(sIdx === cIdx) { btn.classList.add('correct'); score_10++; } 
+    else { btn.classList.add('wrong'); btns[cIdx].classList.add('correct'); btns[cIdx].style.opacity = '1'; }
+    document.getElementById('q-next-10').style.display = 'block';
+  }
+  function nextQuestion_10() { curQ_10++; renderQ_10(); }
+  setTimeout(() => renderQ_10(), 100);
+</script>
+  
+<script>
+let ctx = null;
+function playOsc(type) {
+  if(!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+  let osc = ctx.createOscillator(); osc.type = type; osc.frequency.value = 110; // A2
+  let gain = ctx.createGain(); gain.gain.setValueAtTime(0, ctx.currentTime);
+  gain.gain.linearRampToValueAtTime(0.5, ctx.currentTime + 0.1);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.5);
+  osc.connect(gain); gain.connect(ctx.destination);
+  osc.start(); osc.stop(ctx.currentTime + 1.5);
+}
+
+// ADSR Canvas
+const cv = document.getElementById('adsrCanvas');
+const cxt = cv.getContext('2d');
+let points = [{x:20, y:230}, {x:80, y:20}, {x:150, y:120}, {x:250, y:120}, {x:320, y:230}];
+let drag = -1;
+
+function drawADSR() {
+  cxt.fillStyle='#111'; cxt.fillRect(0,0,cv.width,cv.height);
+  cxt.strokeStyle='#333'; cxt.lineWidth=1;
+  for(let i=0; i<5; i++){ cxt.beginPath(); cxt.moveTo(0, i*50); cxt.lineTo(cv.width, i*50); cxt.stroke(); }
+  
+  // Enforce limits
+  points[1].x = Math.max(points[0].x+10, Math.min(points[1].x, points[2].x-10));
+  points[2].x = Math.max(points[1].x+10, Math.min(points[2].x, points[3].x-10));
+  points[3].x = Math.max(points[2].x+10, Math.min(points[3].x, points[4].x-10));
+  points[2].y = points[3].y; // Sustain level must match
+  
+  cxt.beginPath(); cxt.moveTo(points[0].x, points[0].y);
+  for(let i=1;i<5;i++) cxt.lineTo(points[i].x, points[i].y);
+  cxt.strokeStyle='#0055FF'; cxt.lineWidth=4; cxt.stroke();
+  
+  cxt.fillStyle='red';
+  for(let i=1;i<5;i++){ cxt.beginPath(); cxt.arc(points[i].x, points[i].y, 8, 0, Math.PI*2); cxt.fill(); }
+}
+drawADSR();
+
+cv.onmousedown = (e) => {
+  const r = cv.getBoundingClientRect(); const mx = e.clientX - r.left; const my = e.clientY - r.top;
+  for(let i=1;i<5;i++) { if(Math.hypot(points[i].x-mx, points[i].y-my) < 15) { drag = i; break; } }
+};
+cv.onmousemove = (e) => {
+  if(drag>-1) {
+    const r = cv.getBoundingClientRect(); 
+    points[drag].x = Math.max(20, Math.min(e.clientX - r.left, cv.width-20));
+    points[drag].y = Math.max(20, Math.min(e.clientY - r.top, 230));
+    drawADSR();
+  }
+};
+cv.onmouseup = () => drag = -1;
+cv.onmouseleave = () => drag = -1;
+
+function triggerADSR() {
+  if(!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+  let osc = ctx.createOscillator(); osc.type = 'sawtooth'; osc.frequency.value = 110;
+  let gain = ctx.createGain(); gain.gain.setValueAtTime(0, ctx.currentTime);
+  
+  // Map pixels to seconds/volume
+  let tA = (points[1].x - points[0].x) / 100; // Attack time
+  let tD = (points[2].x - points[1].x) / 100; // Decay time
+  let sL = 1 - (points[2].y / 230); // Sustain level (0 to 1)
+  let tR = (points[4].x - points[3].x) / 100; // Release time
+  let tHold = (points[3].x - points[2].x) / 100; // Hold time
+  
+  gain.gain.linearRampToValueAtTime(1.0, ctx.currentTime + tA);
+  gain.gain.exponentialRampToValueAtTime(Math.max(sL,0.01), ctx.currentTime + tA + tD);
+  gain.gain.setValueAtTime(Math.max(sL,0.01), ctx.currentTime + tA + tD + tHold);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + tA + tD + tHold + tR);
+  
+  osc.connect(gain); gain.connect(ctx.destination);
+  osc.start(ctx.currentTime); osc.stop(ctx.currentTime + tA + tD + tHold + tR + 0.1);
+}
+</script>
+<script src="../js/tooltips.js"></script>
+<script>
+  // Touch to Mouse converter
+  function touchHandler(event) {
+    if(event.target.tagName !== 'CANVAS' && event.target.type !== 'range') return;
+    var touch = event.changedTouches[0];
+    var simulatedEvent = document.createEvent("MouseEvent");
+    simulatedEvent.initMouseEvent({ touchstart:"mousedown", touchmove:"mousemove", touchend:"mouseup" }[event.type], true, true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null);
+    touch.target.dispatchEvent(simulatedEvent);
+    if(event.target.tagName === 'CANVAS') event.preventDefault();
+  }
+  document.addEventListener("touchstart", touchHandler, {passive: false});
+  document.addEventListener("touchmove", touchHandler, {passive: false});
+  document.addEventListener("touchend", touchHandler, {passive: false});
+</script>
+<div style="position:fixed;bottom:15px;right:20px;font-size:0.9rem;opacity:0.35;z-index:9999;font-weight:700;">Creado por @laurorobles</div>
+</body></html>

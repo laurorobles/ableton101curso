@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dojo de Shortcuts — Ableton 101</title>
+  <style>
+    :root {
+      --bg: #F8F9FA;
+      --surface: #ffffff;
+      --text: #1a1a1a;
+      --border: #e2e8f0;
+      --primary: #0055FF;
+      --hover: #f1f5f9;
+      --kbd-bg: #f1f5f9;
+      --kbd-border: #cbd5e1;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg); color: var(--text); padding: 2rem; padding-top: 5rem; }
+    
+    .btn-back {
+      position: fixed; top: 20px; left: 20px; background: var(--surface); color: var(--text); text-decoration: none; padding: 10px 15px; border-radius: 8px; border: 2px solid var(--border); font-weight: bold; z-index: 9999; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: 0.2s;
+    }
+    .btn-back:hover { border-color: var(--primary); color: var(--primary); }
+
+    .hero { text-align: center; margin-bottom: 3rem; }
+    .hero h1 { font-size: 3rem; font-weight: 900; margin-bottom: 1rem; color: #111; }
+    .hero p { font-size: 1.2rem; color: #666; max-width: 600px; margin: 0 auto; }
+
+    .filter-bar {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.02); display: flex; flex-direction: column; gap: 1rem;
+    }
+    .filter-group { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .filter-group h3 { font-size: 0.9rem; text-transform: uppercase; color: #888; width: 100px; }
+    .btn-filter {
+      background: transparent; border: 1px solid var(--border); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-size: 0.9rem; font-weight: 600; color: #555; transition: all 0.2s;
+    }
+    .btn-filter:hover { background: var(--hover); }
+    .btn-filter.active { background: var(--primary); color: white; border-color: var(--primary); }
+    
+    .search-box { width: 100%; padding: 0.8rem 1rem; border: 2px solid var(--border); border-radius: 8px; font-size: 1rem; outline: none; transition: 0.2s; }
+    .search-box:focus { border-color: var(--primary); }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+
+    .shortcut-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; display: flex; flex-direction: column; box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .shortcut-card:hover { transform: translateY(-3px); box-shadow: 0 8px 16px rgba(0,0,0,0.06); }
+
+    .sc-keys { display: flex; align-items: center; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.2rem; font-size: 1.1rem; }
+    kbd {
+      background-color: var(--kbd-bg); border: 1px solid var(--kbd-border); border-radius: 6px; padding: 0.3rem 0.6rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.9rem; font-weight: 700; color: #111; box-shadow: 0 2px 0 var(--kbd-border);
+    }
+    .sc-keys .plus { color: #999; font-weight: bold; font-size: 0.9rem; }
+
+    .sc-desc { font-size: 1rem; line-height: 1.4; color: #333; flex-grow: 1; margin-bottom: 1.5rem; font-weight: 500; }
+
+    .sc-tags { display: flex; gap: 0.5rem; margin-top: auto; }
+    .sc-tags span { font-size: 0.65rem; text-transform: uppercase; font-weight: 800; padding: 0.3rem 0.6rem; border-radius: 4px; letter-spacing: 0.5px; }
+    .tag-cat { background: #111; color: white; }
+    .tag-cls { background: #e2e8f0; color: #4a5568; }
+  </style>
+</head>
+<body>
+
+<a href="../index.html" class="btn-back">← Volver al Índice</a>
+
+<div class="hero">
+  <h1>📖 La Biblia de Shortcuts</h1>
+  <p>Domina Ableton Live como un profesional. Usa los filtros o el buscador para encontrar exactamente el atajo que necesitas.</p>
+</div>
+
+<div class="filter-bar">
+  <input type="text" id="searchInput" class="search-box" placeholder="🔍 Buscar shortcut (ej. 'Consolidar' o 'Cmd + J')..." onkeyup="applyFilters()">
+  
+  <div class="filter-group" id="catFilters">
+    <h3>Categoría</h3>
+    <button class="btn-filter active" onclick="setCatFilter('all', this)">Todos</button>
+    <button class="btn-filter" onclick="setCatFilter('transporte', this)">Transporte</button>
+    <button class="btn-filter" onclick="setCatFilter('vistas', this)">Vistas</button>
+    <button class="btn-filter" onclick="setCatFilter('edición', this)">Edición</button>
+    <button class="btn-filter" onclick="setCatFilter('midi', this)">MIDI</button>
+    <button class="btn-filter" onclick="setCatFilter('pistas', this)">Pistas</button>
+    <button class="btn-filter" onclick="setCatFilter('efectos', this)">Efectos</button>
+    <button class="btn-filter" onclick="setCatFilter('warping', this)">Warping</button>
+    <button class="btn-filter" onclick="setCatFilter('exportación', this)">Exportación</button>
+  </div>
+</div>
+
+<div class="grid" id="scGrid">
+  <div class="shortcut-card" data-cat="transporte" data-cls="c1">
+    <div class="sc-keys"><kbd>Space</kbd></div>
+    <div class="sc-desc">Reproducir / Pausar</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Transporte</span>
+      <span class="tag-cls">Clase 1</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="transporte" data-cls="cgen">
+    <div class="sc-keys"><kbd>Shift</kbd><span class="plus">+</span><kbd>Space</kbd></div>
+    <div class="sc-desc">Reproducir desde la posición seleccionada</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Transporte</span>
+      <span class="tag-cls">General</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="transporte" data-cls="c15">
+    <div class="sc-keys"><kbd>F9</kbd></div>
+    <div class="sc-desc">Activar Grabación Global</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Transporte</span>
+      <span class="tag-cls">Clase 15</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="vistas" data-cls="c1">
+    <div class="sc-keys"><kbd>Tab (⇥)</kbd></div>
+    <div class="sc-desc">Alternar entre Vista de Sesión y Arreglo</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Vistas</span>
+      <span class="tag-cls">Clase 1</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="vistas" data-cls="c1">
+    <div class="sc-keys"><kbd>Shift</kbd><span class="plus">+</span><kbd>Tab</kbd></div>
+    <div class="sc-desc">Alternar panel inferior (Clip / Dispositivos)</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Vistas</span>
+      <span class="tag-cls">Clase 1</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="vistas" data-cls="cgen">
+    <div class="sc-keys"><kbd>Cmd ⌘</kbd><span class="plus">+</span><kbd>Alt</kbd><span class="plus">+</span><kbd>B</kbd></div>
+    <div class="sc-desc">Mostrar / Ocultar el Navegador (Browser)</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Vistas</span>
+      <span class="tag-cls">General</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="vistas" data-cls="cgen">
+    <div class="sc-keys"><kbd>Cmd ⌘</kbd><span class="plus">+</span><kbd>Alt</kbd><span class="plus">+</span><kbd>I</kbd></div>
+    <div class="sc-desc">Mostrar / Ocultar Entradas y Salidas (I/O)</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Vistas</span>
+      <span class="tag-cls">General</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="vistas" data-cls="c8">
+    <div class="sc-keys"><kbd>Cmd ⌘</kbd><span class="plus">+</span><kbd>Alt</kbd><span class="plus">+</span><kbd>M</kbd></div>
+    <div class="sc-desc">Mostrar / Ocultar el Mezclador (Mixer)</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Vistas</span>
+      <span class="tag-cls">Clase 8</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="vistas" data-cls="c5">
+    <div class="sc-keys"><kbd>Cmd ⌘</kbd><span class="plus">+</span><kbd>Alt</kbd><span class="plus">+</span><kbd>R</kbd></div>
+    <div class="sc-desc">Mostrar / Ocultar Pistas de Retorno</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Vistas</span>
+      <span class="tag-cls">Clase 5</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="vistas" data-cls="cgen">
+    <div class="sc-keys"><kbd>F11</kbd></div>
+    <div class="sc-desc">Pantalla Completa (Full Screen)</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Vistas</span>
+      <span class="tag-cls">General</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="vistas" data-cls="c3">
+    <div class="sc-keys"><kbd>+ / -</kbd></div>
+    <div class="sc-desc">Zoom In / Zoom Out (Acercar y Alejar)</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Vistas</span>
+      <span class="tag-cls">Clase 3</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="vistas" data-cls="c3">
+    <div class="sc-keys"><kbd>W</kbd></div>
+    <div class="sc-desc">Ajustar proyecto al ancho de pantalla (Fit to Width)</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Vistas</span>
+      <span class="tag-cls">Clase 3</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="edición" data-cls="c3">
+    <div class="sc-keys"><kbd>Cmd ⌘</kbd><span class="plus">+</span><kbd>E</kbd></div>
+    <div class="sc-desc">Dividir o cortar un clip en el Arrangement</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Edición</span>
+      <span class="tag-cls">Clase 3</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="edición" data-cls="c3">
+    <div class="sc-keys"><kbd>Cmd ⌘</kbd><span class="plus">+</span><kbd>J</kbd></div>
+    <div class="sc-desc">Consolidar (Unir varios clips en uno solo)</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Edición</span>
+      <span class="tag-cls">Clase 3</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="edición" data-cls="c3">
+    <div class="sc-keys"><kbd>Cmd ⌘</kbd><span class="plus">+</span><kbd>D</kbd></div>
+    <div class="sc-desc">Duplicar el clip o pista seleccionada</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Edición</span>
+      <span class="tag-cls">Clase 3</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="edición" data-cls="cgen">
+    <div class="sc-keys"><kbd>Cmd ⌘</kbd><span class="plus">+</span><kbd>Z</kbd></div>
+    <div class="sc-desc">Deshacer (Undo)</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Edición</span>
+      <span class="tag-cls">General</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="edición" data-cls="cgen">
+    <div class="sc-keys"><kbd>Cmd ⌘</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>Z</kbd></div>
+    <div class="sc-desc">Rehacer (Redo)</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Edición</span>
+      <span class="tag-cls">General</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="edición" data-cls="c3">
+    <div class="sc-keys"><kbd>Cmd ⌘</kbd><span class="plus">+</span><kbd>I</kbd></div>
+    <div class="sc-desc">Insertar tiempo en blanco (Silencio)</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Edición</span>
+      <span class="tag-cls">Clase 3</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="edición" data-cls="c5">
+    <div class="sc-keys"><kbd>0 (Cero)</kbd></div>
+    <div class="sc-desc">Activar / Desactivar Clip, Nota o Plugin (Mute)</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Edición</span>
+      <span class="tag-cls">Clase 5</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="edición" data-cls="cgen">
+    <div class="sc-keys"><kbd>Delete (⌫)</kbd></div>
+    <div class="sc-desc">Eliminar selección</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Edición</span>
+      <span class="tag-cls">General</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="edición" data-cls="c3">
+    <div class="sc-keys"><kbd>Opt ⌥</kbd><span class="plus">+</span><kbd>Arrastrar</kbd></div>
+    <div class="sc-desc">Copiar un clip o nota al arrastrar</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Edición</span>
+      <span class="tag-cls">Clase 3</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="midi" data-cls="c4">
+    <div class="sc-keys"><kbd>Cmd ⌘</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>M</kbd></div>
+    <div class="sc-desc">Crear un clip MIDI vacío</div>
+    <div class="sc-tags">
+      <span class="tag-cat">MIDI</span>
+      <span class="tag-cls">Clase 4</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="midi" data-cls="c4">
+    <div class="sc-keys"><kbd>M</kbd></div>
+    <div class="sc-desc">Usar el teclado de la computadora como teclado MIDI</div>
+    <div class="sc-tags">
+      <span class="tag-cat">MIDI</span>
+      <span class="tag-cls">Clase 4</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="midi" data-cls="c4">
+    <div class="sc-keys"><kbd>B</kbd></div>
+    <div class="sc-desc">Activar el modo Lápiz (Draw Mode)</div>
+    <div class="sc-tags">
+      <span class="tag-cat">MIDI</span>
+      <span class="tag-cls">Clase 4</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="midi" data-cls="c4">
+    <div class="sc-keys"><kbd>Z / X</kbd></div>
+    <div class="sc-desc">Bajar / Subir de Octava el teclado de computadora</div>
+    <div class="sc-tags">
+      <span class="tag-cat">MIDI</span>
+      <span class="tag-cls">Clase 4</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="midi" data-cls="c4">
+    <div class="sc-keys"><kbd>C / V</kbd></div>
+    <div class="sc-desc">Bajar / Subir Velocidad el teclado de computadora</div>
+    <div class="sc-tags">
+      <span class="tag-cat">MIDI</span>
+      <span class="tag-cls">Clase 4</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="midi" data-cls="c4">
+    <div class="sc-keys"><kbd>Cmd ⌘</kbd><span class="plus">+</span><kbd>U</kbd></div>
+    <div class="sc-desc">Cuantizar notas seleccionadas</div>
+    <div class="sc-tags">
+      <span class="tag-cat">MIDI</span>
+      <span class="tag-cls">Clase 4</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="midi" data-cls="c4">
+    <div class="sc-keys"><kbd>Cmd ⌘</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>U</kbd></div>
+    <div class="sc-desc">Configuración de Cuantización</div>
+    <div class="sc-tags">
+      <span class="tag-cat">MIDI</span>
+      <span class="tag-cls">Clase 4</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="midi" data-cls="c4">
+    <div class="sc-keys"><kbd>Flechas ↑/↓</kbd></div>
+    <div class="sc-desc">Mover notas MIDI un semitono</div>
+    <div class="sc-tags">
+      <span class="tag-cat">MIDI</span>
+      <span class="tag-cls">Clase 4</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="midi" data-cls="c4">
+    <div class="sc-keys"><kbd>Shift</kbd><span class="plus">+</span><kbd>Flechas ↑/↓</kbd></div>
+    <div class="sc-desc">Mover notas MIDI una octava</div>
+    <div class="sc-tags">
+      <span class="tag-cat">MIDI</span>
+      <span class="tag-cls">Clase 4</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="pistas" data-cls="c1">
+    <div class="sc-keys"><kbd>Cmd ⌘</kbd><span class="plus">+</span><kbd>T</kbd></div>
+    <div class="sc-desc">Crear pista de Audio</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Pistas</span>
+      <span class="tag-cls">Clase 1</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="pistas" data-cls="c1">
+    <div class="sc-keys"><kbd>Cmd ⌘</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>T</kbd></div>
+    <div class="sc-desc">Crear pista MIDI</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Pistas</span>
+      <span class="tag-cls">Clase 1</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="pistas" data-cls="c5">
+    <div class="sc-keys"><kbd>Cmd ⌘</kbd><span class="plus">+</span><kbd>Alt</kbd><span class="plus">+</span><kbd>T</kbd></div>
+    <div class="sc-desc">Crear pista de Retorno</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Pistas</span>
+      <span class="tag-cls">Clase 5</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="efectos" data-cls="c5">
+    <div class="sc-keys"><kbd>Cmd ⌘</kbd><span class="plus">+</span><kbd>G</kbd></div>
+    <div class="sc-desc">Agrupar (Crear Audio Effect Rack)</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Efectos</span>
+      <span class="tag-cls">Clase 5</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="efectos" data-cls="c5">
+    <div class="sc-keys"><kbd>Cmd ⌘</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>G</kbd></div>
+    <div class="sc-desc">Desagrupar</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Efectos</span>
+      <span class="tag-cls">Clase 5</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="mezcla" data-cls="c8">
+    <div class="sc-keys"><kbd>Doble Click Fader</kbd></div>
+    <div class="sc-desc">Regresar volumen/paneo a su valor de fábrica (0 dB)</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Mezcla</span>
+      <span class="tag-cls">Clase 8</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="mezcla" data-cls="c8">
+    <div class="sc-keys"><kbd>S</kbd></div>
+    <div class="sc-desc">Poner pista en Solo</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Mezcla</span>
+      <span class="tag-cls">Clase 8</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="automatización" data-cls="c3">
+    <div class="sc-keys"><kbd>A</kbd></div>
+    <div class="sc-desc">Mostrar / Ocultar líneas de Automatización</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Automatización</span>
+      <span class="tag-cls">Clase 3</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="warping" data-cls="c2">
+    <div class="sc-keys"><kbd>Doble Click</kbd></div>
+    <div class="sc-desc">Crear o borrar un Warp Marker</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Warping</span>
+      <span class="tag-cls">Clase 2</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="warping" data-cls="c2">
+    <div class="sc-keys"><kbd>Shift</kbd><span class="plus">+</span><kbd>Arrastrar</kbd></div>
+    <div class="sc-desc">Mover Warp Marker sin afectar audio adyacente</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Warping</span>
+      <span class="tag-cls">Clase 2</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="exportación" data-cls="cgen">
+    <div class="sc-keys"><kbd>Cmd ⌘</kbd><span class="plus">+</span><kbd>S</kbd></div>
+    <div class="sc-desc">Guardar Proyecto (Save)</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Exportación</span>
+      <span class="tag-cls">General</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="exportación" data-cls="cgen">
+    <div class="sc-keys"><kbd>Cmd ⌘</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>S</kbd></div>
+    <div class="sc-desc">Guardar Como (Save As)</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Exportación</span>
+      <span class="tag-cls">General</span>
+    </div>
+  </div>
+  <div class="shortcut-card" data-cat="exportación" data-cls="c15">
+    <div class="sc-keys"><kbd>Cmd ⌘</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>R</kbd></div>
+    <div class="sc-desc">Exportar Audio / Video (Render)</div>
+    <div class="sc-tags">
+      <span class="tag-cat">Exportación</span>
+      <span class="tag-cls">Clase 15</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  let currentCat = 'all';
+
+  function setCatFilter(cat, btn) {
+    document.querySelectorAll('#catFilters .btn-filter').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentCat = cat;
+    applyFilters();
+  }
+
+  function applyFilters() {
+    const term = document.getElementById('searchInput').value.toLowerCase();
+    const cards = document.querySelectorAll('.shortcut-card');
+    
+    cards.forEach(card => {
+      const cat = card.getAttribute('data-cat');
+      const text = card.innerText.toLowerCase();
+      
+      const matchCat = (currentCat === 'all' || cat === currentCat);
+      const matchText = text.includes(term);
+      
+      if (matchCat && matchText) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+</script>
+
+<div style="text-align:center; margin-top:3rem; font-size:0.9rem; color:#888; font-weight:700;">
+  Creado por @laurorobles
+</div>
+</body>
+</html>

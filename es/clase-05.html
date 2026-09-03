@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Ableton 101 — Clase 5: Moldeando el Sonido</title>
+  <style>
+    :root { --bg:#F8F9FA; --surface:#fff; --text:#000; --muted:#555; --border:#E5E7EB; --audio:#0055FF; --play:#00B84D; --midi:#FF5500; --danger:#E53E3E; }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:18px;line-height:1.6;padding:4rem 5%}
+    .btn-back { position:fixed; top:20px; left:20px; background:var(--surface); color:var(--text); text-decoration:none; padding:10px 15px; border-radius:8px; border:2px solid var(--border); font-weight:bold; font-size:0.9rem; z-index:9999; box-shadow:0 4px 10px rgba(0,0,0,0.1); transition:transform 0.1s; }
+    .btn-back:hover { transform:scale(1.05); }
+    
+    /* Layout unificado */
+    header { text-align:center; padding-bottom:3rem; margin-bottom:3rem; border-bottom:1px solid var(--border); }
+    section { max-width:1000px; margin:0 auto 5rem; padding:4rem 0; border-bottom:1px solid var(--border); }
+    section:last-of-type { border-bottom:none; }
+    h1 { font-size:3.5rem; font-weight:900; margin-bottom:1rem; letter-spacing:-0.03em; }
+    h2 { font-size:2.5rem; margin-bottom:1.5rem; }
+    h3 { font-size:1.5rem; margin-bottom:1rem; }
+    p.sub { font-size:1.4rem; color:var(--muted); max-width:800px; margin:0 auto; }
+    .tag { display:inline-block; font-size:0.9rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; background:#E5E7EB; padding:0.4rem 1rem; border-radius:8px; margin-bottom:1rem; }
+    
+    .panel { background:var(--surface); border:2px solid var(--border); border-radius:16px; padding:2rem; box-shadow:0 10px 30px rgba(0,0,0,0.03); }
+    .btn { padding:1rem 2rem; border-radius:8px; border:none; font-weight:bold; font-size:1.2rem; cursor:pointer; color:#fff; transition:transform 0.1s; }
+    .btn:active { transform:scale(0.95); }
+    
+    /* M-FINAL */
+    .m-final { background:#111; color:#fff; padding:4rem; border-radius:24px; margin-top:4rem; }
+    .m-final h2 { color:#fff; }
+    .m-final .tag { background:#333; color:#fff; }
+    .m-final h3 { color:var(--play); border-bottom:1px solid #333; padding-bottom:0.5rem; margin-bottom:1.5rem; margin-top:2rem; }
+    .m-final ul { list-style:none; }
+    .m-final li { margin-bottom:1rem; color:#ccc; display:flex; gap:1rem; align-items:flex-start; }
+    .m-final li strong { color:#fff; min-width:120px; }
+    .quiz-card { background:#222; padding:2rem; border-radius:12px; margin-top:1rem; border:1px solid #333; }
+    .q-opt { display:block; width:100%; text-align:left; background:#333; color:#fff; border:1px solid #444; padding:1rem; border-radius:8px; margin-bottom:0.5rem; cursor:pointer; font-size:1rem; transition:background 0.2s; }
+    .q-opt:hover { background:#444; }
+    .q-opt.correct { background:var(--play); border-color:var(--play); }
+    .q-opt.wrong { background:var(--danger); border-color:var(--danger); }
+  
+    /* Quiz */
+    .quiz-app { background:#222; border:1px solid #333; border-radius:16px; padding:2rem; margin-top:2rem; }
+    .q-text { font-size:1.4rem; color:#fff; margin-bottom:1.5rem; }
+    .q-opt { display:block; width:100%; text-align:left; background:#333; color:#fff; border:2px solid transparent; padding:1.2rem; border-radius:8px; margin-bottom:0.8rem; cursor:pointer; font-size:1.1rem; transition:all 0.2s; }
+    .q-opt:hover { background:#444; border-color:#555; }
+    .q-opt.correct { background:var(--play) !important; color:#fff; border-color:#fff; }
+    .q-opt.wrong { background:var(--danger) !important; color:#fff; }
+    .q-progress { color:var(--muted); margin-bottom:1rem; font-weight:bold; }
+    .q-next { background:var(--audio); color:#fff; padding:1rem 2rem; border:none; border-radius:8px; font-weight:bold; font-size:1.2rem; cursor:pointer; margin-top:1rem; display:none; }
+    .m-final { background:#111; color:#fff; padding:4rem; border-radius:24px; margin-top:4rem; max-width:1000px; margin:4rem auto; }
+    .m-final h2 { color:#fff; }
+    .m-final .tag { background:#333; color:#fff; }
+    .m-final ul { list-style:none; }
+    .m-final li { margin-bottom:1rem; color:#ccc; display:flex; gap:1rem; }
+    .m-final h3 { color:var(--play); border-bottom:1px solid #333; padding-bottom:0.5rem; margin-bottom:1.5rem; margin-top:2rem; }
+  
+  </style>
+</head>
+<body>
+<a href="../index.html" class="btn-back">← Volver al Índice</a>
+
+<!-- HERO ESTANDARIZADO -->
+<header style="background:var(--surface); padding:4rem 2rem; border-radius:24px; border:2px solid var(--border); margin-bottom:4rem;">
+  <div class="tag">Soundspace Academy</div>
+  <h1>Ableton 101<br>Clase 5: Moldeando el Sonido</h1>
+  <p class="sub" style="margin-bottom:2rem">Ecualización (Filtros), Compresión Dinámica y Efectos de Tiempo (Delay/Reverb).</p>
+
+  <div style="display:flex;align-items:center;justify-content:center;gap:1.5rem;margin:0 auto 2rem;text-align:left;max-width:800px;background:#F0F4F8;padding:1.5rem;border-radius:16px;">
+    <img src="../assets/lao_foto.jpg" alt="LAO" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'><rect width=\'100\' height=\'100\' fill=\'%23ccc\'/></svg>'" style="width:100px;height:100px;border-radius:50%;object-fit:cover;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+    <div>
+      <h3 style="margin-bottom:0.3rem;font-size:1.4rem;">Instructor: LAO (Lauro Robles)</h3>
+      <p style="font-size:1rem;color:var(--muted);line-height:1.4;">Bienvenido a la Clase 5. EQ • Compresión • Delay & Reverb</p>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="tag" style="background:var(--audio);color:#fff">Módulo 01</div>
+  <h2>El Filtro Pasa-Bajos (Low Pass Filter)</h2>
+  <p class="sub">El ecualizador es un control de volumen para frecuencias. El LPF ahoga los agudos. Enciende el ruido blanco y mueve el deslizador para esculpir el sonido en tiempo real.</p>
+  
+  <div class="panel" style="background:#111; color:#fff; text-align:center; margin-top:2rem">
+    <button class="btn" id="btn-noise" style="background:var(--audio); padding:1.5rem 3rem; font-size:1.5rem" onclick="toggleNoise()">▶ Encender Generador de Ruido</button>
+    <br><br>
+    <input type="range" id="filter-freq" min="100" max="10000" value="10000" step="10" style="width:100%; max-width:500px; margin:2rem 0; accent-color:var(--play)">
+    <h3 style="color:var(--play); font-size:2.5rem"><span id="freq-lbl">10000</span> Hz</h3>
+    <p style="color:#aaa">Frecuencia de Corte (Cutoff)</p>
+  </div>
+</section>
+
+<section>
+  <div class="tag" style="background:var(--midi);color:#fff">Módulo 02</div>
+  <h2>Delay vs Reverb (Espacio Tridimensional)</h2>
+  <p class="sub">Los efectos de tiempo ubican tu sonido en un espacio físico.</p>
+  
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin-top:2rem">
+    <div class="panel" style="text-align:center">
+      <div style="font-size:4rem; margin-bottom:1rem">⛰️</div>
+      <h3>Delay (Eco)</h3>
+      <p style="color:var(--muted)">El sonido rebota en una montaña lejana. Regresa como copias exactas y separadas en el tiempo. Usado para añadir ritmo rítmico.</p>
+    </div>
+    <div class="panel" style="text-align:center">
+      <div style="font-size:4rem; margin-bottom:1rem">⛪</div>
+      <h3>Reverb (Reverberación)</h3>
+      <p style="color:var(--muted)">El sonido rebota en miles de superficies cercanas (una iglesia o cueva). Se crea una "cola" o nube difusa ininterrumpida. Añade profundidad.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MÓDULO FINAL ESTANDARIZADO -->
+
+<section id="m2">
+  <div class="tag" style="background:#0055FF;color:#fff">Módulo 02</div>
+  <h2>El Espacio: Delay y Reverb</h2>
+  <p class="sub">El Delay crea ecos rítmicos (montañas). La Reverb crea acústica de espacios cerrados (cavernas/habitaciones).</p>
+  
+  <div class="panel" style="margin-top:2rem; background:#1e1e1e; color:#fff; border-radius:12px; border:2px solid #333">
+    <div style="display:flex; justify-content:center; margin-bottom:2rem">
+      <button class="btn" id="btnPluck" style="background:var(--audio); padding:1rem 3rem; font-size:1.2rem" onclick="playFXPluck()">🔊 Disparar Sonido</button>
+    </div>
+    
+    <div style="display:flex; gap:2rem; flex-wrap:wrap">
+      <div style="flex:1; min-width:250px; background:#111; padding:1.5rem; border-radius:8px">
+        <h3 style="color:#FFBC00; margin-bottom:1rem">Delay (Eco)</h3>
+        <label>Cantidad (Wet): <span id="delVal">0</span>%</label>
+        <input type="range" id="slDelay" min="0" max="100" value="0" style="width:100%; margin-bottom:1rem; accent-color:#FFBC00" oninput="document.getElementById('delVal').innerText=this.value">
+        <label>Tiempo (Feedback)</label>
+        <input type="range" id="slFeedback" min="10" max="90" value="40" style="width:100%; accent-color:#FFBC00">
+      </div>
+      
+      <div style="flex:1; min-width:250px; background:#111; padding:1.5rem; border-radius:8px">
+        <h3 style="color:#00B84D; margin-bottom:1rem">Reverb (Catedral)</h3>
+        <label>Cantidad (Wet): <span id="revVal">0</span>%</label>
+        <input type="range" id="slReverb" min="0" max="100" value="0" style="width:100%; margin-bottom:1rem; accent-color:#00B84D" oninput="document.getElementById('revVal').innerText=this.value">
+        <label>Tamaño (Size)</label>
+        <input type="range" id="slSize" min="1" max="5" value="3" style="width:100%; accent-color:#00B84D" onchange="generateImpulse()">
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  let fxAc, delayNode, feedbackGain, convolver, wetDelay, wetReverb, dryGain;
+
+  function initFX() {
+    if(fxAc) return;
+    fxAc = new (window.AudioContext || window.webkitAudioContext)();
+    
+    // Master
+    const master = fxAc.createGain(); master.gain.value = 0.8;
+    master.connect(fxAc.destination);
+
+    // Dry
+    dryGain = fxAc.createGain(); dryGain.gain.value = 1;
+    dryGain.connect(master);
+
+    // Delay Network
+    delayNode = fxAc.createDelay(); delayNode.delayTime.value = 0.3; // 300ms
+    feedbackGain = fxAc.createGain(); feedbackGain.gain.value = 0.4;
+    wetDelay = fxAc.createGain(); wetDelay.gain.value = 0;
+    
+    delayNode.connect(feedbackGain);
+    feedbackGain.connect(delayNode);
+    delayNode.connect(wetDelay);
+    wetDelay.connect(master);
+
+    // Reverb Network
+    convolver = fxAc.createConvolver();
+    wetReverb = fxAc.createGain(); wetReverb.gain.value = 0;
+    convolver.connect(wetReverb);
+    wetReverb.connect(master);
+    
+    generateImpulse();
+  }
+
+  function generateImpulse() {
+    if(!fxAc) return;
+    const sec = parseInt(document.getElementById('slSize').value);
+    const rate = fxAc.sampleRate;
+    const length = rate * sec;
+    const impulse = fxAc.createBuffer(2, length, rate);
+    
+    for (let i = 0; i < 2; i++) {
+      const channel = impulse.getChannelData(i);
+      for (let j = 0; j < length; j++) {
+        // Exponential decay noise
+        channel[j] = (Math.random() * 2 - 1) * Math.pow(1 - j / length, 3);
+      }
+    }
+    convolver.buffer = impulse;
+  }
+
+  function playFXPluck() {
+    initFX();
+    if(fxAc.state === 'suspended') fxAc.resume();
+    
+    // Update live params
+    wetDelay.gain.value = parseInt(document.getElementById('slDelay').value) / 100;
+    feedbackGain.gain.value = parseInt(document.getElementById('slFeedback').value) / 100;
+    wetReverb.gain.value = parseInt(document.getElementById('slReverb').value) / 100;
+    
+    // Create Pluck
+    const osc = fxAc.createOscillator();
+    const g = fxAc.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.value = 440;
+    
+    // Lowpass envelope
+    const f = fxAc.createBiquadFilter();
+    f.type = 'lowpass';
+    f.frequency.setValueAtTime(3000, fxAc.currentTime);
+    f.frequency.exponentialRampToValueAtTime(100, fxAc.currentTime + 0.3);
+    
+    // ADSR
+    g.gain.setValueAtTime(0, fxAc.currentTime);
+    g.gain.linearRampToValueAtTime(0.8, fxAc.currentTime + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.001, fxAc.currentTime + 0.3);
+    
+    osc.connect(f); f.connect(g);
+    
+    // Route to Dry, Delay, Reverb
+    g.connect(dryGain);
+    g.connect(delayNode);
+    g.connect(convolver);
+    
+    osc.start(); osc.stop(fxAc.currentTime + 0.4);
+    
+    // Visual
+    const btn = document.getElementById('btnPluck');
+    btn.style.transform = 'scale(0.9)';
+    setTimeout(() => btn.style.transform = 'scale(1)', 100);
+  }
+</script>
+
+
+<div class="m-final">
+  <div class="tag">Módulo Final</div>
+  <h2>Resumen de Conceptos</h2>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:3rem;">
+    <div>
+      <h3>📚 Conceptos Clave</h3>
+      <ul><li><span>✅</span> <span>La Inserción (Insert) aplica el efecto directo al canal; el Envío (Send) procesa una copia de la señal en paralelo.</span></li><li><span>✅</span> <span>El Ecualizador permite atenuar frecuencias embarradas (cortar graves) o dar brillo.</span></li><li><span>✅</span> <span>El Compresor doma la dinámica reduciendo el volumen de los picos más agresivos.</span></li></ul>
+    </div>
+    <div>
+      <h3>⌨️ Shortcuts Aprendidos</h3>
+      <ul><li><strong>0 (Cero)</strong> <span>Activa o desactiva (Mutea) el clip o dispositivo seleccionado.</span></li></ul>
+    </div>
+  </div>
+  
+  <h3 style="margin-top:4rem; font-size:2rem; text-align:center; border:none">🧠 Evaluador Interactivo</h3>
+  <div class="quiz-app" id="quiz-app-5">
+    <div class="q-progress" id="q-progress-5">Pregunta 1 de 5</div>
+    <div class="q-text" id="q-text-5"></div>
+    <div id="q-opts-5"></div>
+    <button class="q-next" id="q-next-5" onclick="nextQuestion_5()">Siguiente Pregunta ➔</button>
+  </div>
+  
+  <div style="margin-top: 2rem; border-top: 1px solid #333; padding-top: 2rem; text-align:center;">
+    <h3>📖 Bibliografía y Recursos</h3>
+    <ul style="list-style:none; padding:0; margin-top:1rem; line-height:2;">
+      <li><a href="anexo-glosario.html" style="color:var(--audio); text-decoration:none;">➔ Consultar el Glosario Oficial</a></li>
+      <li><a href="examen-final.html" style="color:var(--play); text-decoration:none; font-weight:bold; font-size:1.2rem;">➔ Ir al GRAN EXAMEN FINAL</a></li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  const qData_5 = [{"q":"¿Cuál es la diferencia principal entre un Efecto de Inserción y uno de Envío (Send/Return)?","opts":["El de inserción es solo para MIDI","La inserción procesa el canal completo; el envío permite mandar copias de múltiples canales a un solo efecto global (ej. Reverb)","No hay diferencia","El envío es más rápido"],"ans":1},{"q":"¿Qué significa el parámetro 'Dry/Wet' en un efecto?","opts":["El volumen del bajo y los agudos","El balance entre la señal limpia y original (Dry) y la señal procesada por el efecto (Wet)","La cantidad de saturación","El paneo del canal"],"ans":1},{"q":"El parámetro 'Threshold' (Umbral) en un compresor:","opts":["Añade graves","Define el límite de volumen exacto a partir del cual el compresor empieza a actuar y reducir ganancia","Apaga el sintetizador","Determina el tiempo de eco"],"ans":1},{"q":"Si tienes 'barro' (mud) en tu mezcla, ¿qué herramienta usas habitualmente en un Ecualizador?","opts":["Saturación","Filtro Pasa Altos (High Pass Filter) para cortar las frecuencias subgraves innecesarias de canales como guitarras o hi-hats","Compresor multibanda","Limitador"],"ans":1},{"q":"¿Qué parámetro del efecto de Delay controla el número de veces que se repite el eco antes de desaparecer?","opts":["Time","Dry/Wet","Feedback (Retroalimentación)","Filter"],"ans":2}];
+  let curQ_5 = 0; let score_5 = 0;
+  function renderQ_5() {
+    if(curQ_5 >= qData_5.length) {
+      let p = Math.round((score_5 / qData_5.length) * 100);
+      let msg = p === 100 ? '¡Perfecto!' : (p >= 60 ? '¡Bien hecho!' : 'Repasa la lección.');
+      if (p >= 60) localStorage.setItem('ableton101_c5', score_5);
+      document.getElementById('quiz-app-5').innerHTML = '<div style="text-align:center"><div style="font-size:4rem;margin-bottom:1rem">' + (p>=60?'🏆':'📉') + '</div><h3 style="color:#fff;font-size:2rem;margin-bottom:1rem">Tu Score: ' + score_5 + ' / ' + qData_5.length + ' (' + p + '%)</h3><p style="color:#aaa;font-size:1.2rem">' + msg + '</p></div>';
+      return;
+    }
+    let q = qData_5[curQ_5];
+    document.getElementById('q-progress-5').textContent = 'Pregunta ' + (curQ_5+1) + ' de ' + qData_5.length;
+    document.getElementById('q-text-5').textContent = q.q;
+    let optsHTML = '';
+    q.opts.forEach((opt, idx) => { optsHTML += '<button class="q-opt" onclick="checkQ_5(' + idx + ', ' + q.ans + ', this)">' + opt + '</button>'; });
+    document.getElementById('q-opts-5').innerHTML = optsHTML;
+    document.getElementById('q-next-5').style.display = 'none';
+  }
+  function checkQ_5(sIdx, cIdx, btn) {
+    const btns = document.getElementById('q-opts-5').querySelectorAll('.q-opt');
+    btns.forEach(b => { b.disabled = true; b.style.opacity = '0.7'; });
+    btn.style.opacity = '1';
+    if(sIdx === cIdx) { btn.classList.add('correct'); score_5++; } 
+    else { btn.classList.add('wrong'); btns[cIdx].classList.add('correct'); btns[cIdx].style.opacity = '1'; }
+    document.getElementById('q-next-5').style.display = 'block';
+  }
+  function nextQuestion_5() { curQ_5++; renderQ_5(); }
+  setTimeout(() => renderQ_5(), 100);
+</script>
+
+<script src="../js/tooltips.js"></script>
+<script>
+  function touchHandler(event) {
+    if(event.target.tagName !== 'CANVAS' && event.target.type !== 'range') return;
+    var touch = event.changedTouches[0];
+    var simulatedEvent = document.createEvent("MouseEvent");
+    simulatedEvent.initMouseEvent({ touchstart:"mousedown", touchmove:"mousemove", touchend:"mouseup" }[event.type], true, true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null);
+    touch.target.dispatchEvent(simulatedEvent);
+    if(event.target.tagName === 'CANVAS') event.preventDefault();
+  }
+  document.addEventListener("touchstart", touchHandler, {passive: false});
+  document.addEventListener("touchmove", touchHandler, {passive: false});
+  document.addEventListener("touchend", touchHandler, {passive: false});
+</script>
+<div style="position:fixed;bottom:15px;right:20px;font-size:0.9rem;opacity:0.35;z-index:9999;font-weight:700;">Creado por @laurorobles</div>
+</body></html>

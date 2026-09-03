@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Ableton 101 — Cineclub y Documentales</title>
+  <style>
+    :root { 
+      --bg:#111111; --surface:#1c1c1e; --text:#f5f5f7; --muted:#86868b; 
+      --border:#333336; --audio:#0055FF; --play:#00B84D; --cine:#E53E3E; 
+    }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
+    body { background:var(--bg); color:var(--text); font-family:-apple-system,sans-serif; font-size:18px; line-height:1.6; padding:4rem 5%; }
+    
+    .btn-back { position:fixed; top:20px; left:20px; background:var(--surface); color:var(--text); text-decoration:none; padding:10px 15px; border-radius:8px; border:2px solid var(--border); font-weight:bold; z-index:9999; transition: 0.2s; }
+    .btn-back:hover { border-color: var(--cine); color: var(--cine); }
+
+    header { text-align:center; padding:4rem 2rem; border-radius:24px; border:2px solid var(--cine); margin-bottom:4rem; background:linear-gradient(180deg, #2a0808 0%, var(--surface) 100%); }
+    h1 { font-size:3.5rem; font-weight:900; margin-bottom:1rem; }
+    p.sub { font-size:1.3rem; color:var(--muted); max-width:800px; margin:0 auto; }
+    
+    .filter-bar { display:flex; justify-content:center; gap:1rem; margin-bottom:3rem; flex-wrap:wrap; position:sticky; top:20px; z-index:100; background:rgba(17,17,17,0.8); backdrop-filter:blur(10px); padding:1rem; border-radius:12px; }
+    .btn-filter { background:var(--surface); color:var(--text); border:1px solid var(--border); padding:0.6rem 1.2rem; border-radius:20px; cursor:pointer; font-weight:bold; transition:all 0.2s; }
+    .btn-filter:hover { border-color:var(--cine); }
+    .btn-filter.active { background:var(--cine); color:#fff; border-color:var(--cine); }
+
+    .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:2.5rem; max-width:1400px; margin:0 auto; }
+    .doc-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; overflow:hidden; transition:transform 0.2s; display:flex; flex-direction:column; box-shadow:0 10px 30px rgba(0,0,0,0.2); }
+    .doc-card:hover { border-color:#555; transform:translateY(-5px); }
+    
+    .video-placeholder { position:relative; padding-bottom:56.25%; height:0; background-size:cover; background-position:center; cursor:pointer; overflow:hidden; }
+    .video-placeholder::before { content:''; position:absolute; top:0;left:0;right:0;bottom:0; background:rgba(0,0,0,0.5); transition:background 0.3s; }
+    .video-placeholder:hover::before { background:rgba(0,0,0,0.2); }
+    .play-btn { position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); background:var(--cine); color:#fff; font-weight:bold; padding:0.8rem 1.5rem; border-radius:50px; z-index:2; text-transform:uppercase; font-size:0.9rem; pointer-events:none; }
+    
+    .iframe-container { position:relative; padding-bottom:56.25%; height:0; background:#000; }
+    .iframe-container iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:none; }
+    
+    .doc-info { padding:1.5rem; display:flex; flex-direction:column; flex:1; }
+    .doc-title { font-size:1.2rem; margin-bottom:1rem; color:#fff; line-height:1.3; font-weight:800; }
+    .doc-tags { display:flex; gap:0.5rem; margin-bottom:1rem; flex-wrap:wrap; }
+    .doc-tag { font-size:0.7rem; font-weight:bold; text-transform:uppercase; padding:0.3rem 0.6rem; border-radius:4px; color:#fff; }
+    .doc-desc { color:#aaa; line-height:1.5; font-size:0.9rem; margin-bottom:1rem; }
+  </style>
+</head>
+<body>
+
+<a href="../index.html" class="btn-back">← Volver al Índice</a>
+
+<header>
+  <div style="font-size:3rem; margin-bottom:1rem">🎬</div>
+  <h1>Cineclub Ableton</h1>
+  <p class="sub">Una curaduría magistral de documentales, entrevistas en el estudio, e historia del hardware. Aprende viendo a los pioneros trabajar.</p>
+</header>
+
+<div class="filter-bar">
+  <button class="btn-filter active" onclick="filterDocs('all')">Todos los Archivos (100)</button>
+  <button class="btn-filter" onclick="filterDocs('historia')">Historia / Entrevistas</button>
+  <button class="btn-filter" onclick="filterDocs('sintesis')">Máquinas / Sintetizadores</button>
+  <button class="btn-filter" onclick="filterDocs('escena')">Escenas Locales</button>
+  <button class="btn-filter" onclick="filterDocs('estudio')">En el Estudio</button>
+  <button class="btn-filter" onclick="filterDocs('otros')">Cultura General</button>
+</div>
+
+<div class="grid" id="docGrid">
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-4Mt2-mlTz7Y" style="background-image:url('https://img.youtube.com/vi/4Mt2-mlTz7Y/hqdefault.jpg')" onclick="loadVideo('4Mt2-mlTz7Y')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">The Shape Of Things That Hum</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="sintesis,historia">
+    <div class="video-placeholder" id="ph-OZ74EFdW9Ug" style="background-image:url('https://img.youtube.com/vi/OZ74EFdW9Ug/hqdefault.jpg')" onclick="loadVideo('OZ74EFdW9Ug')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#9C27B0">Síntesis / Hardware</span> <span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">MODULO: The analog synth documentary</h2>
+      <p class="doc-desc">Un documento visual esencial sobre la era dorada de los sintetizadores analógicos, el diseño de circuitos y la síntesis sustractiva pura.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="estudio">
+    <div class="video-placeholder" id="ph-TfUqmsrJ9Tw" style="background-image:url('https://img.youtube.com/vi/TfUqmsrJ9Tw/hqdefault.jpg')" onclick="loadVideo('TfUqmsrJ9Tw')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#00B84D">En el Estudio</span></div>
+      <h2 class="doc-title">In the studio with Joakim</h2>
+      <p class="doc-desc">Acceso directo al estudio. Observa el flujo de trabajo, técnicas de mezcla y filosofía creativa de productores profesionales de clase mundial.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-icGWQZw5n24" style="background-image:url('https://img.youtube.com/vi/icGWQZw5n24/hqdefault.jpg')" onclick="loadVideo('icGWQZw5n24')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">&quot;I Dream of Wires: Hardcore Edition&quot; 2013 official trailer</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="sintesis,escenas,historia">
+    <div class="video-placeholder" id="ph-omHUR3R0Qqw" style="background-image:url('https://img.youtube.com/vi/omHUR3R0Qqw/hqdefault.jpg')" onclick="loadVideo('omHUR3R0Qqw')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#9C27B0">Síntesis / Hardware</span> <span class="doc-tag" style="background:#0055FF">Escenas Locales</span> <span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">TB-303 Documentary - Bassline Baseline</h2>
+      <p class="doc-desc">El sintetizador de bajo que fracasó comercialmente pero resucitó para convertirse en la leyenda fundadora del Acid House.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="sintesis">
+    <div class="video-placeholder" id="ph-7sACo5QntGc" style="background-image:url('https://img.youtube.com/vi/7sACo5QntGc/hqdefault.jpg')" onclick="loadVideo('7sACo5QntGc')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#9C27B0">Síntesis / Hardware</span></div>
+      <h2 class="doc-title">The Open Door: Macintosh, Midi, and Music (1988)</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="sintesis,historia">
+    <div class="video-placeholder" id="ph-XRg8R-00mjs" style="background-image:url('https://img.youtube.com/vi/XRg8R-00mjs/hqdefault.jpg')" onclick="loadVideo('XRg8R-00mjs')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#9C27B0">Síntesis / Hardware</span> <span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">Moog (Documentary)</h2>
+      <p class="doc-desc">La historia del sintetizador que lo cambió todo. Descubre cómo Robert Moog diseñó la máquina que definió el sonido de la electrónica moderna.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="sintesis">
+    <div class="video-placeholder" id="ph-TK1P93r9xes" style="background-image:url('https://img.youtube.com/vi/TK1P93r9xes/hqdefault.jpg')" onclick="loadVideo('TK1P93r9xes')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#9C27B0">Síntesis / Hardware</span></div>
+      <h2 class="doc-title">Synth Britannia</h2>
+      <p class="doc-desc">Documental magistral de la BBC sobre cómo el Post-Punk británico abandonó las guitarras para abrazar los sintetizadores y crear el Synth-Pop.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="estudio">
+    <div class="video-placeholder" id="ph-AXKECB8yPho" style="background-image:url('https://img.youtube.com/vi/AXKECB8yPho/hqdefault.jpg')" onclick="loadVideo('AXKECB8yPho')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#00B84D">En el Estudio</span></div>
+      <h2 class="doc-title">Studio Masters with Goldie: the music innovator, part 1</h2>
+      <p class="doc-desc">Acceso directo al estudio. Observa el flujo de trabajo, técnicas de mezcla y filosofía creativa de productores profesionales de clase mundial.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="estudio">
+    <div class="video-placeholder" id="ph-j2r1cZZOB7Q" style="background-image:url('https://img.youtube.com/vi/j2r1cZZOB7Q/hqdefault.jpg')" onclick="loadVideo('j2r1cZZOB7Q')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#00B84D">En el Estudio</span></div>
+      <h2 class="doc-title">Studio Masters with Goldie: the music innovator, part 2</h2>
+      <p class="doc-desc">Acceso directo al estudio. Observa el flujo de trabajo, técnicas de mezcla y filosofía creativa de productores profesionales de clase mundial.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="estudio">
+    <div class="video-placeholder" id="ph-Bxz6jShW-3E" style="background-image:url('https://img.youtube.com/vi/Bxz6jShW-3E/hqdefault.jpg')" onclick="loadVideo('Bxz6jShW-3E')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#00B84D">En el Estudio</span></div>
+      <h2 class="doc-title">How a recording-studio mishap shaped '80s music</h2>
+      <p class="doc-desc">Acceso directo al estudio. Observa el flujo de trabajo, técnicas de mezcla y filosofía creativa de productores profesionales de clase mundial.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-Xmn8TvFqEGY" style="background-image:url('https://img.youtube.com/vi/Xmn8TvFqEGY/hqdefault.jpg')" onclick="loadVideo('Xmn8TvFqEGY')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">Modeselektor on MASCHINE | Native Instruments</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="estudio">
+    <div class="video-placeholder" id="ph-svxN-fnxfQA" style="background-image:url('https://img.youtube.com/vi/svxN-fnxfQA/hqdefault.jpg')" onclick="loadVideo('svxN-fnxfQA')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#00B84D">En el Estudio</span></div>
+      <h2 class="doc-title">Vince Clarke in the studio 1985</h2>
+      <p class="doc-desc">Acceso directo al estudio. Observa el flujo de trabajo, técnicas de mezcla y filosofía creativa de productores profesionales de clase mundial.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="escenas,estudio">
+    <div class="video-placeholder" id="ph-EqR7F5yCDfw" style="background-image:url('https://img.youtube.com/vi/EqR7F5yCDfw/hqdefault.jpg')" onclick="loadVideo('EqR7F5yCDfw')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#0055FF">Escenas Locales</span> <span class="doc-tag" style="background:#00B84D">En el Estudio</span></div>
+      <h2 class="doc-title">How punk shaped electronic music | Resident Advisor</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="historia">
+    <div class="video-placeholder" id="ph-9ssI3IrLjRE" style="background-image:url('https://img.youtube.com/vi/9ssI3IrLjRE/hqdefault.jpg')" onclick="loadVideo('9ssI3IrLjRE')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">Planet Mu: µ20  (The Documentary)</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="escenas">
+    <div class="video-placeholder" id="ph-QjzI3YTzIGQ" style="background-image:url('https://img.youtube.com/vi/QjzI3YTzIGQ/hqdefault.jpg')" onclick="loadVideo('QjzI3YTzIGQ')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#0055FF">Escenas Locales</span></div>
+      <h2 class="doc-title">Gabber: The Evil EDM - Big Night Out Episode 1</h2>
+      <p class="doc-desc">Exploración de la cultura rave europea y sus ritmos agresivos. Ideal para entender la evolución de los BPM extremos y la distorsión.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="sintesis">
+    <div class="video-placeholder" id="ph-YT0l-OsGpgA" style="background-image:url('https://img.youtube.com/vi/YT0l-OsGpgA/hqdefault.jpg')" onclick="loadVideo('YT0l-OsGpgA')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#9C27B0">Síntesis / Hardware</span></div>
+      <h2 class="doc-title">Adrian Utley (Portishead)'s Synth Collection Tour</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="escenas,historia">
+    <div class="video-placeholder" id="ph-cbXIIK3BmFU" style="background-image:url('https://img.youtube.com/vi/cbXIIK3BmFU/hqdefault.jpg')" onclick="loadVideo('cbXIIK3BmFU')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#0055FF">Escenas Locales</span> <span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">The prodigy, and suburban bass - Early days  Documentary (1992)</h2>
+      <p class="doc-desc">Un análisis profundo sobre la cultura del 'Sound System', el diseño de bajas frecuencias (Sub-bass) y la vibración física del sonido.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="historia">
+    <div class="video-placeholder" id="ph-dooCQdg9-NA" style="background-image:url('https://img.youtube.com/vi/dooCQdg9-NA/hqdefault.jpg')" onclick="loadVideo('dooCQdg9-NA')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">aphex twin interview moscow 1994 part 1</h2>
+      <p class="doc-desc">Entrevista y exploración de la mente maestra de Richard D. James (Aphex Twin) y su enfoque poco convencional hacia la síntesis y secuenciación.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="historia">
+    <div class="video-placeholder" id="ph-zZ896COdVG8" style="background-image:url('https://img.youtube.com/vi/zZ896COdVG8/hqdefault.jpg')" onclick="loadVideo('zZ896COdVG8')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">aphex twin interview moscow 1994 part 2</h2>
+      <p class="doc-desc">Entrevista y exploración de la mente maestra de Richard D. James (Aphex Twin) y su enfoque poco convencional hacia la síntesis y secuenciación.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="escenas,historia">
+    <div class="video-placeholder" id="ph-waAkAlbmu-k" style="background-image:url('https://img.youtube.com/vi/waAkAlbmu-k/hqdefault.jpg')" onclick="loadVideo('waAkAlbmu-k')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#0055FF">Escenas Locales</span> <span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">The Rave Years - With Keith Flint & Richard Russell</h2>
+      <p class="doc-desc">Exploración de la cultura rave europea y sus ritmos agresivos. Ideal para entender la evolución de los BPM extremos y la distorsión.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-z_E8aGx777Q" style="background-image:url('https://img.youtube.com/vi/z_E8aGx777Q/hqdefault.jpg')" onclick="loadVideo('z_E8aGx777Q')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">Oxygene instruments explained</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-29MtfMMDMgM" style="background-image:url('https://img.youtube.com/vi/29MtfMMDMgM/hqdefault.jpg')" onclick="loadVideo('29MtfMMDMgM')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">『未知へのサウンド冨</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="sintesis">
+    <div class="video-placeholder" id="ph-0rAyrmm7vv0" style="background-image:url('https://img.youtube.com/vi/0rAyrmm7vv0/hqdefault.jpg')" onclick="loadVideo('0rAyrmm7vv0')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#9C27B0">Síntesis / Hardware</span></div>
+      <h2 class="doc-title">VODER (1939) - Early Speech Synthesizer</h2>
+      <p class="doc-desc">Un documento visual esencial sobre la era dorada de los sintetizadores analógicos, el diseño de circuitos y la síntesis sustractiva pura.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-ON8lVgJxMQA" style="background-image:url('https://img.youtube.com/vi/ON8lVgJxMQA/hqdefault.jpg')" onclick="loadVideo('ON8lVgJxMQA')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">Peter Gabriel and Fairlight CMI</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-QjLzj8HQqh8" style="background-image:url('https://img.youtube.com/vi/QjLzj8HQqh8/hqdefault.jpg')" onclick="loadVideo('QjLzj8HQqh8')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">La fabrication de Moscow Diskow (Telex)</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="escenas">
+    <div class="video-placeholder" id="ph-S2A4RxpEvN4" style="background-image:url('https://img.youtube.com/vi/S2A4RxpEvN4/hqdefault.jpg')" onclick="loadVideo('S2A4RxpEvN4')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#0055FF">Escenas Locales</span></div>
+      <h2 class="doc-title">Techno-Punk Andrew Weatherall Is 50 And He's Way Cooler Than You</h2>
+      <p class="doc-desc">Explora el ritmo robótico y el alma de la maquinaria que fundó las bases de la música Techno.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="estudio,historia">
+    <div class="video-placeholder" id="ph-dP0ruX3DjhU" style="background-image:url('https://img.youtube.com/vi/dP0ruX3DjhU/hqdefault.jpg')" onclick="loadVideo('dP0ruX3DjhU')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#00B84D">En el Estudio</span> <span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">What the Top Producers Do in The Studio - Art of Making Beats Documentary</h2>
+      <p class="doc-desc">Acceso directo al estudio. Observa el flujo de trabajo, técnicas de mezcla y filosofía creativa de productores profesionales de clase mundial.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-toIeBc4SHEo" style="background-image:url('https://img.youtube.com/vi/toIeBc4SHEo/hqdefault.jpg')" onclick="loadVideo('toIeBc4SHEo')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">Music and the Psychedelic Mind</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="historia">
+    <div class="video-placeholder" id="ph-ppvXD-wSO-s" style="background-image:url('https://img.youtube.com/vi/ppvXD-wSO-s/hqdefault.jpg')" onclick="loadVideo('ppvXD-wSO-s')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">La historia del sintetizador</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="escenas,historia">
+    <div class="video-placeholder" id="ph-kXwA-BRoYQs" style="background-image:url('https://img.youtube.com/vi/kXwA-BRoYQs/hqdefault.jpg')" onclick="loadVideo('kXwA-BRoYQs')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#0055FF">Escenas Locales</span> <span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">Style Guide: Techno – Part 1: History and Sound Design</h2>
+      <p class="doc-desc">Explora el ritmo robótico y el alma de la maquinaria que fundó las bases de la música Techno.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-E1YcqS2Whdw" style="background-image:url('https://img.youtube.com/vi/E1YcqS2Whdw/hqdefault.jpg')" onclick="loadVideo('E1YcqS2Whdw')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">The Top 10 Albums of the 1980s</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="sintesis">
+    <div class="video-placeholder" id="ph-l5qFOA0en6g" style="background-image:url('https://img.youtube.com/vi/l5qFOA0en6g/hqdefault.jpg')" onclick="loadVideo('l5qFOA0en6g')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#9C27B0">Síntesis / Hardware</span></div>
+      <h2 class="doc-title">Roland JX-3P Analog Synthesizer</h2>
+      <p class="doc-desc">Un documento visual esencial sobre la era dorada de los sintetizadores analógicos, el diseño de circuitos y la síntesis sustractiva pura.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="sintesis">
+    <div class="video-placeholder" id="ph-Q1Ha0MMT0aA" style="background-image:url('https://img.youtube.com/vi/Q1Ha0MMT0aA/hqdefault.jpg')" onclick="loadVideo('Q1Ha0MMT0aA')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#9C27B0">Síntesis / Hardware</span></div>
+      <h2 class="doc-title">Yamaha DX7 - The Synthesizer that Defined the '80s</h2>
+      <p class="doc-desc">Un documento visual esencial sobre la era dorada de los sintetizadores analógicos, el diseño de circuitos y la síntesis sustractiva pura.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-0_jrcEm5sXo" style="background-image:url('https://img.youtube.com/vi/0_jrcEm5sXo/hqdefault.jpg')" onclick="loadVideo('0_jrcEm5sXo')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">Arturia V COLLECTION | CMI V</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="escenas,estudio">
+    <div class="video-placeholder" id="ph-OjV3PDi3KE8" style="background-image:url('https://img.youtube.com/vi/OjV3PDi3KE8/hqdefault.jpg')" onclick="loadVideo('OjV3PDi3KE8')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#0055FF">Escenas Locales</span> <span class="doc-tag" style="background:#00B84D">En el Estudio</span></div>
+      <h2 class="doc-title">How Larry Heard made house music deep | Resident Advisor</h2>
+      <p class="doc-desc">Un viaje a los clubes underground y los primeros productores que utilizaron cajas de ritmos para dar origen a la música House.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="estudio">
+    <div class="video-placeholder" id="ph-NwBrd9a1LdA" style="background-image:url('https://img.youtube.com/vi/NwBrd9a1LdA/hqdefault.jpg')" onclick="loadVideo('NwBrd9a1LdA')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#00B84D">En el Estudio</span></div>
+      <h2 class="doc-title">How I PLAY: Carl Cox MODEL 1 DJ Set-Up</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="historia">
+    <div class="video-placeholder" id="ph--fq75Ax_kL0" style="background-image:url('https://img.youtube.com/vi/-fq75Ax_kL0/hqdefault.jpg')" onclick="loadVideo('-fq75Ax_kL0')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">Deals with the Devil: A Brief Musical History</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-eRkgK4jfi6M" style="background-image:url('https://img.youtube.com/vi/eRkgK4jfi6M/hqdefault.jpg')" onclick="loadVideo('eRkgK4jfi6M')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">Jacob Collier Explains Music in 5 Levels of Difficulty ft. Herbie Hancock | WIRED</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-ncEay3D_8yI" style="background-image:url('https://img.youtube.com/vi/ncEay3D_8yI/hqdefault.jpg')" onclick="loadVideo('ncEay3D_8yI')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">Val Garay Talks Waves Aphex Vintage Aural Exciter®</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="estudio">
+    <div class="video-placeholder" id="ph-A3nKAvIc8to" style="background-image:url('https://img.youtube.com/vi/A3nKAvIc8to/hqdefault.jpg')" onclick="loadVideo('A3nKAvIc8to')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#00B84D">En el Estudio</span></div>
+      <h2 class="doc-title">How Michael Jackson Crafted His First Solo Hit</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="estudio">
+    <div class="video-placeholder" id="ph-_9SM9lG47Ew" style="background-image:url('https://img.youtube.com/vi/_9SM9lG47Ew/hqdefault.jpg')" onclick="loadVideo('_9SM9lG47Ew')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#00B84D">En el Estudio</span></div>
+      <h2 class="doc-title">How old school cassette tape drives worked</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-VsEso9JagdQ" style="background-image:url('https://img.youtube.com/vi/VsEso9JagdQ/hqdefault.jpg')" onclick="loadVideo('VsEso9JagdQ')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">The Mellotron In Action</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="sintesis,estudio">
+    <div class="video-placeholder" id="ph-zYLloIcu7us" style="background-image:url('https://img.youtube.com/vi/zYLloIcu7us/hqdefault.jpg')" onclick="loadVideo('zYLloIcu7us')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#9C27B0">Síntesis / Hardware</span> <span class="doc-tag" style="background:#00B84D">En el Estudio</span></div>
+      <h2 class="doc-title">Roland Boutique SE-02 Analog Synthesizer - Designed by Studio Electronics</h2>
+      <p class="doc-desc">Acceso directo al estudio. Observa el flujo de trabajo, técnicas de mezcla y filosofía creativa de productores profesionales de clase mundial.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-qMvplHi4OW0" style="background-image:url('https://img.youtube.com/vi/qMvplHi4OW0/hqdefault.jpg')" onclick="loadVideo('qMvplHi4OW0')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">PSYCHOACOUSTICS</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-YEorsfZe4vU" style="background-image:url('https://img.youtube.com/vi/YEorsfZe4vU/hqdefault.jpg')" onclick="loadVideo('YEorsfZe4vU')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">Mixing explained #1 - Basic Mixing Theory</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-ehB5s5SHG4M" style="background-image:url('https://img.youtube.com/vi/ehB5s5SHG4M/hqdefault.jpg')" onclick="loadVideo('ehB5s5SHG4M')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">Mixing Consoles Explained (part 1)</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-_11Z3BEUArY" style="background-image:url('https://img.youtube.com/vi/_11Z3BEUArY/hqdefault.jpg')" onclick="loadVideo('_11Z3BEUArY')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">Mixing Consoles Explained (Part 2)</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-lxdq-2eCgLg" style="background-image:url('https://img.youtube.com/vi/lxdq-2eCgLg/hqdefault.jpg')" onclick="loadVideo('lxdq-2eCgLg')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">Mixing Consoles Explained (part 3)</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="estudio">
+    <div class="video-placeholder" id="ph-SENzTt3ftiU" style="background-image:url('https://img.youtube.com/vi/SENzTt3ftiU/hqdefault.jpg')" onclick="loadVideo('SENzTt3ftiU')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#00B84D">En el Estudio</span></div>
+      <h2 class="doc-title">How J Dilla humanized his MPC3000</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-aqz3DaisBz8" style="background-image:url('https://img.youtube.com/vi/aqz3DaisBz8/hqdefault.jpg')" onclick="loadVideo('aqz3DaisBz8')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">The music industry and the digital revolution</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="sintesis">
+    <div class="video-placeholder" id="ph-zAGtlgwFdhM" style="background-image:url('https://img.youtube.com/vi/zAGtlgwFdhM/hqdefault.jpg')" onclick="loadVideo('zAGtlgwFdhM')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#9C27B0">Síntesis / Hardware</span></div>
+      <h2 class="doc-title">Trent Reznor | Archetype of a Synthesizer</h2>
+      <p class="doc-desc">Un documento visual esencial sobre la era dorada de los sintetizadores analógicos, el diseño de circuitos y la síntesis sustractiva pura.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="historia">
+    <div class="video-placeholder" id="ph-ITp-KpM_SIg" style="background-image:url('https://img.youtube.com/vi/ITp-KpM_SIg/hqdefault.jpg')" onclick="loadVideo('ITp-KpM_SIg')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">≡ electronic music history ≡</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="historia">
+    <div class="video-placeholder" id="ph-ZKlpoOZvdE4" style="background-image:url('https://img.youtube.com/vi/ZKlpoOZvdE4/hqdefault.jpg')" onclick="loadVideo('ZKlpoOZvdE4')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">History of Electronic Music</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-3CF1nFgiG4Q" style="background-image:url('https://img.youtube.com/vi/3CF1nFgiG4Q/hqdefault.jpg')" onclick="loadVideo('3CF1nFgiG4Q')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">The Many Genres of Electronic Music</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="historia">
+    <div class="video-placeholder" id="ph-If_T1Q9u6FM" style="background-image:url('https://img.youtube.com/vi/If_T1Q9u6FM/hqdefault.jpg')" onclick="loadVideo('If_T1Q9u6FM')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">Historia de la Música (Lecciones Ilustradas)</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-kIMQtMSnpBA" style="background-image:url('https://img.youtube.com/vi/kIMQtMSnpBA/hqdefault.jpg')" onclick="loadVideo('kIMQtMSnpBA')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">The Samples: The Prodigy Edition 1990 - 1995 Part 1</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="historia">
+    <div class="video-placeholder" id="ph-rElcSg81Qgo" style="background-image:url('https://img.youtube.com/vi/rElcSg81Qgo/hqdefault.jpg')" onclick="loadVideo('rElcSg81Qgo')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">portishead - documentaire - 1998 (welcome to portishead)</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="sintesis">
+    <div class="video-placeholder" id="ph-G7TJyPAyTiQ" style="background-image:url('https://img.youtube.com/vi/G7TJyPAyTiQ/hqdefault.jpg')" onclick="loadVideo('G7TJyPAyTiQ')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#9C27B0">Síntesis / Hardware</span></div>
+      <h2 class="doc-title">50th Anniversary of the Moog Modular Synthesizer</h2>
+      <p class="doc-desc">La historia del sintetizador que lo cambió todo. Descubre cómo Robert Moog diseñó la máquina que definió el sonido de la electrónica moderna.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="historia">
+    <div class="video-placeholder" id="ph-v15oIktGJOo" style="background-image:url('https://img.youtube.com/vi/v15oIktGJOo/hqdefault.jpg')" onclick="loadVideo('v15oIktGJOo')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">Inside The Rhapsody (Bohemian Rhapsody mini documentary, 2002) 3 of 3</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="sintesis,historia">
+    <div class="video-placeholder" id="ph-xh4Ok0ex2vU" style="background-image:url('https://img.youtube.com/vi/xh4Ok0ex2vU/hqdefault.jpg')" onclick="loadVideo('xh4Ok0ex2vU')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#9C27B0">Síntesis / Hardware</span> <span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">A Brief History of the Minimoog Part II</h2>
+      <p class="doc-desc">La historia del sintetizador que lo cambió todo. Descubre cómo Robert Moog diseñó la máquina que definió el sonido de la electrónica moderna.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="sintesis,historia">
+    <div class="video-placeholder" id="ph-sLx_x5Fuzp4" style="background-image:url('https://img.youtube.com/vi/sLx_x5Fuzp4/hqdefault.jpg')" onclick="loadVideo('sLx_x5Fuzp4')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#9C27B0">Síntesis / Hardware</span> <span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">A Brief History of the Minimoog Part I</h2>
+      <p class="doc-desc">La historia del sintetizador que lo cambió todo. Descubre cómo Robert Moog diseñó la máquina que definió el sonido de la electrónica moderna.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-Ultp3tofA6Q" style="background-image:url('https://img.youtube.com/vi/Ultp3tofA6Q/hqdefault.jpg')" onclick="loadVideo('Ultp3tofA6Q')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">What is High-Resolution Audio?</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-_iMxIEfmCzI" style="background-image:url('https://img.youtube.com/vi/_iMxIEfmCzI/hqdefault.jpg')" onclick="loadVideo('_iMxIEfmCzI')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">John Peel's Sounds of the Suburbs - Cornwall (1/2)</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-zyXmvGNfMmI" style="background-image:url('https://img.youtube.com/vi/zyXmvGNfMmI/hqdefault.jpg')" onclick="loadVideo('zyXmvGNfMmI')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">John Peel's Sounds of the Suburbs - Cornwall (2/2)</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="estudio">
+    <div class="video-placeholder" id="ph-p_RKVUMaPek" style="background-image:url('https://img.youtube.com/vi/p_RKVUMaPek/hqdefault.jpg')" onclick="loadVideo('p_RKVUMaPek')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#00B84D">En el Estudio</span></div>
+      <h2 class="doc-title">In the studio with Nils Frahm</h2>
+      <p class="doc-desc">Acceso directo al estudio. Observa el flujo de trabajo, técnicas de mezcla y filosofía creativa de productores profesionales de clase mundial.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-mDZcz-V29_M" style="background-image:url('https://img.youtube.com/vi/mDZcz-V29_M/hqdefault.jpg')" onclick="loadVideo('mDZcz-V29_M')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">The Distortion of Sound [Full Film]</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-w9H2zB6qnbg" style="background-image:url('https://img.youtube.com/vi/w9H2zB6qnbg/hqdefault.jpg')" onclick="loadVideo('w9H2zB6qnbg')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">George Martin's Legacy</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="estudio">
+    <div class="video-placeholder" id="ph-NdG5dEfAcxQ" style="background-image:url('https://img.youtube.com/vi/NdG5dEfAcxQ/hqdefault.jpg')" onclick="loadVideo('NdG5dEfAcxQ')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#00B84D">En el Estudio</span></div>
+      <h2 class="doc-title">Hans & Clint | Masters At Work</h2>
+      <p class="doc-desc">Acceso directo al estudio. Observa el flujo de trabajo, técnicas de mezcla y filosofía creativa de productores profesionales de clase mundial.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="historia">
+    <div class="video-placeholder" id="ph-ufcN7Xas2c0" style="background-image:url('https://img.youtube.com/vi/ufcN7Xas2c0/hqdefault.jpg')" onclick="loadVideo('ufcN7Xas2c0')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">We Are Modeselektor Documentary</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="sintesis,escenas,historia">
+    <div class="video-placeholder" id="ph-TLQwwtjtiY4" style="background-image:url('https://img.youtube.com/vi/TLQwwtjtiY4/hqdefault.jpg')" onclick="loadVideo('TLQwwtjtiY4')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#9C27B0">Síntesis / Hardware</span> <span class="doc-tag" style="background:#0055FF">Escenas Locales</span> <span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">TB-303 Documentary - Bassline Baseline (2005)</h2>
+      <p class="doc-desc">El sintetizador de bajo que fracasó comercialmente pero resucitó para convertirse en la leyenda fundadora del Acid House.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-bc6474KUBV8" style="background-image:url('https://img.youtube.com/vi/bc6474KUBV8/hqdefault.jpg')" onclick="loadVideo('bc6474KUBV8')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">RICHIE HAWTIN - Pioneers of Electronic Music (70 Min.) - SLICES Special</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="escenas,historia">
+    <div class="video-placeholder" id="ph-TWPFrWojYQ4" style="background-image:url('https://img.youtube.com/vi/TWPFrWojYQ4/hqdefault.jpg')" onclick="loadVideo('TWPFrWojYQ4')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#0055FF">Escenas Locales</span> <span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">WE CALL IT TECHNO! A documentary about Germany’s early Techno scene and culture</h2>
+      <p class="doc-desc">Explora el ritmo robótico y el alma de la maquinaria que fundó las bases de la música Techno.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-OGmO9qdu4g0" style="background-image:url('https://img.youtube.com/vi/OGmO9qdu4g0/hqdefault.jpg')" onclick="loadVideo('OGmO9qdu4g0')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">Underground Resistance (Electronic Beats TV)</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="historia">
+    <div class="video-placeholder" id="ph-lnMhkkgWpG4" style="background-image:url('https://img.youtube.com/vi/lnMhkkgWpG4/hqdefault.jpg')" onclick="loadVideo('lnMhkkgWpG4')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">Krautrock The Rebirth of Germany == full length documentary  (with Translating tools)</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="historia">
+    <div class="video-placeholder" id="ph-cu38AL4E7I4" style="background-image:url('https://img.youtube.com/vi/cu38AL4E7I4/hqdefault.jpg')" onclick="loadVideo('cu38AL4E7I4')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">Early Documentary about Sampling (1988)</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="escenas,historia">
+    <div class="video-placeholder" id="ph-NHnJgHFpkpA" style="background-image:url('https://img.youtube.com/vi/NHnJgHFpkpA/hqdefault.jpg')" onclick="loadVideo('NHnJgHFpkpA')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#0055FF">Escenas Locales</span> <span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">Goldie talks about the History of Rave Music to Skream and Benga</h2>
+      <p class="doc-desc">Exploración de la cultura rave europea y sus ritmos agresivos. Ideal para entender la evolución de los BPM extremos y la distorsión.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="escenas">
+    <div class="video-placeholder" id="ph-INXiIq5Puu0" style="background-image:url('https://img.youtube.com/vi/INXiIq5Puu0/hqdefault.jpg')" onclick="loadVideo('INXiIq5Puu0')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#0055FF">Escenas Locales</span></div>
+      <h2 class="doc-title">I Was There When House Took Over the World : House Went Global / Part 2</h2>
+      <p class="doc-desc">Un viaje a los clubes underground y los primeros productores que utilizaron cajas de ritmos para dar origen a la música House.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="historia">
+    <div class="video-placeholder" id="ph-Jz_gKisNgxY" style="background-image:url('https://img.youtube.com/vi/Jz_gKisNgxY/hqdefault.jpg')" onclick="loadVideo('Jz_gKisNgxY')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">UK Pirate Radio Documentary  - Making Waves</h2>
+      <p class="doc-desc">Acceso directo al estudio. Observa el flujo de trabajo, técnicas de mezcla y filosofía creativa de productores profesionales de clase mundial.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-D6f851odbYg" style="background-image:url('https://img.youtube.com/vi/D6f851odbYg/hqdefault.jpg')" onclick="loadVideo('D6f851odbYg')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">The Prodigy - Evolution</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-QuTveHVXMlg" style="background-image:url('https://img.youtube.com/vi/QuTveHVXMlg/hqdefault.jpg')" onclick="loadVideo('QuTveHVXMlg')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">Pirate Radio- welcome to the jungle</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="historia">
+    <div class="video-placeholder" id="ph-d02FGTqszPY" style="background-image:url('https://img.youtube.com/vi/d02FGTqszPY/hqdefault.jpg')" onclick="loadVideo('d02FGTqszPY')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">24 Hour Party People Interviews (New Order, James, Happy Mondays...)</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="escenas,historia">
+    <div class="video-placeholder" id="ph-iO1oLIOS-kY" style="background-image:url('https://img.youtube.com/vi/iO1oLIOS-kY/hqdefault.jpg')" onclick="loadVideo('iO1oLIOS-kY')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#0055FF">Escenas Locales</span> <span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">1995 Gabber documentary (Lola Da Musica) with English subtitles</h2>
+      <p class="doc-desc">Exploración de la cultura rave europea y sus ritmos agresivos. Ideal para entender la evolución de los BPM extremos y la distorsión.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-o_rQrQRMOk4" style="background-image:url('https://img.youtube.com/vi/o_rQrQRMOk4/hqdefault.jpg')" onclick="loadVideo('o_rQrQRMOk4')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">Five Days at the BBC Radiophonic Workshop Part 1</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-sYGd4t3dflQ" style="background-image:url('https://img.youtube.com/vi/sYGd4t3dflQ/hqdefault.jpg')" onclick="loadVideo('sYGd4t3dflQ')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">Five Days at the BBC Radiophonic Workshop Part 2</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-vlcPB-5WonU" style="background-image:url('https://img.youtube.com/vi/vlcPB-5WonU/hqdefault.jpg')" onclick="loadVideo('vlcPB-5WonU')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">Five Days at the BBC Radiophonic Workshop Part 3</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="historia">
+    <div class="video-placeholder" id="ph-g571IJ50qIA" style="background-image:url('https://img.youtube.com/vi/g571IJ50qIA/hqdefault.jpg')" onclick="loadVideo('g571IJ50qIA')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">Chris Carter: IDOW Extended Interview #9</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-Veab3zDZLhA" style="background-image:url('https://img.youtube.com/vi/Veab3zDZLhA/hqdefault.jpg')" onclick="loadVideo('Veab3zDZLhA')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">SUBOTNICK - Portrait of an Electronic Music Pioneer</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="historia">
+    <div class="video-placeholder" id="ph-ut3c4u7fiCg" style="background-image:url('https://img.youtube.com/vi/ut3c4u7fiCg/hqdefault.jpg')" onclick="loadVideo('ut3c4u7fiCg')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">Modulations History Of Electronic Dance Music Documentary</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-lzqWGkf8tsw" style="background-image:url('https://img.youtube.com/vi/lzqWGkf8tsw/hqdefault.jpg')" onclick="loadVideo('lzqWGkf8tsw')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">Blank Tape: Electronic Cassette Culture</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="estudio">
+    <div class="video-placeholder" id="ph-Et5B-zfAIIo" style="background-image:url('https://img.youtube.com/vi/Et5B-zfAIIo/hqdefault.jpg')" onclick="loadVideo('Et5B-zfAIIo')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#00B84D">En el Estudio</span></div>
+      <h2 class="doc-title">Burial's Untrue: The making of a masterpiece</h2>
+      <p class="doc-desc">Acceso directo al estudio. Observa el flujo de trabajo, técnicas de mezcla y filosofía creativa de productores profesionales de clase mundial.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="escenas,historia">
+    <div class="video-placeholder" id="ph-X2zNvBNTnHg" style="background-image:url('https://img.youtube.com/vi/X2zNvBNTnHg/hqdefault.jpg')" onclick="loadVideo('X2zNvBNTnHg')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#0055FF">Escenas Locales</span> <span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">Chicago Hip House Documentary 1989</h2>
+      <p class="doc-desc">Un viaje a los clubes underground y los primeros productores que utilizaron cajas de ritmos para dar origen a la música House.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="escenas,historia">
+    <div class="video-placeholder" id="ph-vqV8THEloGM" style="background-image:url('https://img.youtube.com/vi/vqV8THEloGM/hqdefault.jpg')" onclick="loadVideo('vqV8THEloGM')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#0055FF">Escenas Locales</span> <span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">Factory Records Documentary | 1988 | Channel 4 for ITV Education Series (Information Technology)</h2>
+      <p class="doc-desc">Explora el ritmo robótico y el alma de la maquinaria que fundó las bases de la música Techno.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-801iT1PMga8" style="background-image:url('https://img.youtube.com/vi/801iT1PMga8/hqdefault.jpg')" onclick="loadVideo('801iT1PMga8')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">Four Tet: Looking Backward, Moving Forward</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-xxi8kbgxxcI" style="background-image:url('https://img.youtube.com/vi/xxi8kbgxxcI/hqdefault.jpg')" onclick="loadVideo('xxi8kbgxxcI')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">Icy Lake: A Night Slugs x Fade to Mind Short Film</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-3w6qWiEx8BQ" style="background-image:url('https://img.youtube.com/vi/3w6qWiEx8BQ/hqdefault.jpg')" onclick="loadVideo('3w6qWiEx8BQ')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">Back to the Future Sounds</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="otros">
+    <div class="video-placeholder" id="ph-Zsb1w-3iFa8" style="background-image:url('https://img.youtube.com/vi/Zsb1w-3iFa8/hqdefault.jpg')" onclick="loadVideo('Zsb1w-3iFa8')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#333">Cultura General</span></div>
+      <h2 class="doc-title">The Art of Sounds (2007) - Pierre Henry</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="historia">
+    <div class="video-placeholder" id="ph-jUBnS5G34IM" style="background-image:url('https://img.youtube.com/vi/jUBnS5G34IM/hqdefault.jpg')" onclick="loadVideo('jUBnS5G34IM')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">PINK FLOYD - The Dark Side Of The Moon 2003 Documentary HD</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="historia">
+    <div class="video-placeholder" id="ph-fGX2MWmLurw" style="background-image:url('https://img.youtube.com/vi/fGX2MWmLurw/hqdefault.jpg')" onclick="loadVideo('fGX2MWmLurw')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">The New Sound of Music (BBC Documentary 1979)</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+  <div class="doc-card" data-cat="historia">
+    <div class="video-placeholder" id="ph-tYqYnfw2J-0" style="background-image:url('https://img.youtube.com/vi/tYqYnfw2J-0/hqdefault.jpg')" onclick="loadVideo('tYqYnfw2J-0')">
+      <div class="play-btn">▶ Ver Ahora</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-tags"><span class="doc-tag" style="background:#FFBC00; color:#000">Historia / Documental</span></div>
+      <h2 class="doc-title">LOVE IS THE MESSAGE (The Love Parade Documentary, 1995)</h2>
+      <p class="doc-desc">Documental curado del playlist maestro. Analiza los ritmos, máquinas y el contexto histórico de esta pieza audiovisual clave en la electrónica.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function filterDocs(cat) {
+    document.querySelectorAll('.btn-filter').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    document.querySelectorAll('.doc-card').forEach(card => {
+      if (cat === 'all' || card.getAttribute('data-cat').includes(cat)) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  function loadVideo(id) {
+    const ph = document.getElementById('ph-' + id);
+    ph.outerHTML = '<div class="iframe-container"><iframe src="https://www.youtube.com/embed/' + id + '?autoplay=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>';
+  }
+</script>
+
+<div style="text-align:center; margin-top:3rem; font-size:0.9rem; color:var(--muted); font-weight:700;">
+  Creado por @laurorobles
+</div>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Ableton 101 — Clase 11: Síntesis II - FM y Avanzada</title>
+  <style>
+    :root { --bg:#F8F9FA; --surface:#fff; --text:#000; --muted:#555; --border:#E5E7EB; --audio:#0055FF; --midi:#FF5500; --play:#00B84D; --danger:#E53E3E; }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:-apple-system,sans-serif;font-size:18px;line-height:1.6;padding:4rem 5%}
+    h1{font-size:3.5rem;font-weight:900;margin-bottom:1rem;}
+    h2{font-size:2.5rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.8rem}
+    .sub{font-size:1.5rem;color:var(--muted);max-width:900px;margin-bottom:2.5rem;font-weight:500}
+    section{max-width:1000px;margin:0 auto 5rem;padding:4rem 0;border-bottom:1px solid var(--border);}
+    .tag{display:inline-block;font-size:1rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;border-radius:4px;padding:4px 8px;background:#111;color:#fff;}
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;}
+    .panel{background:var(--surface);border:3px solid var(--border);border-radius:20px;padding:2.5rem;box-shadow:0 8px 24px rgba(0,0,0,.04)}
+    header{text-align:center;padding:4rem 2rem;border-radius:24px;border:2px solid var(--border);margin-bottom:4rem;background:var(--surface);}
+    .m-final{background:#111;color:#fff;padding:4rem;border-radius:24px;margin-top:4rem;max-width:1000px;margin:4rem auto;}
+    .m-final h2{color:#fff;}
+    .btn{display:inline-block;background:var(--audio);color:#fff;padding:1rem 2rem;text-decoration:none;border-radius:8px;font-weight:bold;cursor:pointer;border:none;}
+    canvas{width:100%;background:#111;border-radius:12px;margin-top:1.5rem;cursor:crosshair;touch-action:none;}
+  
+    /* Quiz */
+    .quiz-app { background:#222; border:1px solid #333; border-radius:16px; padding:2rem; margin-top:2rem; }
+    .q-text { font-size:1.4rem; color:#fff; margin-bottom:1.5rem; }
+    .q-opt { display:block; width:100%; text-align:left; background:#333; color:#fff; border:2px solid transparent; padding:1.2rem; border-radius:8px; margin-bottom:0.8rem; cursor:pointer; font-size:1.1rem; transition:all 0.2s; }
+    .q-opt:hover { background:#444; border-color:#555; }
+    .q-opt.correct { background:var(--play) !important; color:#fff; border-color:#fff; }
+    .q-opt.wrong { background:var(--danger) !important; color:#fff; }
+    .q-progress { color:var(--muted); margin-bottom:1rem; font-weight:bold; }
+    .q-next { background:var(--audio); color:#fff; padding:1rem 2rem; border:none; border-radius:8px; font-weight:bold; font-size:1.2rem; cursor:pointer; margin-top:1rem; display:none; }
+    .m-final ul { list-style:none; }
+    .m-final li { margin-bottom:1rem; color:#ccc; display:flex; gap:1rem; }
+    .m-final h3 { color:var(--play); border-bottom:1px solid #333; padding-bottom:0.5rem; margin-bottom:1.5rem; margin-top:2rem; }
+    
+  </style>
+</head>
+<body>
+<a href="../index.html" style="position:fixed;top:20px;left:20px;background:var(--surface);color:var(--text);text-decoration:none;padding:10px 15px;border-radius:8px;border:2px solid var(--border);font-weight:bold;z-index:9999;">← Volver</a>
+<header><div class="tag">Soundspace Academy</div><h1>Ableton 101<br>Clase 11: Síntesis II - FM y Avanzada</h1><p class="sub">Creando sonidos alienígenas con FM y tablas de ondas.</p></header>
+
+<section>
+  <div class="tag" style="background:var(--audio)">Módulo 01</div><h2>Síntesis Wavetable</h2>
+  <div class="panel">
+    <p>Mientras que la síntesis analógica usa formas fijas (sierra, cuadrada), la <span class="tt">Wavetable</span> permite cargar un "libro" tridimensional con docenas de formas de onda (una tabla). Girando una perilla, puedes escanear las hojas del libro suavemente.</p>
+    <p>Esto permite crear los sonidos altamente texturizados, rasposos y orgánicos del Dubstep y Drum & Bass moderno (ej. Serum o Ableton Wavetable).</p>
+  </div>
+</section>
+
+<section>
+  <div class="tag" style="background:var(--midi)">Módulo 02</div><h2>Síntesis FM (Frecuencia Modulada)</h2>
+  <div class="split">
+    <div class="panel">
+      <p>Inventada en los 80s (Yamaha DX7). Un oscilador inaudible (<strong>Modulador</strong>) hace vibrar la frecuencia de otro oscilador (<strong>Portador</strong>) a velocidades extremas.</p>
+      <p>El resultado es la adición de armónicos inarmónicos, creando tonos de campanas, metales y bajos profundos tipo "Donk".</p>
+    </div>
+    <div class="panel">
+      <h3>Simulador FM WebAudio</h3>
+      <p style="margin-bottom:1rem; color:var(--muted); font-size:0.9rem;">Mueve el Slider para ver y escuchar cómo la modulación destruye y enriquece la onda base.</p>
+      <input type="range" id="fmSlider" min="0" max="2000" value="0" style="width:100%; margin-bottom:1rem;" oninput="updateFM(this.value)">
+      <canvas id="fmCanvas" height="150" style="margin-top:0"></canvas>
+      <button class="btn" style="margin-top:1rem; background:#FF5500;" onmousedown="playFM()" onmouseup="stopFM()">MANTENER PRESIONADO PARA ESCUCHAR</button>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="tag" style="background:var(--danger)">Módulo 03</div><h2>La Matriz de Modulación</h2>
+  <div class="panel">
+    <p>Imagina un panel de operadora telefónica de los años 50. La matriz de modulación te permite conectar CUALQUIER fuente (ej. LFO 1, Envolvente 2, Velocity del teclado) a CUALQUIER destino (Cutoff del filtro, Tono del oscilador, Paneo).</p>
+    <p>Esta es la clave del <em>Sound Design</em> dinámico: los sonidos no deben ser estáticos, deben evolucionar al apretar una tecla.</p>
+  </div>
+</section>
+
+<section>
+  <div class="tag" style="background:var(--cc)">Módulo 04</div><h2>Construyendo un Reese Bass</h2>
+  <div class="panel">
+    <p>El "Reese Bass" es el bajo icónico y oscuro del Drum & Bass y Neurofunk. ¿Cómo se hace?</p>
+    <ul style="margin-left:2rem; margin-top:1rem; line-height:2;">
+      <li>1. Toma dos osciladores en Diente de Sierra (Saw).</li>
+      <li>2. Bájalos una o dos octavas.</li>
+      <li>3. Desafina ligeramente un oscilador respecto al otro (+10 cents, -10 cents).</li>
+      <li>4. Ese choque de frecuencias crea una oscilación lenta (Phasing / Beating) masiva.</li>
+    </ul>
+  </div>
+</section>
+
+
+<div class="m-final">
+  <div class="tag">Módulo Final</div>
+  <h2>Resumen de Conceptos</h2>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:3rem;">
+    <div>
+      <h3>📚 Conceptos Clave</h3>
+      <ul>
+        <li><span>✅</span> <span>La Síntesis Wavetable permite escanear suavemente una tabla 3D con múltiples formas de onda.</span></li><li><span>✅</span> <span>En Síntesis FM, un Modulador altera la frecuencia de un Portador (Carrier) a alta velocidad.</span></li><li><span>✅</span> <span>La Matriz de Modulación conecta fuentes (como un LFO o el Velocity) con destinos (como el Filtro o Paneo).</span></li>
+      </ul>
+    </div>
+    <div>
+      <h3>⌨️ Shortcuts Aprendidos</h3>
+      <ul>
+        <li><strong>Cmd/Ctrl + G</strong> <span>Agrupar el sintetizador y sus efectos en un Instrument Rack.</span></li>
+      </ul>
+    </div>
+  </div>
+  
+  <h3 style="margin-top:4rem; font-size:2rem; text-align:center; border:none">🧠 Evaluador Interactivo</h3>
+  <div class="quiz-app" id="quiz-app-11">
+    <div class="q-progress" id="q-progress-11">Pregunta 1 de 5</div>
+    <div class="q-text" id="q-text-11"></div>
+    <div id="q-opts-11"></div>
+    <button class="q-next" id="q-next-11" onclick="nextQuestion_11()">Siguiente Pregunta ➔</button>
+  </div>
+  
+  <div style="margin-top: 2rem; border-top: 1px solid #333; padding-top: 2rem; text-align:center;">
+    <h3>📖 Bibliografía y Recursos</h3>
+    <ul style="list-style:none; padding:0; margin-top:1rem; line-height:2;">
+      <li><a href="anexo-glosario.html" style="color:var(--audio); text-decoration:none;">➔ Consultar el Glosario Oficial</a></li>
+      <li><a href="examen-final.html" style="color:var(--play); text-decoration:none; font-weight:bold; font-size:1.2rem;">➔ Ir al GRAN EXAMEN FINAL</a></li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  const qData_11 = [{"q":"¿Qué se obtiene en Síntesis FM si modulas fuertemente un oscilador?","opts":["Un sonido muy bajito","Timbres complejos, armónicos inarmónicos y sonidos metálicos tipo campana","Un ruido rosa","Silencio"],"ans":1},{"q":"¿En Síntesis FM, qué oscilador es el que finalmente escuchas en la salida principal?","opts":["El Modulador","El Portador (Carrier)","El LFO","El ADSR"],"ans":1},{"q":"¿Qué ventaja tiene la Síntesis Wavetable sobre la Analógica tradicional?","opts":["No consume CPU","Permite animar y escanear decenas de formas de onda en tiempo real creando texturas orgánicas","Solo puede hacer ondas senoidales","Es exclusiva de Ableton"],"ans":1},{"q":"Para hacer un Reese Bass, el paso fundamental es:","opts":["Usar una onda senoidal pura","Desafinar ligeramente dos osciladores (sierra) para crear 'Phasing'","Usar un filtro HPF agresivo","Añadir mucho Reverb"],"ans":1},{"q":"¿Para qué sirve la Matriz de Modulación?","opts":["Para afinar la canción","Para asignar fácilmente fuentes de movimiento (LFOs) a múltiples parámetros del sinte","Para exportar el MIDI","Para cambiar el BPM"],"ans":1}];
+  let curQ_11 = 0; let score_11 = 0;
+  function renderQ_11() {
+    if(curQ_11 >= qData_11.length) {
+      let p = Math.round((score_11 / qData_11.length) * 100);
+      let msg = p === 100 ? '¡Perfecto!' : (p >= 60 ? '¡Bien hecho!' : 'Repasa la lección.');
+      if (p >= 60) localStorage.setItem('ableton101_c11', score_11);
+      document.getElementById('quiz-app-11').innerHTML = '<div style="text-align:center"><div style="font-size:4rem;margin-bottom:1rem">' + (p>=60?'🏆':'📉') + '</div><h3 style="color:#fff;font-size:2rem;margin-bottom:1rem">Tu Score: ' + score_11 + ' / ' + qData_11.length + ' (' + p + '%)</h3><p style="color:#aaa;font-size:1.2rem">' + msg + '</p></div>';
+      return;
+    }
+    let q = qData_11[curQ_11];
+    document.getElementById('q-progress-11').textContent = 'Pregunta ' + (curQ_11+1) + ' de ' + qData_11.length;
+    document.getElementById('q-text-11').textContent = q.q;
+    let optsHTML = '';
+    q.opts.forEach((opt, idx) => { optsHTML += '<button class="q-opt" onclick="checkQ_11(' + idx + ', ' + q.ans + ', this)">' + opt + '</button>'; });
+    document.getElementById('q-opts-11').innerHTML = optsHTML;
+    document.getElementById('q-next-11').style.display = 'none';
+  }
+  function checkQ_11(sIdx, cIdx, btn) {
+    const btns = document.getElementById('q-opts-11').querySelectorAll('.q-opt');
+    btns.forEach(b => { b.disabled = true; b.style.opacity = '0.7'; });
+    btn.style.opacity = '1';
+    if(sIdx === cIdx) { btn.classList.add('correct'); score_11++; } 
+    else { btn.classList.add('wrong'); btns[cIdx].classList.add('correct'); btns[cIdx].style.opacity = '1'; }
+    document.getElementById('q-next-11').style.display = 'block';
+  }
+  function nextQuestion_11() { curQ_11++; renderQ_11(); }
+  setTimeout(() => renderQ_11(), 100);
+</script>
+  
+<script>
+// FM Canvas & WebAudio
+const fmC = document.getElementById('fmCanvas');
+const fmCtx = fmC.getContext('2d');
+let fmVal = 0;
+function drawFM() {
+  fmCtx.fillStyle='#111'; fmCtx.fillRect(0,0,fmC.width,fmC.height);
+  fmCtx.beginPath(); fmCtx.strokeStyle='#FF5500'; fmCtx.lineWidth=2;
+  for(let i=0; i<fmC.width; i++) {
+    // Portador a baja frec + modulador rápido
+    let wave = Math.sin(i*0.05 + Math.sin(i* (fmVal*0.005)) * (fmVal*0.01)) * 50;
+    if(i===0) fmCtx.moveTo(i, 75+wave); else fmCtx.lineTo(i, 75+wave);
+  }
+  fmCtx.stroke();
+}
+drawFM();
+
+let actx, fmM, fmC_osc, fmGain;
+function updateFM(val) {
+  fmVal = val; drawFM();
+  if(fmM) {
+     fmM.frequency.value = 100 + (val*2); // Frecuencia de modulador sube
+     fmGain.gain.value = val * 2; // Indice de modulacion sube
+  }
+}
+function playFM() {
+  if(!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+  
+  fmM = actx.createOscillator(); fmM.type='sine'; fmM.frequency.value = 100 + (fmVal*2);
+  fmGain = actx.createGain(); fmGain.gain.value = fmVal * 2;
+  
+  fmC_osc = actx.createOscillator(); fmC_osc.type='sine'; fmC_osc.frequency.value = 80;
+  
+  let masterGain = actx.createGain(); masterGain.gain.value = 0.5;
+  
+  fmM.connect(fmGain);
+  fmGain.connect(fmC_osc.frequency); // FM Magic happens here
+  fmC_osc.connect(masterGain);
+  masterGain.connect(actx.destination);
+  
+  fmM.start(); fmC_osc.start();
+}
+function stopFM() {
+  if(fmM) { fmM.stop(); fmC_osc.stop(); }
+}
+</script>
+<script src="../js/tooltips.js"></script>
+<script>
+  // Touch to Mouse converter
+  function touchHandler(event) {
+    if(event.target.tagName !== 'CANVAS' && event.target.type !== 'range') return;
+    var touch = event.changedTouches[0];
+    var simulatedEvent = document.createEvent("MouseEvent");
+    simulatedEvent.initMouseEvent({ touchstart:"mousedown", touchmove:"mousemove", touchend:"mouseup" }[event.type], true, true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null);
+    touch.target.dispatchEvent(simulatedEvent);
+    if(event.target.tagName === 'CANVAS') event.preventDefault();
+  }
+  document.addEventListener("touchstart", touchHandler, {passive: false});
+  document.addEventListener("touchmove", touchHandler, {passive: false});
+  document.addEventListener("touchend", touchHandler, {passive: false});
+</script>
+<div style="position:fixed;bottom:15px;right:20px;font-size:0.9rem;opacity:0.35;z-index:9999;font-weight:700;">Creado por @laurorobles</div>
+</body></html>

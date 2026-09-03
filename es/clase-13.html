@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Ableton 101 — Clase 13: Sampling y Manipulación</title>
+  <style>
+    :root { --bg:#F8F9FA; --surface:#fff; --text:#000; --muted:#555; --border:#E5E7EB; --audio:#0055FF; --midi:#FF5500; --play:#00B84D; --danger:#E53E3E; --cc:#8800DD; }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:-apple-system,sans-serif;font-size:18px;line-height:1.6;padding:4rem 5%}
+    h1{font-size:3.5rem;font-weight:900;margin-bottom:1rem;}
+    h2{font-size:2.5rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.8rem}
+    .sub{font-size:1.5rem;color:var(--muted);max-width:900px;margin-bottom:2.5rem;font-weight:500}
+    section{max-width:1000px;margin:0 auto 5rem;padding:4rem 0;border-bottom:1px solid var(--border);}
+    .tag{display:inline-block;font-size:1rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;border-radius:4px;padding:4px 8px;background:#111;color:#fff;}
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;}
+    .panel{background:var(--surface);border:3px solid var(--border);border-radius:20px;padding:2.5rem;box-shadow:0 8px 24px rgba(0,0,0,.04)}
+    header{text-align:center;padding:4rem 2rem;border-radius:24px;border:2px solid var(--border);margin-bottom:4rem;background:var(--surface);}
+    .m-final{background:#111;color:#fff;padding:4rem;border-radius:24px;margin-top:4rem;max-width:1000px;margin:4rem auto;}
+    .m-final h2{color:#fff;}
+    .btn{display:inline-block;background:var(--audio);color:#fff;padding:1rem 2rem;text-decoration:none;border-radius:8px;font-weight:bold;cursor:pointer;border:none;}
+    canvas{width:100%;background:#111;border-radius:12px;margin-top:1.5rem;cursor:crosshair;touch-action:none;}
+  
+    /* Quiz */
+    .quiz-app { background:#222; border:1px solid #333; border-radius:16px; padding:2rem; margin-top:2rem; }
+    .q-text { font-size:1.4rem; color:#fff; margin-bottom:1.5rem; }
+    .q-opt { display:block; width:100%; text-align:left; background:#333; color:#fff; border:2px solid transparent; padding:1.2rem; border-radius:8px; margin-bottom:0.8rem; cursor:pointer; font-size:1.1rem; transition:all 0.2s; }
+    .q-opt:hover { background:#444; border-color:#555; }
+    .q-opt.correct { background:var(--play) !important; color:#fff; border-color:#fff; }
+    .q-opt.wrong { background:var(--danger) !important; color:#fff; }
+    .q-progress { color:var(--muted); margin-bottom:1rem; font-weight:bold; }
+    .q-next { background:var(--audio); color:#fff; padding:1rem 2rem; border:none; border-radius:8px; font-weight:bold; font-size:1.2rem; cursor:pointer; margin-top:1rem; display:none; }
+    .m-final ul { list-style:none; }
+    .m-final li { margin-bottom:1rem; color:#ccc; display:flex; gap:1rem; }
+    .m-final h3 { color:var(--play); border-bottom:1px solid #333; padding-bottom:0.5rem; margin-bottom:1.5rem; margin-top:2rem; }
+    
+  </style>
+</head>
+<body>
+<a href="../index.html" style="position:fixed;top:20px;left:20px;background:var(--surface);color:var(--text);text-decoration:none;padding:10px 15px;border-radius:8px;border:2px solid var(--border);font-weight:bold;z-index:9999;">← Volver</a>
+<header><div class="tag">Soundspace Academy</div><h1>Ableton 101<br>Clase 13: Sampling y Manipulación</h1><p class="sub">El arte de convertir cualquier sonido grabado en un instrumento.</p></header>
+
+<section>
+  <div class="tag" style="background:var(--cc)">Módulo 01</div><h2>El Sampling y la MPC</h2>
+  <div class="panel">
+    <p>El Hip Hop no se inventó con guitarras, se inventó robando bucles ("breaks") de discos de vinilo de funk usando samplers como la <em>Akai MPC60</em>.</p>
+    <p>El <span class="tt" data-term="Sampling">Sampling</span> es tomar una porción de audio grabada y re-contextualizarla, cambiando su tono, cortándola, o tocándola como un piano.</p>
+  </div>
+</section>
+
+<section>
+  <div class="tag" style="background:var(--audio)">Módulo 02</div><h2>Simpler vs Sampler</h2>
+  <div class="panel">
+    <p>Ableton tiene dos bestias para esto:</p>
+    <ul style="margin-left:2rem; line-height:2; margin-top:1rem;">
+      <li><strong>Simpler:</strong> Ágil. Toma UN solo archivo de audio. Perfecto para hacer un instrumento rápido con un vocal o un bajo pesado de 808.</li>
+      <li><strong>Sampler:</strong> Profundo (Multisampling). Permite mapear miles de archivos (ej. 10 grabaciones por cada tecla de un piano) para crear instrumentos hiper-realistas.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="tag" style="background:var(--danger)">Módulo 03</div><h2>Modo Slice (Chopping)</h2>
+  <div class="split">
+    <div class="panel">
+      <p>El modo <strong>Slice</strong> de Simpler toma un break de batería (o un vocal de Soul de 4 compases) y lo pica automáticamente usando los "transitorios" (golpes fuertes) como puntos de corte.</p>
+      <p>Luego asigna cada rebanada a un pad del teclado, permitiéndote tocar la batería original en un orden totalmente nuevo.</p>
+    </div>
+    <div class="panel">
+      <h3>Simulador de Chopping</h3>
+      <p style="font-size:0.9rem; color:var(--muted); margin-bottom:1rem;">Haz clic sobre la onda verde para insertar un punto de corte (Slice Marker).</p>
+      <canvas id="chopCanvas" height="150" style="margin-top:0.5rem;"></canvas>
+      <button class="btn" style="background:var(--danger); margin-top:1rem; width:100%;" onclick="clearChop()">Limpiar Cortes</button>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="tag" style="background:var(--play)">Módulo 04</div><h2>El motor de Warping</h2>
+  <div class="panel">
+    <p>El <span class="tt">Warping</span> te permite ajustar un vocal de 90 BPM a tu pista de 120 BPM sin que parezca cantado por las Ardillas (sin afectar el Pitch). Usa el algoritmo correcto:</p>
+    <ul style="margin-left:2rem; line-height:2; margin-top:1rem;">
+      <li><strong>Beats:</strong> Para baterías y percusiones.</li>
+      <li><strong>Tones:</strong> Para bajos y sintes puros.</li>
+      <li><strong>Complex Pro:</strong> Para canciones enteras y voces (Mantiene los formantes intactos, protegiendo el carácter humano de la voz).</li>
+    </ul>
+  </div>
+</section>
+
+
+<div class="m-final">
+  <div class="tag">Módulo Final</div>
+  <h2>Resumen de Conceptos</h2>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:3rem;">
+    <div>
+      <h3>📚 Conceptos Clave</h3>
+      <ul>
+        <li><span>✅</span> <span>Simpler es para editar un solo archivo rápidamente; Sampler es para instrumentos complejos multi-muestra.</span></li><li><span>✅</span> <span>El Modo Slice (Chopping) pica un archivo de audio automáticamente usando los picos transitorios.</span></li><li><span>✅</span> <span>Warping Beats es para percusión; Complex Pro es para canciones completas o voces complejas.</span></li>
+      </ul>
+    </div>
+    <div>
+      <h3>⌨️ Shortcuts Aprendidos</h3>
+      <ul>
+        <li><strong>Cmd/Ctrl + E</strong> <span>Rebanar (Slice) el clip de audio en la línea de tiempo.</span></li><li><strong>Clic Derecho > Slice to New MIDI Track</strong> <span>Convertir un audio en un Drum Rack al instante.</span></li>
+      </ul>
+    </div>
+  </div>
+  
+  <h3 style="margin-top:4rem; font-size:2rem; text-align:center; border:none">🧠 Evaluador Interactivo</h3>
+  <div class="quiz-app" id="quiz-app-13">
+    <div class="q-progress" id="q-progress-13">Pregunta 1 de 5</div>
+    <div class="q-text" id="q-text-13"></div>
+    <div id="q-opts-13"></div>
+    <button class="q-next" id="q-next-13" onclick="nextQuestion_13()">Siguiente Pregunta ➔</button>
+  </div>
+  
+  <div style="margin-top: 2rem; border-top: 1px solid #333; padding-top: 2rem; text-align:center;">
+    <h3>📖 Bibliografía y Recursos</h3>
+    <ul style="list-style:none; padding:0; margin-top:1rem; line-height:2;">
+      <li><a href="anexo-glosario.html" style="color:var(--audio); text-decoration:none;">➔ Consultar el Glosario Oficial</a></li>
+      <li><a href="examen-final.html" style="color:var(--play); text-decoration:none; font-weight:bold; font-size:1.2rem;">➔ Ir al GRAN EXAMEN FINAL</a></li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  const qData_13 = [{"q":"¿Cuál es el origen histórico del Sampling en el Hip Hop?","opts":["Grabar bandas en vivo","Tomar breaks de batería de discos de vinilo de Funk y re-secuenciarlos en la Akai MPC","Sintetizar ruido blanco","Comprar librerías en Splice"],"ans":1},{"q":"En el modo 'Slice' de Simpler, la división automática de las rebanadas suele hacerse usando:","opts":["Los picos de agudos","Los Transitorios (Transients) o impactos fuertes de la onda","El volumen master","Notas musicales aleatorias"],"ans":1},{"q":"¿Cuál es el mejor modo de Warping para editar y estirar un Acapella (Voz Humana)?","opts":["Beats","Repitch","Complex / Complex Pro","Tones"],"ans":2},{"q":"¿Cuál es la principal diferencia técnica entre Simpler y Sampler?","opts":["Simpler es de pago","Sampler permite crear multi-samples (mapear decenas de archivos distintos a distintas teclas y velocidades), Simpler solo carga uno a la vez","Sampler no soporta MIDI","Simpler es para video"],"ans":1},{"q":"El Warping permite:","opts":["Afinar voces","Ajustar el tiempo de un archivo de audio al BPM de tu proyecto sin alterar su tono original","Cortar graves","Exportar más rápido"],"ans":1}];
+  let curQ_13 = 0; let score_13 = 0;
+  function renderQ_13() {
+    if(curQ_13 >= qData_13.length) {
+      let p = Math.round((score_13 / qData_13.length) * 100);
+      let msg = p === 100 ? '¡Perfecto!' : (p >= 60 ? '¡Bien hecho!' : 'Repasa la lección.');
+      if (p >= 60) localStorage.setItem('ableton101_c13', score_13);
+      document.getElementById('quiz-app-13').innerHTML = '<div style="text-align:center"><div style="font-size:4rem;margin-bottom:1rem">' + (p>=60?'🏆':'📉') + '</div><h3 style="color:#fff;font-size:2rem;margin-bottom:1rem">Tu Score: ' + score_13 + ' / ' + qData_13.length + ' (' + p + '%)</h3><p style="color:#aaa;font-size:1.2rem">' + msg + '</p></div>';
+      return;
+    }
+    let q = qData_13[curQ_13];
+    document.getElementById('q-progress-13').textContent = 'Pregunta ' + (curQ_13+1) + ' de ' + qData_13.length;
+    document.getElementById('q-text-13').textContent = q.q;
+    let optsHTML = '';
+    q.opts.forEach((opt, idx) => { optsHTML += '<button class="q-opt" onclick="checkQ_13(' + idx + ', ' + q.ans + ', this)">' + opt + '</button>'; });
+    document.getElementById('q-opts-13').innerHTML = optsHTML;
+    document.getElementById('q-next-13').style.display = 'none';
+  }
+  function checkQ_13(sIdx, cIdx, btn) {
+    const btns = document.getElementById('q-opts-13').querySelectorAll('.q-opt');
+    btns.forEach(b => { b.disabled = true; b.style.opacity = '0.7'; });
+    btn.style.opacity = '1';
+    if(sIdx === cIdx) { btn.classList.add('correct'); score_13++; } 
+    else { btn.classList.add('wrong'); btns[cIdx].classList.add('correct'); btns[cIdx].style.opacity = '1'; }
+    document.getElementById('q-next-13').style.display = 'block';
+  }
+  function nextQuestion_13() { curQ_13++; renderQ_13(); }
+  setTimeout(() => renderQ_13(), 100);
+</script>
+  
+<script>
+const chopC = document.getElementById('chopCanvas');
+const chopCtx = chopC.getContext('2d');
+let slices = [50, 150]; // initial cuts
+
+function drawChop() {
+  chopCtx.fillStyle='#111'; chopCtx.fillRect(0,0,chopC.width,chopC.height);
+  
+  // Draw wave
+  chopCtx.fillStyle='#00B84D';
+  for(let i=0; i<chopC.width; i+=4) {
+    let h = (Math.sin(i*0.05) * Math.sin(i*0.01) * 40) + 20 + Math.random()*20;
+    chopCtx.fillRect(i, 75 - (h/2), 2, h);
+  }
+  
+  // Draw Slices
+  chopCtx.strokeStyle='#FFBC00'; chopCtx.lineWidth=2;
+  slices.forEach(x => {
+    chopCtx.beginPath(); chopCtx.moveTo(x, 0); chopCtx.lineTo(x, chopC.height); chopCtx.stroke();
+    // Little marker
+    chopCtx.fillStyle='#FFBC00';
+    chopCtx.beginPath(); chopCtx.moveTo(x-5, 0); chopCtx.lineTo(x+5, 0); chopCtx.lineTo(x, 10); chopCtx.fill();
+  });
+}
+drawChop();
+
+chopC.onmousedown = (e) => {
+  const r = chopC.getBoundingClientRect();
+  const mx = e.clientX - r.left;
+  slices.push(mx);
+  drawChop();
+};
+
+function clearChop() { slices = []; drawChop(); }
+</script>
+<script src="../js/tooltips.js"></script>
+<script>
+  function touchHandler(event) {
+    if(event.target.tagName !== 'CANVAS' && event.target.type !== 'range') return;
+    var touch = event.changedTouches[0];
+    var simulatedEvent = document.createEvent("MouseEvent");
+    simulatedEvent.initMouseEvent({ touchstart:"mousedown", touchmove:"mousemove", touchend:"mouseup" }[event.type], true, true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null);
+    touch.target.dispatchEvent(simulatedEvent);
+    if(event.target.tagName === 'CANVAS') event.preventDefault();
+  }
+  document.addEventListener("touchstart", touchHandler, {passive: false});
+  document.addEventListener("touchmove", touchHandler, {passive: false});
+  document.addEventListener("touchend", touchHandler, {passive: false});
+</script>
+<div style="position:fixed;bottom:15px;right:20px;font-size:0.9rem;opacity:0.35;z-index:9999;font-weight:700;">Creado por @laurorobles</div>
+</body></html>

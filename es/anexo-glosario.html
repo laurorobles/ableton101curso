@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Ableton 101 — Glosario Interactivo</title>
+  <style>
+    :root { 
+      --bg:#F8F9FA; --surface:#fff; --text:#000; --muted:#555;
+      --border:#E5E7EB; --audio:#0055FF; --midi:#FF5500;
+      --play:#00B84D; --cine:#E53E3E;
+    }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
+    body { background:var(--bg); color:var(--text); font-family:-apple-system,sans-serif; font-size:18px; line-height:1.6; padding:4rem 5%; }
+    .btn-back { position:fixed; top:20px; left:20px; background:#fff; color:#000; text-decoration:none; padding:10px 15px; border-radius:8px; border:2px solid var(--border); font-weight:bold; z-index:9999; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
+    header { text-align:center; padding:4rem 2rem; border-radius:24px; margin-bottom:4rem; background:#111; color:#fff; }
+    h1 { font-size:3.5rem; font-weight:900; margin-bottom:1rem; }
+    p.sub { font-size:1.3rem; color:#aaa; max-width:800px; margin:0 auto; }
+    .controls { background:var(--surface); padding:2rem; border-radius:16px; border:1px solid var(--border); margin-bottom:3rem; }
+    .search-box { width:100%; padding:1rem; font-size:1.2rem; background:#fff; color:#000; border:2px solid var(--border); border-radius:8px; margin-bottom:1.5rem; outline:none; }
+    .filter-group { margin-bottom:1.5rem; }
+    .filter-group h3 { font-size:1rem; color:var(--muted); margin-bottom:0.5rem; text-transform:uppercase; font-weight:800; }
+    .filter-row { display:flex; gap:0.5rem; flex-wrap:wrap; }
+    .btn-filter { background:#fff; color:#555; border:1px solid var(--border); padding:0.4rem 1rem; border-radius:20px; cursor:pointer; font-weight:bold; transition:all 0.2s; font-size:0.9rem; }
+    .btn-filter.active { background:var(--audio); color:#fff; border-color:var(--audio); }
+    .btn-filter-cls.active { background:var(--play); color:#fff; border-color:var(--play); }
+    .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:1.5rem; }
+    .gl-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.5rem; transition:transform 0.2s; display:flex; flex-direction:column; box-shadow:0 4px 15px rgba(0,0,0,0.03); }
+    .gl-card:hover { transform:translateY(-3px); box-shadow:0 8px 25px rgba(0,0,0,0.1); }
+    .gl-title { font-size:1.5rem; color:#000; margin-bottom:1rem; font-weight:800;}
+    .gl-desc { font-size:1.05rem; margin-bottom:1.5rem; flex:1; color:#333; }
+    .gl-tags { display:flex; gap:0.5rem; flex-wrap:wrap; }
+    .tag-cat { font-size:0.75rem; background:#f0f0f0; color:#555; padding:0.2rem 0.6rem; border-radius:4px; text-transform:uppercase; font-weight:bold; }
+    .tag-cls { font-size:0.75rem; background:rgba(0, 184, 77, 0.15); color:var(--play); padding:0.2rem 0.6rem; border-radius:4px; text-transform:uppercase; font-weight:bold; }
+    .gl-visual { width:100%; height:120px; background:#111; border-radius:8px; margin-bottom:1rem; position:relative; overflow:hidden; display:flex; justify-content:center; align-items:center; }
+    .gl-canvas { width:100%; height:100%; display:block; }
+  </style>
+</head>
+<body>
+<a href="../index.html" class="btn-back">← Volver al Índice</a>
+<header>
+  <div style="font-size:4rem; margin-bottom:1rem">📖</div>
+  <h1>Glosario Animado Universal</h1>
+  <p class="sub">Cada concepto de audio ilustrado en tiempo real para el cerebro visual del productor.</p>
+</header>
+<div class="controls">
+  <input type="text" id="searchInput" class="search-box" placeholder="🔍 Buscar término (Ej. Cuantización, Swing, FM)..." onkeyup="applyFilters()">
+  <div class="filter-group">
+    <h3>📂 Filtrar por Categoría</h3>
+    <div class="filter-row" id="catFilters">
+      <button class="btn-filter active" data-cat="all" onclick="setCatFilter('all', this)">Todos</button>
+      <button class="btn-filter" data-cat="audio-digital" onclick="setCatFilter('audio-digital', this)">Audio Digital</button>
+      <button class="btn-filter" data-cat="ableton" onclick="setCatFilter('ableton', this)">Ableton</button>
+      <button class="btn-filter" data-cat="midi" onclick="setCatFilter('midi', this)">MIDI</button>
+      <button class="btn-filter" data-cat="síntesis" onclick="setCatFilter('síntesis', this)">Síntesis</button>
+      <button class="btn-filter" data-cat="efectos" onclick="setCatFilter('efectos', this)">Efectos</button>
+      <button class="btn-filter" data-cat="mezcla" onclick="setCatFilter('mezcla', this)">Mezcla</button>
+      <button class="btn-filter" data-cat="hardware" onclick="setCatFilter('hardware', this)">Hardware</button>
+    </div>
+  </div>
+</div>
+<div class="grid" id="glGrid"><div class="gl-card" data-cat="audio-digital" data-cls="c1">  <h2 class="gl-title">Sample Rate</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="samplerate" width="300" height="100"></canvas></div>  <p class="gl-desc">Frecuencia de Muestreo. La cantidad de 'fotos' que se le toman al sonido por segundo.</p>  <div class="gl-tags">    <span class="tag-cat">Audio Digital</span>    <span class="tag-cls">Clase 1</span>  </div></div><div class="gl-card" data-cat="audio-digital" data-cls="c1">  <h2 class="gl-title">Bit Depth</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="bitdepth" width="300" height="100"></canvas></div>  <p class="gl-desc">Profundidad de Bits. Define la resolución de volumen (escalones). A mayor bit depth, curva más suave.</p>  <div class="gl-tags">    <span class="tag-cat">Audio Digital</span>    <span class="tag-cls">Clase 1</span>  </div></div><div class="gl-card" data-cat="audio-digital" data-cls="c7">  <h2 class="gl-title">Latencia</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="latency" width="300" height="100"></canvas></div>  <p class="gl-desc">El retraso desde que tocas una tecla hasta que escuchas el sonido.</p>  <div class="gl-tags">    <span class="tag-cat">Audio Digital</span>    <span class="tag-cls">Clase 7</span>  </div></div><div class="gl-card" data-cat="audio-digital" data-cls="c7">  <h2 class="gl-title">Buffer Size</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="buffer" width="300" height="100"></canvas></div>  <p class="gl-desc">El 'tiempo' que le das al CPU. Buffer alto = Tarda en procesar pero no se traba.</p>  <div class="gl-tags">    <span class="tag-cat">Audio Digital</span>    <span class="tag-cls">Clase 7</span>  </div></div><div class="gl-card" data-cat="audio-digital" data-cls="c8">  <h2 class="gl-title">Fase (Phase)</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="phase" width="300" height="100"></canvas></div>  <p class="gl-desc">Alineación de ondas. Si dos ondas idénticas están desfasadas 180 grados, se cancelan (silencio).</p>  <div class="gl-tags">    <span class="tag-cat">Audio Digital</span>    <span class="tag-cls">Clase 8</span>  </div></div><div class="gl-card" data-cat="audio-digital" data-cls="c2">  <h2 class="gl-title">Warping</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="warp" width="300" height="100"></canvas></div>  <p class="gl-desc">Algoritmo exclusivo de Ableton para estirar el audio en el tiempo sin alterar su tono.</p>  <div class="gl-tags">    <span class="tag-cat">Audio Digital</span>    <span class="tag-cls">Clase 2</span>  </div></div><div class="gl-card" data-cat="audio-digital" data-cls="c2">  <h2 class="gl-title">BPM</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="bpm" width="300" height="100"></canvas></div>  <p class="gl-desc">Beats Per Minute. La velocidad o tempo de la canción.</p>  <div class="gl-tags">    <span class="tag-cat">Audio Digital</span>    <span class="tag-cls">Clase 2</span>  </div></div><div class="gl-card" data-cat="audio-digital" data-cls="c13">  <h2 class="gl-title">Sampling</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="sampling" width="300" height="100"></canvas></div>  <p class="gl-desc">Tomar un fragmento de audio (sample) y recortarlo de forma creativa.</p>  <div class="gl-tags">    <span class="tag-cat">Audio Digital</span>    <span class="tag-cls">Clase 13</span>  </div></div><div class="gl-card" data-cat="ableton" data-cls="c1">  <h2 class="gl-title">Session View</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="session" width="300" height="100"></canvas></div>  <p class="gl-desc">Vista de Ableton (vertical) basada en lanzar Clips de audio para improvisar sin línea de tiempo.</p>  <div class="gl-tags">    <span class="tag-cat">Ableton</span>    <span class="tag-cls">Clase 1</span>  </div></div><div class="gl-card" data-cat="ableton" data-cls="c3">  <h2 class="gl-title">Arrangement</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="arrangement" width="300" height="100"></canvas></div>  <p class="gl-desc">La vista tradicional (horizontal) donde la canción avanza de izquierda a derecha.</p>  <div class="gl-tags">    <span class="tag-cat">Ableton</span>    <span class="tag-cls">Clase 3</span>  </div></div><div class="gl-card" data-cat="ableton" data-cls="c5">  <h2 class="gl-title">Macro</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="macro" width="300" height="100"></canvas></div>  <p class="gl-desc">Una perilla maestra que controla múltiples parámetros de diferentes plugins al mismo tiempo.</p>  <div class="gl-tags">    <span class="tag-cat">Ableton</span>    <span class="tag-cls">Clase 5</span>  </div></div><div class="gl-card" data-cat="ableton" data-cls="c15">  <h2 class="gl-title">Freeze (Congelar)</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="freeze" width="300" height="100"></canvas></div>  <p class="gl-desc">Renderizar pista MIDI a Audio invisible para ahorrar CPU.</p>  <div class="gl-tags">    <span class="tag-cat">Ableton</span>    <span class="tag-cls">Clase 15</span>  </div></div><div class="gl-card" data-cat="midi" data-cls="c1">  <h2 class="gl-title">MIDI</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="midi" width="300" height="100"></canvas></div>  <p class="gl-desc">Protocolo de instrucciones. Son bloques de datos (notas, duración), no sonido real.</p>  <div class="gl-tags">    <span class="tag-cat">MIDI</span>    <span class="tag-cls">Clase 1</span>  </div></div><div class="gl-card" data-cat="midi" data-cls="c4">  <h2 class="gl-title">Velocity</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="velocity" width="300" height="100"></canvas></div>  <p class="gl-desc">La fuerza con la que se presiona una tecla. Controla la intensidad del sonido.</p>  <div class="gl-tags">    <span class="tag-cat">MIDI</span>    <span class="tag-cls">Clase 4</span>  </div></div><div class="gl-card" data-cat="midi" data-cls="c4">  <h2 class="gl-title">Cuantización</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="quantize" width="300" height="100"></canvas></div>  <p class="gl-desc">Ajustar o 'imantar' automáticamente las notas tocadas fuera de tiempo a la cuadrícula perfecta.</p>  <div class="gl-tags">    <span class="tag-cat">MIDI</span>    <span class="tag-cls">Clase 4</span>  </div></div><div class="gl-card" data-cat="midi" data-cls="c4">  <h2 class="gl-title">Swing / Groove</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="swing" width="300" height="100"></canvas></div>  <p class="gl-desc">Desplazar matemáticamente las notas fuera de la cuadrícula perfecta para dar un tacto humano.</p>  <div class="gl-tags">    <span class="tag-cat">MIDI</span>    <span class="tag-cls">Clase 4</span>  </div></div><div class="gl-card" data-cat="midi" data-cls="c12">  <h2 class="gl-title">Polirritmia</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="poly" width="300" height="100"></canvas></div>  <p class="gl-desc">Reproducción simultánea de ritmos independientes (ej. 3 vs 4).</p>  <div class="gl-tags">    <span class="tag-cat">MIDI</span>    <span class="tag-cls">Clase 12</span>  </div></div><div class="gl-card" data-cat="midi" data-cls="c4">  <h2 class="gl-title">Pitch Bend</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="pitchbend" width="300" height="100"></canvas></div>  <p class="gl-desc">Rueda que resbala el tono de una nota hacia arriba o abajo en tiempo real.</p>  <div class="gl-tags">    <span class="tag-cat">MIDI</span>    <span class="tag-cls">Clase 4</span>  </div></div><div class="gl-card" data-cat="síntesis" data-cls="c10">  <h2 class="gl-title">ADSR</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="adsr" width="300" height="100"></canvas></div>  <p class="gl-desc">Attack, Decay, Sustain, Release. Las 4 fases del volumen en el tiempo.</p>  <div class="gl-tags">    <span class="tag-cat">Síntesis</span>    <span class="tag-cls">Clase 10</span>  </div></div><div class="gl-card" data-cat="síntesis" data-cls="c10">  <h2 class="gl-title">LFO</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="lfo" width="300" height="100"></canvas></div>  <p class="gl-desc">Oscilador inaudible que mueve otros parámetros automáticamente (ej. Vibrato).</p>  <div class="gl-tags">    <span class="tag-cat">Síntesis</span>    <span class="tag-cls">Clase 10</span>  </div></div><div class="gl-card" data-cat="síntesis" data-cls="c10">  <h2 class="gl-title">Senoidal (Sine)</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="sine" width="300" height="100"></canvas></div>  <p class="gl-desc">Forma de onda pura, sin armónicos. Suena como un silbido.</p>  <div class="gl-tags">    <span class="tag-cat">Síntesis</span>    <span class="tag-cls">Clase 10</span>  </div></div><div class="gl-card" data-cat="síntesis" data-cls="c10">  <h2 class="gl-title">Sierra (Saw)</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="saw" width="300" height="100"></canvas></div>  <p class="gl-desc">Onda rica en armónicos. Sonido brillante (típica de sintes brass).</p>  <div class="gl-tags">    <span class="tag-cat">Síntesis</span>    <span class="tag-cls">Clase 10</span>  </div></div><div class="gl-card" data-cat="síntesis" data-cls="c10">  <h2 class="gl-title">Cuadrada</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="square" width="300" height="100"></canvas></div>  <p class="gl-desc">Contiene solo armónicos impares. Sonido hueco, tipo videojuego retro.</p>  <div class="gl-tags">    <span class="tag-cat">Síntesis</span>    <span class="tag-cls">Clase 10</span>  </div></div><div class="gl-card" data-cat="síntesis" data-cls="c10">  <h2 class="gl-title">Ruido Blanco</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="noise" width="300" height="100"></canvas></div>  <p class="gl-desc">Contiene todas las frecuencias al mismo nivel. Suena a estática.</p>  <div class="gl-tags">    <span class="tag-cat">Síntesis</span>    <span class="tag-cls">Clase 10</span>  </div></div><div class="gl-card" data-cat="síntesis" data-cls="c10">  <h2 class="gl-title">Glide</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="glide" width="300" height="100"></canvas></div>  <p class="gl-desc">El tono se desliza suavemente de una nota a otra en lugar de saltar instantáneamente.</p>  <div class="gl-tags">    <span class="tag-cat">Síntesis</span>    <span class="tag-cls">Clase 10</span>  </div></div><div class="gl-card" data-cat="síntesis" data-cls="c11">  <h2 class="gl-title">Síntesis FM</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="fm" width="300" height="100"></canvas></div>  <p class="gl-desc">Modulación donde una onda altera a otra a gran velocidad, creando tonos metálicos.</p>  <div class="gl-tags">    <span class="tag-cat">Síntesis</span>    <span class="tag-cls">Clase 11</span>  </div></div><div class="gl-card" data-cat="efectos" data-cls="c5">  <h2 class="gl-title">LPF (Low Pass)</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="lpf" width="300" height="100"></canvas></div>  <p class="gl-desc">Permite el paso de graves y recorta agudos.</p>  <div class="gl-tags">    <span class="tag-cat">Efectos</span>    <span class="tag-cls">Clase 5</span>  </div></div><div class="gl-card" data-cat="efectos" data-cls="c5">  <h2 class="gl-title">HPF (High Pass)</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="hpf" width="300" height="100"></canvas></div>  <p class="gl-desc">Permite el paso de agudos y recorta graves.</p>  <div class="gl-tags">    <span class="tag-cat">Efectos</span>    <span class="tag-cls">Clase 5</span>  </div></div><div class="gl-card" data-cat="efectos" data-cls="c5">  <h2 class="gl-title">Reverb</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="reverb" width="300" height="100"></canvas></div>  <p class="gl-desc">Simulación de ecos microscópicos rebotando en un cuarto.</p>  <div class="gl-tags">    <span class="tag-cat">Efectos</span>    <span class="tag-cls">Clase 5</span>  </div></div><div class="gl-card" data-cat="efectos" data-cls="c5">  <h2 class="gl-title">Delay</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="delay" width="300" height="100"></canvas></div>  <p class="gl-desc">Efecto que captura el sonido y lo repite rítmicamente.</p>  <div class="gl-tags">    <span class="tag-cat">Efectos</span>    <span class="tag-cls">Clase 5</span>  </div></div><div class="gl-card" data-cat="efectos" data-cls="c5">  <h2 class="gl-title">Chorus</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="chorus" width="300" height="100"></canvas></div>  <p class="gl-desc">Duplica la señal y desafina sutilmente las copias para crear un efecto de coro ancho.</p>  <div class="gl-tags">    <span class="tag-cat">Efectos</span>    <span class="tag-cls">Clase 5</span>  </div></div><div class="gl-card" data-cat="efectos" data-cls="c5">  <h2 class="gl-title">Saturación</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="saturation" width="300" height="100"></canvas></div>  <p class="gl-desc">Distorsión sutil que aplasta los picos y añade armónicos cálidos (efecto tubo).</p>  <div class="gl-tags">    <span class="tag-cat">Efectos</span>    <span class="tag-cls">Clase 5</span>  </div></div><div class="gl-card" data-cat="efectos" data-cls="c9">  <h2 class="gl-title">Sidechain</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="sidechain" width="300" height="100"></canvas></div>  <p class="gl-desc">El volumen del Bajo se reduce automáticamente cada vez que suena el Bombo.</p>  <div class="gl-tags">    <span class="tag-cat">Efectos</span>    <span class="tag-cls">Clase 9</span>  </div></div><div class="gl-card" data-cat="efectos" data-cls="c9">  <h2 class="gl-title">Noise Gate</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="gate" width="300" height="100"></canvas></div>  <p class="gl-desc">Silencia el canal de golpe cuando el sonido baja de un umbral (limpia fondo).</p>  <div class="gl-tags">    <span class="tag-cat">Efectos</span>    <span class="tag-cls">Clase 9</span>  </div></div><div class="gl-card" data-cat="mezcla" data-cls="c8">  <h2 class="gl-title">Headroom</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="headroom" width="300" height="100"></canvas></div>  <p class="gl-desc">El espacio de seguridad entre tus picos más altos y el techo de 0 dB.</p>  <div class="gl-tags">    <span class="tag-cat">Mezcla</span>    <span class="tag-cls">Clase 8</span>  </div></div><div class="gl-card" data-cat="mezcla" data-cls="c8">  <h2 class="gl-title">Paneo (Pan)</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="pan" width="300" height="100"></canvas></div>  <p class="gl-desc">Distribución del sonido en el espectro estéreo (Izquierda / Derecha).</p>  <div class="gl-tags">    <span class="tag-cat">Mezcla</span>    <span class="tag-cls">Clase 8</span>  </div></div><div class="gl-card" data-cat="mezcla" data-cls="c8">  <h2 class="gl-title">Clipping</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="clip" width="300" height="100"></canvas></div>  <p class="gl-desc">Distorsión que ocurre cuando el volumen choca con el techo de 0 dBFS.</p>  <div class="gl-tags">    <span class="tag-cat">Mezcla</span>    <span class="tag-cls">Clase 8</span>  </div></div><div class="gl-card" data-cat="mezcla" data-cls="c9">  <h2 class="gl-title">Compresor</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="compresor" width="300" height="100"></canvas></div>  <p class="gl-desc">Reduce automáticamente los picos más altos del audio.</p>  <div class="gl-tags">    <span class="tag-cat">Mezcla</span>    <span class="tag-cls">Clase 9</span>  </div></div><div class="gl-card" data-cat="mezcla" data-cls="c14">  <h2 class="gl-title">Limitador</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="limiter" width="300" height="100"></canvas></div>  <p class="gl-desc">Compresor extremo: un muro de concreto. Ninguna señal pasa el techo.</p>  <div class="gl-tags">    <span class="tag-cat">Mezcla</span>    <span class="tag-cls">Clase 14</span>  </div></div><div class="gl-card" data-cat="mezcla" data-cls="c14">  <h2 class="gl-title">LUFS</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="lufs" width="300" height="100"></canvas></div>  <p class="gl-desc">Medida del volumen promedio percibido por el oído humano.</p>  <div class="gl-tags">    <span class="tag-cat">Mezcla</span>    <span class="tag-cls">Clase 14</span>  </div></div><div class="gl-card" data-cat="hardware" data-cls="c1">  <h2 class="gl-title">Interfaz</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="interfaz" width="300" height="100"></canvas></div>  <p class="gl-desc">Convierte el audio analógico en binario para la computadora.</p>  <div class="gl-tags">    <span class="tag-cat">Hardware</span>    <span class="tag-cls">Clase 1</span>  </div></div><div class="gl-card" data-cat="hardware" data-cls="c1">  <h2 class="gl-title">Phantom Power</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="phantom" width="300" height="100"></canvas></div>  <p class="gl-desc">Corriente eléctrica de 48V enviada por el cable para prender micrófonos.</p>  <div class="gl-tags">    <span class="tag-cat">Hardware</span>    <span class="tag-cls">Clase 1</span>  </div></div><div class="gl-card" data-cat="hardware" data-cls="c1">  <h2 class="gl-title">Monitores</h2>  <div class="gl-visual"><canvas class="gl-canvas" data-type="monitors" width="300" height="100"></canvas></div>  <p class="gl-desc">Altavoces planos, no colorean el sonido. Esenciales para mezclar.</p>  <div class="gl-tags">    <span class="tag-cat">Hardware</span>    <span class="tag-cls">Clase 1</span>  </div></div><div class="gl-card" data-cat="daw" data-cls="c15">
+  <h2 class="gl-title">Bounce / Render</h2>
+  <div class="gl-visual"><canvas class="gl-canvas" data-type="export" width="300" height="100"></canvas></div>
+  <p class="gl-desc">Convertir pistas MIDI y plugins en un archivo de audio consolidado final.</p>
+  <div class="gl-tags"><span class="tag-cat">Daw</span><span class="tag-cls">Clase 15</span></div>
+</div><div class="gl-card" data-cat="daw" data-cls="c1">
+  <h2 class="gl-title">Freeze (Congelar)</h2>
+  <div class="gl-visual"><canvas class="gl-canvas" data-type="freeze" width="300" height="100"></canvas></div>
+  <p class="gl-desc">Pre-renderizar temporalmente una pista pesada para ahorrar recursos del CPU.</p>
+  <div class="gl-tags"><span class="tag-cat">Daw</span><span class="tag-cls">Clase 1</span></div>
+</div><div class="gl-card" data-cat="daw" data-cls="c1">
+  <h2 class="gl-title">Buffer Size</h2>
+  <div class="gl-visual"><canvas class="gl-canvas" data-type="buffer" width="300" height="100"></canvas></div>
+  <p class="gl-desc">Tamaño de memoria temporal. Menor buffer = Menos Latencia, pero más esfuerzo del CPU.</p>
+  <div class="gl-tags"><span class="tag-cat">Daw</span><span class="tag-cls">Clase 1</span></div>
+</div><div class="gl-card" data-cat="daw" data-cls="c6">
+  <h2 class="gl-title">Automatización</h2>
+  <div class="gl-visual"><canvas class="gl-canvas" data-type="automation" width="300" height="100"></canvas></div>
+  <p class="gl-desc">Movimiento programado de un parámetro (ej. Filtro, Volumen) a lo largo del tiempo.</p>
+  <div class="gl-tags"><span class="tag-cat">Daw</span><span class="tag-cls">Clase 6</span></div>
+</div><div class="gl-card" data-cat="daw" data-cls="c3">
+  <h2 class="gl-title">Crossfade</h2>
+  <div class="gl-visual"><canvas class="gl-canvas" data-type="crossfade" width="300" height="100"></canvas></div>
+  <p class="gl-desc">Transición en X: un clip baja su volumen gradualmente mientras el otro lo sube.</p>
+  <div class="gl-tags"><span class="tag-cat">Daw</span><span class="tag-cls">Clase 3</span></div>
+</div><div class="gl-card" data-cat="mezcla" data-cls="c8">
+  <h2 class="gl-title">Gain Staging</h2>
+  <div class="gl-visual"><canvas class="gl-canvas" data-type="headroom" width="300" height="100"></canvas></div>
+  <p class="gl-desc">Ajustar la ganancia de entrada y salida en cada plugin para mantener la señal sana.</p>
+  <div class="gl-tags"><span class="tag-cat">Mezcla</span><span class="tag-cls">Clase 8</span></div>
+</div><div class="gl-card" data-cat="mezcla" data-cls="c8">
+  <h2 class="gl-title">Bus / Grupo</h2>
+  <div class="gl-visual"><canvas class="gl-canvas" data-type="bus" width="300" height="100"></canvas></div>
+  <p class="gl-desc">Canal maestro donde se agrupan múltiples pistas (ej. todas las voces) para procesarlas juntas.</p>
+  <div class="gl-tags"><span class="tag-cat">Mezcla</span><span class="tag-cls">Clase 8</span></div>
+</div><div class="gl-card" data-cat="mezcla" data-cls="c13">
+  <h2 class="gl-title">Transitorio (Transient)</h2>
+  <div class="gl-visual"><canvas class="gl-canvas" data-type="transient" width="300" height="100"></canvas></div>
+  <p class="gl-desc">El pico explosivo y milisegundo inicial de un sonido (ej. el golpe de la baqueta).</p>
+  <div class="gl-tags"><span class="tag-cat">Mezcla</span><span class="tag-cls">Clase 13</span></div>
+</div><div class="gl-card" data-cat="mezcla" data-cls="c8">
+  <h2 class="gl-title">Fase (Phase)</h2>
+  <div class="gl-visual"><canvas class="gl-canvas" data-type="phase" width="300" height="100"></canvas></div>
+  <p class="gl-desc">La alineación de las ondas. Si dos ondas idénticas están invertidas, se cancelan (silencio).</p>
+  <div class="gl-tags"><span class="tag-cat">Mezcla</span><span class="tag-cls">Clase 8</span></div>
+</div><div class="gl-card" data-cat="mezcla" data-cls="c5">
+  <h2 class="gl-title">De-Esser</h2>
+  <div class="gl-visual"><canvas class="gl-canvas" data-type="deesser" width="300" height="100"></canvas></div>
+  <p class="gl-desc">Compresor especializado que solo actúa sobre frecuencias agudas molestas (sibilancia en la voz).</p>
+  <div class="gl-tags"><span class="tag-cat">Mezcla</span><span class="tag-cls">Clase 5</span></div>
+</div><div class="gl-card" data-cat="mezcla" data-cls="c5">
+  <h2 class="gl-title">Send / Return</h2>
+  <div class="gl-visual"><canvas class="gl-canvas" data-type="send" width="300" height="100"></canvas></div>
+  <p class="gl-desc">Procesamiento en paralelo: Enviar una copia de la señal a un canal auxiliar (ej. Reverb).</p>
+  <div class="gl-tags"><span class="tag-cat">Mezcla</span><span class="tag-cls">Clase 5</span></div>
+</div><div class="gl-card" data-cat="síntesis" data-cls="c4">
+  <h2 class="gl-title">Arpegiador</h2>
+  <div class="gl-visual"><canvas class="gl-canvas" data-type="arpeggiator" width="300" height="100"></canvas></div>
+  <p class="gl-desc">Toma un acorde simultáneo y lo reproduce como una secuencia rítmica de notas individuales.</p>
+  <div class="gl-tags"><span class="tag-cat">Síntesis</span><span class="tag-cls">Clase 4</span></div>
+</div><div class="gl-card" data-cat="síntesis" data-cls="c10">
+  <h2 class="gl-title">Polifonía</h2>
+  <div class="gl-visual"><canvas class="gl-canvas" data-type="chords" width="300" height="100"></canvas></div>
+  <p class="gl-desc">Capacidad de tocar varias notas a la vez. Lo opuesto es Monofónico (1 sola nota).</p>
+  <div class="gl-tags"><span class="tag-cat">Síntesis</span><span class="tag-cls">Clase 10</span></div>
+</div><div class="gl-card" data-cat="síntesis" data-cls="c10">
+  <h2 class="gl-title">Portamento (Glide)</h2>
+  <div class="gl-visual"><canvas class="gl-canvas" data-type="glide" width="300" height="100"></canvas></div>
+  <p class="gl-desc">Deslizamiento continuo del tono (pitch) entre dos notas sin un corte brusco.</p>
+  <div class="gl-tags"><span class="tag-cat">Síntesis</span><span class="tag-cls">Clase 10</span></div>
+</div><div class="gl-card" data-cat="síntesis" data-cls="c10">
+  <h2 class="gl-title">Sub-Bajo</h2>
+  <div class="gl-visual"><canvas class="gl-canvas" data-type="sine" width="300" height="100"></canvas></div>
+  <p class="gl-desc">Frecuencias extremadamente graves (20-60 Hz) sentidas físicamente, usualmente senoidales.</p>
+  <div class="gl-tags"><span class="tag-cat">Síntesis</span><span class="tag-cls">Clase 10</span></div>
+</div><div class="gl-card" data-cat="música" data-cls="c12">
+  <h2 class="gl-title">Swing / Groove</h2>
+  <div class="gl-visual"><canvas class="gl-canvas" data-type="swing" width="300" height="100"></canvas></div>
+  <p class="gl-desc">Retraso de las notas pares de la cuadrícula para darle un factor humano a la batería.</p>
+  <div class="gl-tags"><span class="tag-cat">Música</span><span class="tag-cls">Clase 12</span></div>
+</div><div class="gl-card" data-cat="música" data-cls="c12">
+  <h2 class="gl-title">Velocity</h2>
+  <div class="gl-visual"><canvas class="gl-canvas" data-type="velocity" width="300" height="100"></canvas></div>
+  <p class="gl-desc">La fuerza o intensidad eléctrica (0-127) con la que fue golpeada una tecla MIDI.</p>
+  <div class="gl-tags"><span class="tag-cat">Música</span><span class="tag-cls">Clase 12</span></div>
+</div></div>
+
+<script>
+  let currentCat = 'all';
+  function setCatFilter(cat, btn) {
+    document.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active')); btn.classList.add('active');
+    currentCat = cat; applyFilters();
+  }
+  function applyFilters() {
+    const term = document.getElementById('searchInput').value.toLowerCase();
+    document.querySelectorAll('.gl-card').forEach(card => {
+      const cat = card.getAttribute('data-cat');
+      const text = card.innerText.toLowerCase();
+      const matchCat = (currentCat === 'all' || cat.includes(currentCat));
+      const matchText = text.includes(term);
+      card.style.display = (matchCat && matchText) ? 'flex' : 'none';
+    });
+  }
+
+  // THE ULTIMATE CANVAS MOTOR (40+ Animations)
+  const canvases = document.querySelectorAll('.gl-canvas');
+  let phase = 0;
+  function drawGraphics() {
+    canvases.forEach(canvas => {
+      const type = canvas.getAttribute('data-type');
+      const ctx = canvas.getContext('2d');
+      const p = canvas.parentElement; const w = p.clientWidth; const h = p.clientHeight;
+      if(canvas.width !== w) canvas.width = w; if(canvas.height !== h) canvas.height = h;
+      
+      ctx.clearRect(0,0,w,h);
+      ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      const cx = w/2, cy = h/2;
+
+      // 1. FUNDAMENTOS
+      if(type === 'samplerate') {
+        ctx.beginPath(); ctx.strokeStyle = '#333';
+        for(let x=0; x<w; x++) ctx[x===0?'moveTo':'lineTo'](x, cy + Math.sin(x*0.05 + phase)*30); ctx.stroke();
+        let sr = Math.floor(w / 15);
+        ctx.beginPath(); ctx.strokeStyle = '#0055FF';
+        for(let i=0; i<sr; i++) {
+          let x = i * 15; let y = cy + Math.sin(x*0.05 + phase)*30;
+          ctx.moveTo(x, cy); ctx.lineTo(x, y); ctx.arc(x,y,2,0,Math.PI*2);
+        }
+        ctx.stroke();
+      }
+      else if(type === 'bitdepth') {
+        ctx.beginPath(); ctx.strokeStyle = '#00B84D';
+        for(let x=0; x<w; x++) ctx[x===0?'moveTo':'lineTo'](x, cy-25 + Math.sin(x*0.05 + phase)*15); ctx.stroke();
+        ctx.beginPath(); ctx.strokeStyle = '#FFBC00';
+        for(let x=0; x<w; x+=10) {
+          let y = cy+25 + Math.round(Math.sin(x*0.05 + phase)*2) * 7.5;
+          ctx.lineTo(x, y); ctx.lineTo(x+10, y);
+        }
+        ctx.stroke();
+      }
+      else if(type === 'latency') {
+        let press = (Math.sin(phase*2) > 0);
+        ctx.fillStyle = press ? '#FFBC00' : '#333'; ctx.fillRect(40, cy-15, 30, 30); // Key
+        ctx.fillStyle = '#fff'; ctx.fillText('Tecla', 35, cy+30);
+        let waveWait = (Math.sin(phase*2 - 1.5) > 0);
+        ctx.fillStyle = waveWait ? '#0055FF' : '#111'; ctx.beginPath(); ctx.arc(w-60, cy, 15, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = '#fff'; ctx.fillText('Sonido', w-80, cy+30);
+        ctx.strokeStyle = '#555'; ctx.setLineDash([5,5]); ctx.beginPath(); ctx.moveTo(80, cy); ctx.lineTo(w-80, cy); ctx.stroke(); ctx.setLineDash([]);
+      }
+      else if(type === 'buffer') {
+        let load = (phase*30) % w;
+        ctx.fillStyle = '#333'; ctx.fillRect(20, cy-10, w-40, 20);
+        ctx.fillStyle = '#E53E3E'; ctx.fillRect(20, cy-10, load-20, 20); // CPU struggling
+        if(load > w/2) ctx.fillStyle = '#fff'; ctx.fillText('CPU Protegido', cx-30, cy+5);
+      }
+      
+      // 2. ABLETON
+      else if(type === 'session') {
+        for(let c=0; c<4; c++) {
+          for(let r=0; r<3; r++) {
+            let active = Math.sin(phase*4 + c + r) > 0.8;
+            ctx.fillStyle = active ? '#00B84D' : '#333';
+            ctx.fillRect(w*0.2 + c*40, h*0.2 + r*25, 30, 15);
+          }
+        }
+      }
+      else if(type === 'arrangement') {
+        let pos = -(phase*20) % 100;
+        ctx.strokeStyle = '#fff'; ctx.beginPath(); ctx.moveTo(w*0.3, 0); ctx.lineTo(w*0.3, h); ctx.stroke(); // Playhead
+        for(let r=0; r<3; r++) {
+          ctx.fillStyle = r===1 ? '#0055FF' : '#FFBC00';
+          ctx.fillRect(pos + r*50 + 50, h*0.2 + r*25, 80, 15);
+          ctx.fillRect(pos + r*50 + 200, h*0.2 + r*25, 80, 15);
+        }
+      }
+      else if(type === 'macro') {
+        let ang = phase;
+        ctx.beginPath(); ctx.arc(cx, cy, 30, 0, Math.PI*2); ctx.strokeStyle='#00B84D'; ctx.lineWidth=4; ctx.stroke();
+        ctx.beginPath(); ctx.arc(cx + Math.cos(ang)*30, cy + Math.sin(ang)*30, 5, 0, Math.PI*2); ctx.fillStyle='#fff'; ctx.fill();
+        for(let i=0; i<3; i++) {
+          let ox = cx - 80 + i*80; let oy = cy + 40;
+          ctx.beginPath(); ctx.arc(ox, oy, 10, 0, Math.PI*2); ctx.strokeStyle='#555'; ctx.lineWidth=2; ctx.stroke();
+          ctx.beginPath(); ctx.arc(ox + Math.cos(ang)*10, oy + Math.sin(ang)*10, 3, 0, Math.PI*2); ctx.fillStyle='#fff'; ctx.fill();
+        }
+      }
+      else if(type === 'freeze') {
+        let isIce = Math.sin(phase) > 0;
+        if(!isIce) {
+          ctx.fillStyle = '#FFBC00'; ctx.fillRect(cx-40, cy-15, 20, 10); ctx.fillRect(cx-10, cy-5, 30, 10); ctx.fillRect(cx+30, cy-25, 10, 10);
+        } else {
+          ctx.fillStyle = 'rgba(0,255,255,0.7)'; ctx.fillRect(cx-50, cy-30, 100, 60);
+          ctx.fillStyle = '#fff'; ctx.fillText('❄️ AUDIO', cx-25, cy+5);
+        }
+      }
+
+      // 3. MIDI & TEORÍA
+      else if(type === 'midi') {
+        let drop = (phase*30) % h;
+        ctx.fillStyle = '#FFBC00'; ctx.fillRect(cx-20, drop, 10, 20); ctx.fillRect(cx+10, drop-20, 10, 30);
+        ctx.fillStyle = '#fff'; for(let i=0; i<4; i++) { ctx.fillRect(cx-40 + i*20, h-20, 15, 20); }
+      }
+      else if(type === 'velocity') {
+        for(let i=0; i<5; i++) {
+          let v = (i+1)*20;
+          let h_bar = v * 0.4;
+          ctx.fillStyle = 'rgb(' + (v*2) + ', 50, ' + (255 - v*2) + ')';
+          ctx.fillRect(w*0.2 + i*35, h-10, 20, -h_bar);
+        }
+      }
+      else if(type === 'quantize') {
+        ctx.strokeStyle = '#333'; ctx.beginPath();
+        for(let i=0; i<w; i+=40) { ctx.moveTo(i, 0); ctx.lineTo(i, h); } ctx.stroke(); // Grid
+        let mag = Math.abs(Math.sin(phase*2));
+        ctx.fillStyle = '#00B84D';
+        ctx.fillRect(40 - (15*mag), cy, 10, 20); ctx.fillRect(120 + (10*mag), cy, 10, 20); ctx.fillRect(200 - (5*mag), cy, 10, 20);
+      }
+      else if(type === 'swing') {
+        ctx.strokeStyle = '#333'; ctx.beginPath();
+        for(let i=0; i<w; i+=40) { ctx.moveTo(i, 0); ctx.lineTo(i, h); } ctx.stroke();
+        let sw = Math.abs(Math.sin(phase*3))*15;
+        ctx.fillStyle = '#FFBC00';
+        ctx.fillRect(40, cy, 10, 20); ctx.fillRect(80 + sw, cy, 10, 20); ctx.fillRect(120, cy, 10, 20); ctx.fillRect(160 + sw, cy, 10, 20);
+      }
+      else if(type === 'pitchbend') {
+        ctx.beginPath(); ctx.strokeStyle = '#E53E3E';
+        ctx.moveTo(20, cy); ctx.lineTo(w/3, cy); 
+        ctx.bezierCurveTo(w/2, cy, w/2, cy-40 + Math.sin(phase)*80, w*0.66, cy-40 + Math.sin(phase)*80);
+        ctx.lineTo(w-20, cy-40 + Math.sin(phase)*80);
+        ctx.stroke();
+      }
+      else if(type === 'glide') {
+        let t = (Math.sin(phase)+1)/2;
+        let nx = 40 + t*(w-80); let ny = cy+20 - t*40;
+        ctx.fillStyle = '#333'; ctx.fillRect(40, cy+20, 20, 5); ctx.fillRect(w-60, cy-20, 20, 5); // Target notes
+        ctx.beginPath(); ctx.arc(nx, ny, 8, 0, Math.PI*2); ctx.fillStyle = '#0055FF'; ctx.fill();
+      }
+      else if(type === 'fm') {
+        ctx.beginPath(); ctx.strokeStyle = '#00B84D';
+        let mod = Math.sin(phase*2)*5;
+        for(let x=0; x<w; x++) ctx[x===0?'moveTo':'lineTo'](x, cy + Math.sin(x*0.05 + Math.sin(x*0.5)*mod)*30);
+        ctx.stroke();
+      }
+      
+      // 4. EFECTOS (REDUX)
+      else if(type === 'chorus') {
+        ctx.lineWidth=2;
+        ctx.beginPath(); ctx.strokeStyle = '#FFBC00'; for(let x=0;x<w;x++) ctx[x===0?'moveTo':'lineTo'](x, cy + Math.sin(x*0.05 + phase)*25); ctx.stroke();
+        ctx.beginPath(); ctx.strokeStyle = '#E53E3E'; for(let x=0;x<w;x++) ctx[x===0?'moveTo':'lineTo'](x, cy + Math.sin(x*0.048 + phase*1.1)*25); ctx.stroke();
+        ctx.beginPath(); ctx.strokeStyle = '#0055FF'; for(let x=0;x<w;x++) ctx[x===0?'moveTo':'lineTo'](x, cy + Math.sin(x*0.052 + phase*0.9)*25); ctx.stroke();
+      }
+      else if(type === 'saturation') {
+        ctx.beginPath(); ctx.strokeStyle = '#E53E3E';
+        for(let x=0; x<w; x++) {
+          let s = Math.sin(x*0.05 + phase)*40;
+          if (s > 25) s = 25 + Math.random()*5; // "Hair" on peaks
+          if (s < -25) s = -25 - Math.random()*5;
+          ctx[x===0?'moveTo':'lineTo'](x, cy + s);
+        }
+        ctx.stroke();
+      }
+      else if(type === 'gate') {
+        ctx.fillStyle = 'rgba(255,255,255,0.1)'; ctx.fillRect(0, cy-15, w, 30); // Threshold
+        ctx.beginPath(); ctx.strokeStyle = '#00B84D';
+        let isLoud = Math.sin(phase) > 0;
+        for(let x=0; x<w; x++) {
+          let noise = (Math.random()-0.5)*10;
+          let y = isLoud ? Math.sin(x*0.1)*30 + noise : 0;
+          ctx[x===0?'moveTo':'lineTo'](x, cy + y);
+        }
+        ctx.stroke();
+      }
+      
+      // 5. MEZCLA Y HARDWARE
+      else if(type === 'headroom') {
+        ctx.fillStyle = '#333'; ctx.fillRect(cx-20, 20, 40, h-40);
+        let peak = 30 + Math.abs(Math.sin(phase*4)*40);
+        ctx.fillStyle = '#00B84D'; ctx.fillRect(cx-20, h-20, 40, -peak);
+        ctx.fillStyle = 'rgba(255, 188, 0, 0.4)'; ctx.fillRect(cx-20, 20, 40, 30); // 0dB buffer
+        ctx.strokeStyle = '#E53E3E'; ctx.beginPath(); ctx.moveTo(cx-25, 20); ctx.lineTo(cx+25, 20); ctx.stroke();
+      }
+      else if(type === 'pan') {
+        let p = Math.sin(phase); // -1 to 1
+        ctx.fillStyle = p < 0 ? '#00B84D' : '#333'; ctx.fillRect(40, cy-10, 10, 20); // L speaker
+        ctx.fillStyle = p > 0 ? '#00B84D' : '#333'; ctx.fillRect(w-50, cy-10, 10, 20); // R speaker
+        ctx.beginPath(); ctx.arc(cx + p*60, cy, 10, 0, Math.PI*2); ctx.fillStyle = '#fff'; ctx.fill();
+      }
+      else if(type === 'interfaz') {
+        ctx.beginPath(); ctx.strokeStyle = '#0055FF'; for(let x=10; x<cx-20; x++) ctx[x===10?'moveTo':'lineTo'](x, cy + Math.sin(x*0.2+phase)*15); ctx.stroke();
+        ctx.fillStyle = '#333'; ctx.fillRect(cx-20, cy-20, 40, 40);
+        ctx.beginPath(); ctx.strokeStyle = '#FFBC00'; for(let x=cx+20; x<w-10; x+=5) { ctx.lineTo(x, cy + Math.round(Math.sin(x+phase)*2)*7); ctx.lineTo(x+5, cy + Math.round(Math.sin(x+phase)*2)*7); } ctx.stroke();
+      }
+      else if(type === 'phantom') {
+        // Draw Interfaz on the right
+        ctx.fillStyle = '#222'; ctx.strokeStyle = '#FFBC00'; ctx.lineWidth = 2;
+        ctx.fillRect(w - 70, 20, 60, 60); ctx.strokeRect(w - 70, 20, 60, 60);
+        ctx.fillStyle = '#FFBC00'; ctx.font = '10px sans-serif'; ctx.textAlign = 'center';
+        ctx.fillText('+48V', w - 40, 50);
+        ctx.fillText('INT', w - 40, 65);
+        
+        // Draw Mic on the left
+        ctx.fillStyle = '#222'; ctx.strokeStyle = '#fff'; ctx.lineWidth = 2;
+        ctx.fillRect(10, 30, 30, 40); ctx.strokeRect(10, 30, 30, 40);
+        ctx.beginPath(); ctx.arc(25, 30, 15, 0, Math.PI, true); ctx.stroke(); // Grill
+        ctx.fillStyle = '#fff'; ctx.fillText('MIC', 25, 55);
+        
+        // Draw Cable (XLR)
+        ctx.beginPath(); ctx.strokeStyle = '#444'; ctx.lineWidth = 4;
+        ctx.moveTo(40, 50); ctx.lineTo(w - 70, 50); ctx.stroke();
+        
+        // Audio flowing LEFT to RIGHT (Mic to Interface)
+        ctx.beginPath(); ctx.strokeStyle = 'rgba(255,255,255,0.7)'; ctx.lineWidth = 2;
+        for (let x = 40; x < w - 70; x += 2) {
+           let y = 50 + Math.sin(x*0.1 - phase*2) * 6;
+           ctx[x===40 ? 'moveTo' : 'lineTo'](x, y);
+        }
+        ctx.stroke();
+        
+        // +48V Power flowing RIGHT to LEFT (Interface to Mic)
+        ctx.fillStyle = '#FFBC00';
+        let zap = w - 70 - ((phase * 40) % (w - 110)); 
+        if (zap > 40) { // Don't draw past mic
+          ctx.beginPath(); ctx.arc(zap, 50, 4, 0, Math.PI*2); ctx.fill();
+          ctx.fillText('48v⚡', zap + 5, 40);
+        }
+      }
+      else if(type === 'monitors') {
+        ctx.beginPath(); ctx.strokeStyle = '#E53E3E'; ctx.moveTo(20, cy-20); ctx.bezierCurveTo(cx, cy+40, cx, cy+40, w-20, cy-20); ctx.stroke(); // Hi-Fi smiley
+        ctx.beginPath(); ctx.strokeStyle = '#00B84D'; ctx.moveTo(20, cy); ctx.lineTo(w-20, cy); ctx.stroke(); // Flat monitor
+        ctx.fillStyle='#fff'; ctx.fillText('Hi-Fi', 25, cy-25); ctx.fillText('Monitor Plano', 25, cy+15);
+      }
+      // FALLBACK for standard ones (Ads, clip, etc from before)
+      else if(type === 'adsr') {
+        const ax = w*0.1, ay = h-20, bx = w*0.3, by = 20, cx = w*0.5, cy = h*0.5, dx = w*0.8, dy = h*0.5, ex = w*0.9, ey = h-20;
+        ctx.beginPath(); ctx.strokeStyle = '#E53E3E'; ctx.moveTo(ax, ay); ctx.lineTo(bx, by); ctx.lineTo(cx, cy); ctx.lineTo(dx, dy); ctx.lineTo(ex, ey); ctx.stroke();
+        ctx.fillStyle = 'rgba(229, 62, 62, 0.2)'; ctx.lineTo(ax, ey); ctx.fill();
+        let t = (phase % 10) / 10; let px = ax + t*(ex-ax);
+        ctx.beginPath(); ctx.strokeStyle = '#fff'; ctx.setLineDash([3,3]); ctx.moveTo(px, 0); ctx.lineTo(px, h); ctx.stroke(); ctx.setLineDash([]);
+      }
+      
+      else if(type === 'glide') {
+        // Draw two notes
+        ctx.fillStyle = '#444'; 
+        ctx.fillRect(20, cy+20, 60, 15); // Note 1 (Low)
+        ctx.fillRect(w-80, cy-35, 60, 15); // Note 2 (High)
+        // Draw the slide path
+        ctx.beginPath(); ctx.strokeStyle = 'rgba(255,255,255,0.2)'; ctx.setLineDash([4,4]);
+        ctx.moveTo(80, cy+27); ctx.lineTo(w-80, cy-27); ctx.stroke(); ctx.setLineDash([]);
+        // Moving pitch
+        let px = 80 + (Math.sin(phase)*0.5 + 0.5)*(w-160);
+        let py = cy+27 - (Math.sin(phase)*0.5 + 0.5)*54;
+        ctx.fillStyle = '#0055FF'; ctx.beginPath(); ctx.arc(px, py, 8, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = '#fff'; ctx.fillText('PITCH', px, py-15);
+      }
+      else if(type === 'send') {
+        // Main Track
+        ctx.beginPath(); ctx.strokeStyle = '#00B84D'; ctx.lineWidth = 4;
+        ctx.moveTo(20, cy-20); ctx.lineTo(w-20, cy-20); ctx.stroke();
+        ctx.fillStyle = '#fff'; ctx.fillText('Main Audio', w/2, cy-30);
+        // Split (Send)
+        ctx.beginPath(); ctx.strokeStyle = 'rgba(255, 188, 0, 0.7)'; ctx.lineWidth = 2;
+        ctx.moveTo(w*0.3, cy-20); ctx.lineTo(w*0.3, cy+20); ctx.lineTo(w*0.6, cy+20); ctx.stroke();
+        // FX Box
+        ctx.fillStyle = '#FF5500'; ctx.fillRect(w*0.6, cy+10, 40, 20);
+        ctx.fillStyle = '#fff'; ctx.fillText('FX', w*0.6 + 20, cy+24);
+        // Return
+        ctx.beginPath(); ctx.moveTo(w*0.6 + 40, cy+20); ctx.lineTo(w*0.8, cy+20); ctx.lineTo(w*0.8, cy-20); ctx.stroke();
+        // Flowing dot on send
+        let sx = w*0.3; let sy = cy-20;
+        let flow = (phase*60) % (w*0.5 + 40);
+        if(flow < 40) { sy += flow; } 
+        else if(flow < w*0.3 + 40) { sy = cy+20; sx += (flow - 40); }
+        else { sx = w*0.8; sy = cy+20 - (flow - (w*0.3 + 40)); }
+        ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(sx, sy, 4, 0, Math.PI*2); ctx.fill();
+      }
+      else if(type === 'deesser') {
+        ctx.beginPath(); ctx.strokeStyle = '#aaa'; ctx.lineWidth = 2;
+        for(let x=0; x<w; x++) {
+          let sibilance = (x > w*0.4 && x < w*0.6) ? Math.random()*80 - 40 : Math.sin(x*0.1)*10;
+          let y = cy + sibilance;
+          // De-Esser clamp
+          if(y > cy + 20) y = cy + 20; if(y < cy - 20) y = cy - 20;
+          ctx[x===0?'moveTo':'lineTo'](x, y);
+        }
+        ctx.stroke();
+        ctx.strokeStyle = '#E53E3E'; ctx.setLineDash([4,4]);
+        ctx.beginPath(); ctx.moveTo(w*0.4, cy-20); ctx.lineTo(w*0.6, cy-20); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(w*0.4, cy+20); ctx.lineTo(w*0.6, cy+20); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = '#E53E3E'; ctx.fillText('Clamp "S"', w/2, cy-30);
+      }
+      else if(type === 'chords') {
+        let active = Math.floor((phase * 2) % 3);
+        ctx.fillStyle = active === 0 ? '#444' : '#0055FF'; ctx.fillRect(w/2 - 20, cy+20, 40, 10);
+        ctx.fillStyle = active === 1 ? '#444' : '#FF5500'; ctx.fillRect(w/2 - 20, cy, 40, 10);
+        ctx.fillStyle = active === 2 ? '#444' : '#00B84D'; ctx.fillRect(w/2 - 20, cy-20, 40, 10);
+        ctx.fillStyle = '#fff'; ctx.fillText('Voz 1', w/2 - 40, cy-15); ctx.fillText('Voz 2', w/2 - 40, cy+5); ctx.fillText('Voz 3', w/2 - 40, cy+25);
+      }
+      else if(type === 'export') {
+        let prog = (phase*50) % w;
+        ctx.fillStyle = '#222'; ctx.fillRect(20, cy-10, w-40, 20);
+        ctx.fillStyle = '#0055FF'; ctx.fillRect(20, cy-10, prog, 20);
+        ctx.fillStyle = '#fff'; ctx.fillText('Rendering Audio...', w/2, cy+5);
+      }
+      else if(type === 'freeze') {
+        ctx.fillStyle = 'rgba(0, 184, 255, 0.2)'; ctx.fillRect(0,0,w,h); // icy background
+        ctx.beginPath(); ctx.strokeStyle = '#00B8FF'; ctx.lineWidth = 3;
+        for(let x=0; x<w; x++) ctx[x===0?'moveTo':'lineTo'](x, cy + Math.sin(x*0.1)*20); ctx.stroke();
+        ctx.fillStyle = '#fff'; ctx.fillText('❄️ FREEZE', w/2, cy-25);
+      }
+      else if(type === 'buffer') {
+        let dot = (Math.floor(phase * 4) % 10) * (w/10);
+        ctx.fillStyle = '#444'; for(let i=0; i<w; i+=w/10) { ctx.fillRect(i+2, cy-10, (w/10)-4, 20); }
+        ctx.fillStyle = '#E53E3E'; ctx.fillRect(dot+2, cy-10, (w/10)-4, 20);
+        ctx.fillStyle = '#fff'; ctx.fillText('CPU Buffer', w/2, cy-20);
+      }
+      else if(type === 'automation') {
+        ctx.beginPath(); ctx.strokeStyle = '#FFBC00'; ctx.lineWidth = 2;
+        ctx.moveTo(0, cy+30); ctx.lineTo(w*0.3, cy+30); ctx.lineTo(w*0.6, cy-30); ctx.lineTo(w, cy-30); ctx.stroke();
+        let px = (phase*60) % w;
+        let py = px < w*0.3 ? cy+30 : (px > w*0.6 ? cy-30 : cy+30 - ((px - w*0.3)/(w*0.3))*60);
+        ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(px, py, 6, 0, Math.PI*2); ctx.fill();
+      }
+      else if(type === 'crossfade') {
+        let amt = (Math.sin(phase)*0.5 + 0.5);
+        ctx.fillStyle = 'rgba(0, 85, 255, ' + (1-amt) + ')'; ctx.fillRect(0, cy-20, w, 40);
+        ctx.fillStyle = 'rgba(0, 184, 77, ' + amt + ')'; ctx.fillRect(0, cy-20, w, 40);
+        ctx.beginPath(); ctx.strokeStyle = '#0055FF'; ctx.moveTo(0, cy-20); ctx.lineTo(w, cy+20); ctx.stroke();
+        ctx.beginPath(); ctx.strokeStyle = '#00B84D'; ctx.moveTo(0, cy+20); ctx.lineTo(w, cy-20); ctx.stroke();
+      }
+      else if(type === 'bus') {
+        ctx.beginPath(); ctx.strokeStyle = '#aaa'; ctx.moveTo(20, cy-20); ctx.lineTo(w/2, cy); ctx.moveTo(20, cy); ctx.lineTo(w/2, cy); ctx.moveTo(20, cy+20); ctx.lineTo(w/2, cy); ctx.stroke();
+        ctx.fillStyle = '#0055FF'; ctx.fillRect(w/2, cy-15, w/2 - 20, 30);
+        ctx.fillStyle = '#fff'; ctx.fillText('MASTER BUS', w*0.75, cy+4);
+      }
+      else if(type === 'transient') {
+        ctx.beginPath(); ctx.strokeStyle = '#00B84D'; ctx.lineWidth = 2;
+        for(let x=0; x<w; x++) {
+          let env = x < 40 ? 0 : (x < 45 ? 1 : Math.exp(-(x-45)*0.05));
+          let y = Math.sin(x*0.5 + phase*10) * 40 * env;
+          ctx[x===0?'moveTo':'lineTo'](x, cy + y);
+        }
+        ctx.stroke();
+        ctx.fillStyle = '#fff'; ctx.fillText('↙ Transitorio', 80, cy-30);
+      }
+      else if(type === 'arpeggiator') {
+        let step = Math.floor((phase * 4) % 4);
+        let notes = [cy+20, cy, cy-20, cy];
+        ctx.fillStyle = '#444'; for(let i=0; i<4; i++) { ctx.fillRect(20 + i*40, notes[i], 30, 10); }
+        ctx.fillStyle = '#FF5500'; ctx.fillRect(20 + step*40, notes[step], 30, 10);
+      }
+      else if(type === 'swing') {
+        ctx.fillStyle = '#333'; ctx.fillRect(40, cy-20, 10, 40); ctx.fillRect(140, cy-20, 10, 40); ctx.fillRect(240, cy-20, 10, 40);
+        let offset = Math.sin(phase)*20 + 20; // 0 to 40
+        ctx.fillStyle = '#FFBC00'; ctx.fillRect(90 + offset, cy-20, 10, 40); ctx.fillRect(190 + offset, cy-20, 10, 40);
+      }
+      else if(type === 'velocity') {
+        let vel = (Math.sin(phase)*0.5 + 0.5);
+        ctx.fillStyle = 'rgba(0, 184, 77, ' + (0.2 + vel*0.8) + ')';
+        ctx.fillRect(w/2 - 20, cy + 30, 40, -vel*60 - 10);
+        ctx.fillStyle = '#fff'; ctx.fillText(Math.floor(vel*127), w/2, cy-40);
+      }
+      else if(type === 'compresor') {
+        // Draw uncompressed background ghost wave
+        ctx.beginPath(); ctx.strokeStyle = '#333';
+        for(let x=0; x<w; x++) {
+          let y = Math.sin(x*0.05 + phase)*60;
+          ctx[x===0?'moveTo':'lineTo'](x, h/2 + y);
+        }
+        ctx.stroke();
+        
+        // Draw compressed wave (squished proportionally, not clipped flat)
+        ctx.beginPath(); ctx.strokeStyle = '#0055FF'; ctx.lineWidth = 2;
+        for(let x=0; x<w; x++) {
+          let y = Math.sin(x*0.05 + phase)*60;
+          let threshold = 25;
+          let ratio = 4; // 4:1 compression
+          if(y > threshold) { y = threshold + ((y - threshold) / ratio); }
+          else if(y < -threshold) { y = -threshold + ((y + threshold) / ratio); }
+          ctx[x===0?'moveTo':'lineTo'](x, h/2 + y);
+        }
+        ctx.stroke();
+        
+        // Draw threshold lines
+        ctx.strokeStyle = '#FFBC00'; ctx.setLineDash([4,4]); ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(0, h/2 - 25); ctx.lineTo(w, h/2 - 25); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(0, h/2 + 25); ctx.lineTo(w, h/2 + 25); ctx.stroke();
+        ctx.setLineDash([]);
+      }
+      else if(type === 'clip') {
+        ctx.beginPath(); ctx.strokeStyle = '#fff';
+        for(let x=0; x<w; x++) {
+          let y = Math.sin(x*0.05 + phase)*60;
+          if(y > 35) { y = 35; ctx.strokeStyle = '#E53E3E'; } else if(y < -35) { y = -35; ctx.strokeStyle = '#E53E3E'; } else { ctx.strokeStyle = '#fff'; }
+          ctx[x===0?'moveTo':'lineTo'](x, h/2 + y);
+        }
+        ctx.stroke(); ctx.strokeStyle = '#E53E3E'; ctx.setLineDash([5,5]); ctx.beginPath(); ctx.moveTo(0, h/2 - 35); ctx.lineTo(w, h/2 - 35); ctx.stroke(); ctx.beginPath(); ctx.moveTo(0, h/2 + 35); ctx.lineTo(w, h/2 + 35); ctx.stroke(); ctx.setLineDash([]);
+      }
+      else if(type === 'lfo') {
+        ctx.beginPath(); ctx.strokeStyle = '#9C27B0';
+        for(let x=0; x<w; x++) ctx[x===0?'moveTo':'lineTo'](x, h/2 + Math.sin(x*0.01 + phase*0.1)*40); ctx.stroke();
+        let markerX = (phase*40) % w; ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(markerX, h/2 + Math.sin(markerX*0.01 + phase*0.1)*40, 6, 0, Math.PI*2); ctx.fill();
+      }
+      else if(type === 'sine') {
+        ctx.beginPath(); ctx.strokeStyle = '#0055FF'; for(let x=0; x<w; x++) ctx[x===0?'moveTo':'lineTo'](x, h/2 + Math.sin(x*0.05 + phase)*35); ctx.stroke();
+      }
+      else if(type === 'saw') {
+        ctx.beginPath(); ctx.strokeStyle = '#FFBC00'; for(let x=0; x<w; x++) { let t = (x*0.05 + phase) % (Math.PI*2); let y = 2 * (t/(Math.PI*2)) - 1; ctx[x===0?'moveTo':'lineTo'](x, h/2 + y*35); } ctx.stroke();
+      }
+      else if(type === 'square') {
+        ctx.beginPath(); ctx.strokeStyle = '#9C27B0'; for(let x=0; x<w; x++) { let y = Math.sin(x*0.05 + phase) > 0 ? 30 : -30; ctx[x===0?'moveTo':'lineTo'](x, h/2 + y); } ctx.stroke();
+      }
+      else if(type === 'phase') {
+        ctx.beginPath(); ctx.strokeStyle = '#00B84D'; for(let x=0; x<w; x++) ctx[x===0?'moveTo':'lineTo'](x, h/2 + Math.sin(x*0.05 + phase)*25); ctx.stroke();
+        ctx.beginPath(); ctx.strokeStyle = 'rgba(255,0,0,0.5)'; for(let x=0; x<w; x++) ctx[x===0?'moveTo':'lineTo'](x, h/2 + Math.sin(x*0.05 + phase + Math.PI)*25); ctx.stroke();
+      }
+      else if(type === 'noise') {
+        ctx.beginPath(); ctx.strokeStyle = '#aaa'; ctx.lineWidth = 1; for(let x=0; x<w; x++) { ctx[x===0?'moveTo':'lineTo'](x, h/2 + (Math.random()*60 - 30)); } ctx.stroke();
+      }
+      else if(type === 'warp') {
+        ctx.beginPath(); ctx.strokeStyle = 'rgba(255,255,255,0.4)'; for(let x=20; x<w-20; x+=8) { ctx.moveTo(x, h/2 - Math.random()*25); ctx.lineTo(x, h/2 + Math.random()*25); } ctx.stroke();
+        let stretch = Math.sin(phase)*30; ctx.fillStyle = '#FFBC00'; ctx.fillRect(w*0.3 - stretch, h/2-30, 4, 60); ctx.fillRect(w*0.7 + stretch, h/2-30, 4, 60);
+      }
+      else if(type === 'bpm') {
+        let size = 25 + Math.sin(phase * 4) * 8; ctx.fillStyle = '#0055FF'; ctx.beginPath(); ctx.arc(w/2, h/2, size, 0, Math.PI*2); ctx.fill(); ctx.fillStyle = '#fff'; ctx.font = 'bold 18px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('120', w/2, h/2);
+      }
+      else if(type === 'sampling') {
+        ctx.fillStyle = '#0055FF'; let slice = Math.floor((phase*2)%4); for(let i=0; i<4; i++) { ctx.globalAlpha = i===slice ? 1 : 0.3; ctx.fillRect(w*0.1 + i*(w*0.2), h*0.2, w*0.18, h*0.6); } ctx.globalAlpha = 1;
+      }
+      else if(type === 'lpf') {
+        ctx.beginPath(); ctx.strokeStyle = '#00B84D'; ctx.moveTo(w*0.1, 30); ctx.lineTo(w*0.5, 30); ctx.bezierCurveTo(w*0.7, 30, w*0.75, h-20, w*0.9, h-20); ctx.stroke();
+        ctx.fillStyle = 'rgba(0,184,77,0.2)'; ctx.fill(); let fx = w*0.5 + Math.sin(phase)*20; ctx.fillStyle = '#fff'; ctx.fillRect(fx, 30, 4, h-50);
+      }
+      else if(type === 'hpf') {
+        ctx.beginPath(); ctx.strokeStyle = '#00B84D'; ctx.moveTo(w*0.1, h-20); ctx.lineTo(w*0.3, h-20); ctx.bezierCurveTo(w*0.45, h-20, w*0.5, 30, w*0.7, 30); ctx.lineTo(w*0.9, 30); ctx.stroke();
+        ctx.fillStyle = 'rgba(0,184,77,0.2)'; ctx.lineTo(w*0.9, h-20); ctx.lineTo(w*0.1, h-20); ctx.fill();
+      }
+      else if(type === 'reverb') {
+        ctx.fillStyle = '#fff'; ctx.fillRect(w*0.1, h/2-25, 8, 50); for(let i=1; i<8; i++) { ctx.fillStyle = 'rgba(0,184,77,' + (1 - (i/8)) + ')'; let ox = w*0.1 + i*(w/10) + Math.sin(phase+i)*10; ctx.fillRect(ox, h/2 - (25 - i*2), 6, 50 - i*4); }
+      }
+      else if(type === 'delay') {
+        ctx.fillStyle = '#fff'; ctx.fillRect(w*0.1, h/2-25, 6, 50); for(let i=1; i<5; i++) { ctx.fillStyle = 'rgba(255,188,0,' + (1 - (i/5)) + ')'; let drop = (phase*40 - i*(w/5)) % w; if(drop < w*0.1) drop += w; ctx.fillRect(drop, h/2-25, 6, 50); }
+      }
+      else if(type === 'sidechain') {
+        ctx.fillStyle = '#111'; ctx.fillRect(0,0,w,h);
+        let beat = phase % (Math.PI); let kickEnv = Math.max(0, 1 - (beat * 2));
+        ctx.fillStyle = '#E53E3E'; ctx.fillRect(20, h-10, 10, -kickEnv*60);
+        ctx.beginPath(); ctx.strokeStyle = '#0055FF'; for(let x=0; x<w; x++) { let duck = 1; if (x < 100) duck = Math.min(1, x / 100); ctx[x===0?'moveTo':'lineTo'](x, h/2 + Math.sin(x*0.1)*(20*duck)); } ctx.stroke();
+      }
+      else if(type === 'limiter') {
+        ctx.fillStyle = '#111'; ctx.fillRect(0,0,w,h); let sigH = 30 + Math.abs(Math.sin(phase)*50); let cappedH = Math.min(sigH, 40); 
+        ctx.fillStyle = cappedH >= 40 ? '#E53E3E' : '#00B84D'; ctx.fillRect(w/2 - 20, h - cappedH, 40, cappedH);
+        ctx.strokeStyle = '#fff'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(0, h-40); ctx.lineTo(w, h-40); ctx.stroke();
+      }
+      else if(type === 'lufs') {
+        ctx.fillStyle = '#111'; ctx.fillRect(w*0.1, h*0.3, w*0.8, h*0.4); let lvl = 0.5 + Math.sin(phase)*0.4;
+        ctx.fillStyle = lvl > 0.8 ? '#E53E3E' : (lvl > 0.6 ? '#FFBC00' : '#00B84D'); ctx.fillRect(w*0.1, h*0.3, (w*0.8)*lvl, h*0.4);
+        ctx.fillStyle = '#fff'; ctx.fillRect(w*0.7, h*0.2, 4, h*0.6);
+      }
+      else if(type === 'poly') {
+        let ax = (phase * 50) % w; let bx = (phase * 66.6) % w; 
+        ctx.fillStyle = '#00B84D'; ctx.beginPath(); ctx.arc(ax, h*0.3, 12, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = '#FFBC00'; ctx.beginPath(); ctx.arc(bx, h*0.7, 12, 0, Math.PI*2); ctx.fill();
+      }
+    });
+    
+    phase += 0.05;
+    requestAnimationFrame(drawGraphics);
+  }
+  
+  setTimeout(drawGraphics, 100);
+</script>
+
+<!-- AUTHOR CREDIT -->
+<div style="position:fixed; bottom:15px; right:20px; font-size:0.9rem; color:inherit; opacity:0.35; z-index:9999; font-weight:700; pointer-events:none; transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.35'">
+  Creado por @laurorobles
+</div>
+</body>
+
+</html>

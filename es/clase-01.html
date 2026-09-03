@@ -13,13 +13,13 @@
     }
     *{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
-    body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:22px;line-height:1.5;-webkit-font-smoothing:antialiased}
+    body{background:var(--bg);color:var(--text);font-family:-apple-system,sans-serif;font-size:18px;line-height:1.6;padding:4rem 5%}
     ::-webkit-scrollbar{width:0;background:transparent}
-    h1{font-size:4.5rem;font-weight:900;letter-spacing:-.04em;line-height:1.05;margin-bottom:1rem}
+    h1 { font-size:3.5rem; font-weight:900; margin-bottom:1rem; }
     h2{font-size:3rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.8rem}
     h3{font-size:1.8rem;font-weight:700;margin-bottom:.5rem}
     .sub{font-size:1.5rem;color:var(--muted);max-width:900px;margin-bottom:2.5rem;font-weight:500}
-    section{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:5rem 5%;border-bottom:2px solid var(--border);overflow:visible}
+    section { max-width:1000px; margin:0 auto 5rem; padding:4rem 0; border-bottom:1px solid var(--border); }
     .tag{display:inline-block;font-size:1rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
     .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font-size:1.2rem;font-weight:700;padding:.9rem 1.8rem;border-radius:12px;border:none;cursor:pointer;transition:transform .1s,filter .15s;color:#fff;user-select:none;font-family:inherit}
     .btn:active{transform:scale(.96)} .btn:hover{filter:brightness(1.1)}
@@ -156,26 +156,54 @@
     /* ── Toast ── */
     #toast{position:fixed;bottom:40px;left:50%;transform:translateX(-50%) translateY(160px);background:var(--text);color:#fff;padding:1.2rem 2.5rem;border-radius:100px;font-size:1.4rem;font-weight:bold;z-index:9999;transition:transform .4s cubic-bezier(.175,.885,.32,1.275);box-shadow:0 20px 40px rgba(0,0,0,.25);max-width:640px;text-align:center}
     #toast.show{transform:translateX(-50%) translateY(0)}
+    header { text-align:center; padding:4rem 2rem; border-radius:24px; border:2px solid var(--border); margin-bottom:4rem; background:var(--surface); }
+
+    .m-final { background:#111; color:#fff; padding:4rem; border-radius:24px; margin-top:4rem; max-width:1000px; margin:4rem auto; }
+    .m-final h2 { color:#fff; }
+    .m-final .tag { background:#333; color:#fff; }
+    .m-final h3 { color:var(--play); border-bottom:1px solid #333; padding-bottom:0.5rem; margin-bottom:1.5rem; margin-top:2rem; }
+    .m-final ul { list-style:none; }
+    .m-final li { margin-bottom:1rem; color:#ccc; display:flex; gap:1rem; }
+  
+    /* Quiz */
+    .quiz-app { background:#222; border:1px solid #333; border-radius:16px; padding:2rem; margin-top:2rem; }
+    .q-text { font-size:1.4rem; color:#fff; margin-bottom:1.5rem; }
+    .q-opt { display:block; width:100%; text-align:left; background:#333; color:#fff; border:2px solid transparent; padding:1.2rem; border-radius:8px; margin-bottom:0.8rem; cursor:pointer; font-size:1.1rem; transition:all 0.2s; }
+    .q-opt:hover { background:#444; border-color:#555; }
+    .q-opt.correct { background:var(--play) !important; color:#fff; border-color:#fff; }
+    .q-opt.wrong { background:var(--danger) !important; color:#fff; }
+    .q-progress { color:var(--muted); margin-bottom:1rem; font-weight:bold; }
+    .q-next { background:var(--audio); color:#fff; padding:1rem 2rem; border:none; border-radius:8px; font-weight:bold; font-size:1.2rem; cursor:pointer; margin-top:1rem; display:none; }
+    .m-final { background:#111; color:#fff; padding:4rem; border-radius:24px; margin-top:4rem; max-width:1000px; margin:4rem auto; }
+    .m-final h2 { color:#fff; }
+    .m-final .tag { background:#333; color:#fff; }
+    .m-final ul { list-style:none; }
+    .m-final li { margin-bottom:1rem; color:#ccc; display:flex; gap:1rem; }
+    .m-final h3 { color:var(--play); border-bottom:1px solid #333; padding-bottom:0.5rem; margin-bottom:1.5rem; margin-top:2rem; }
+  
   </style>
 </head>
 <body>
+<!-- Botón de Navegación -->
+<a href="../index.html" style="position:fixed; top:20px; left:20px; background:var(--surface); color:var(--text); text-decoration:none; padding:10px 15px; border-radius:8px; border:2px solid var(--border); font-weight:bold; font-size:0.9rem; z-index:9999; box-shadow:0 4px 10px rgba(0,0,0,0.1); transition:transform 0.1s;">
+  ← Volver al Índice
+</a>
+
 <div id="toast"></div>
 
-<!-- HERO ─────────────────────────────────── -->
-<section style="background:var(--surface);align-items:center;text-align:center">
-  <div class="tag" style="background:#E5E7EB;padding:.4rem 1rem;border-radius:8px;color:var(--text)">Soundspace Academy</div>
+<!-- HERO ESTANDARIZADO -->
+<header>
+  <div class="tag">Soundspace Academy</div>
   <h1>Ableton 101<br>Clase 1: Fundamentos Prácticos</h1>
-  <p class="sub" style="font-size:1.8rem;text-align:center;margin:0 auto 1.5rem">Manual interactivo para aprender en el salón.</p>
-
-  <div style="display:flex;align-items:center;justify-content:center;gap:1.5rem;margin-bottom:2.5rem;text-align:left;max-width:800px;background:#F0F4F8;padding:1.5rem;border-radius:16px;">
-    <img src="../assets/lao_foto.jpg" alt="LAO" style="width:100px;height:100px;border-radius:50%;object-fit:cover;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+  <p class="sub" style="margin-bottom:2rem">Manual interactivo para aprender en el salón.</p>
+  <div style="display:flex;align-items:center;justify-content:center;gap:1.5rem;margin:0 auto 2rem;text-align:left;max-width:800px;background:#F0F4F8;padding:1.5rem;border-radius:16px;">
+    <img src="../assets/lao_foto.jpg" alt="LAO" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'><rect width=\'100\' height=\'100\' fill=\'%23ccc\'/></svg>'" style="width:100px;height:100px;border-radius:50%;object-fit:cover;">
     <div>
-      <h3 style="margin-bottom:0.3rem;font-size:1.4rem;">Creado por LAO (Lauro Robles)</h3>
-      <p style="font-size:1rem;color:var(--muted);line-height:1.4;">Productor, DJ y cofundador de NAAFI. Figura clave de la música electrónica experimental latinoamericana con presentaciones en Sónar, Mutek y Boiler Room.</p>
+      <h3 style="margin-bottom:0.3rem;font-size:1.4rem;">Instructor: LAO (Lauro Robles)</h3>
+      <p style="font-size:1rem;color:var(--muted);line-height:1.4;">Bienvenido a la Clase 1. Audio • MIDI • Ruteo</p>
     </div>
   </div>
-  <a href="#m1" class="btn btn-dark" style="text-decoration:none;padding:1.3rem 3rem;font-size:1.7rem">Empezar Clase ↓</a>
-</section>
+</header>
 
 <!-- M1: AUDIO VS MIDI ───────────────────── -->
 <section id="m1">
@@ -186,7 +214,7 @@
 
     <div class="panel">
       <h3 class="t-audio">🎙 Audio (bell.wav)</h3>
-      <p style="color:var(--muted)">Grabación real de sonido.</p>
+      <p style=\"color:var(--muted)">Grabación real de sonido.</p>
       <canvas id="waveCanvas"></canvas>
       <div id="audioStatus" style="font-size:.9rem;color:var(--muted);margin-bottom:.8rem">Cargando bell.wav…</div>
       <div class="row">
@@ -202,7 +230,7 @@
 
     <div class="panel">
       <h3 class="t-midi">🎹 MIDI</h3>
-      <p style="color:var(--muted)">Instrucciones digitales: Nota, Ritmo, Fuerza.</p>
+      <p style=\"color:var(--muted)">Instrucciones digitales: Nota, Ritmo, Fuerza.</p>
       <div id="midiViz"></div>
       <div class="row">
         <button class="btn btn-midi" onclick="playMelody('sine','Piano')">🎹 Piano</button>
@@ -324,893 +352,140 @@
   </div>
 </section>
 
-<!-- M4: TU PRIMER BEAT ──────────────────── -->
-<section id="m4" style="background:var(--surface)">
-  <div class="tag t-play">Módulo 04</div>
-  <h2>Tu Primer Beat</h2>
-  <p class="sub">Activa los cuadros y presiona Play para escuchar tu ritmo.</p>
-  <div class="seq-wrap">
-    <div class="seq-grid" id="seqGrid"></div>
-    <div class="row">
-      <button class="btn btn-play" id="btnSeq" onclick="toggleSeq()" style="font-size:1.8rem;padding:1rem 2.5rem">▶ PLAY BEAT</button>
-      <button class="btn btn-outline" onclick="clearSeq()">🗑 Limpiar</button>
-      <button class="btn btn-outline" onclick="loadBeat()">🥁 Cargar Ritmo</button>
-      <div style="margin-left:auto;display:flex;align-items:center;gap:1rem;font-size:1.3rem;font-weight:bold">
-        Tempo:
-        <input type="range" min="60" max="180" value="120" id="bpmSlider" oninput="updateBPM(this.value)"
-               style="width:180px;height:10px;accent-color:var(--play)">
-        <span id="bpmVal" class="t-play">120</span> BPM
-      </div>
+
+<!-- M-INTERFAZ: RADIOGRAFÍA -->
+<section id="m-interfaz" style="background:#1c1c1c; color:#fff">
+  <div class="tag" style="background:#444; color:#fff">Familiarización</div>
+  <h2 style=\"color:#fff">Radiografía de Ableton Live</h2>
+  <p class="sub" style=\"color:#aaa">Pasa el mouse sobre las diferentes zonas de esta interfaz simplificada para descubrir cómo está organizado el DAW.</p>
+
+  <div style="position:relative; width:100%; max-width:1000px; height:600px; background:#333; border:2px solid #555; border-radius:12px; margin:0 auto; display:flex; flex-direction:column; overflow:hidden">
+    
+    <!-- Barra de Control (Top) -->
+    <div class="ui-zone" data-desc="<b>Barra de Control (Transporte):</b> Aquí configuras el Tempo (BPM), enciendes el Metrónomo y controlas la reproducción (Play, Stop, Record)." style="height:50px; border-bottom:2px solid #222; display:flex; align-items:center; padding:0 1rem; gap:1rem; background:#444">
+      <div style="width:60px; height:25px; background:#222; border-radius:4px"></div>
+      <div style="width:30px; height:25px; background:var(--play); border-radius:4px"></div>
+      <div style="width:30px; height:25px; background:#222; border-radius:4px"></div>
+      <div style="width:30px; height:25px; background:var(--danger); border-radius:4px; border-radius:50%"></div>
     </div>
-  </div>
-</section>
-
-<!-- M5: SYNTH VS DRUM MACHINE ──────────────── -->
-<section id="m5">
-  <div class="tag t-audio">Módulo 05</div>
-  <h2>Sintetizadores vs. Cajas de Ritmos</h2>
-  <p class="sub">Las dos herramientas más icónicas de la producción electrónica. ¿En qué se diferencian?</p>
-  <div class="split">
-
-    <div class="panel">
-      <h3 style="color:#FF0055">🎹 Sintetizadores</h3>
-      <p style="color:var(--muted);margin-bottom:1rem">Generan melodías, acordes y bajos.</p>
-      <div style="background:#111;border-radius:10px;padding:1.5rem;color:#fff;text-align:center;margin-bottom:1.5rem;">
-        <div style="display:flex; justify-content:center; gap:30px; font-size:3rem; margin-bottom:0.5rem; user-select:none;">
-           <div onclick="playSynth('sine')" style="cursor:pointer; transition:transform 0.1s" onmousedown="popPad(this)" title="Onda Senoidal (Sine)">∿</div>
-           <div onclick="playSynth('square')" style="cursor:pointer; transition:transform 0.1s" onmousedown="popPad(this)" title="Onda Cuadrada (Square)">⎍</div>
-           <div onclick="playSynth('sawtooth')" style="cursor:pointer; transition:transform 0.1s" onmousedown="popPad(this)" title="Onda Sierra (Sawtooth)">◿</div>
-        </div>
-        <div style="font-size:0.9rem;color:#aaa">Haz clic en las ondas para escuchar los osciladores</div>
+    
+    <div style="display:flex; flex:1">
+      <!-- Navegador (Left) -->
+      <div class="ui-zone" data-desc="<b>Navegador (Browser):</b> Tu biblioteca. Aquí buscas instrumentos, efectos de audio, librerías de sonidos (samples) y tus propios proyectos." style="width:250px; border-right:2px solid #222; background:#3a3a3a; display:flex; flex-direction:column; padding:1rem; gap:0.5rem">
+        <div style="width:100%; height:20px; background:#444; border-radius:4px"></div>
+        <div style="width:80%; height:20px; background:#444; border-radius:4px"></div>
+        <div style="width:90%; height:20px; background:#444; border-radius:4px"></div>
       </div>
-      <p style="font-size:1.1rem">Están diseñados para tocar <strong>notas musicales</strong> a diferentes alturas. Usan osciladores (ondas) para crear y esculpir el sonido desde cero.</p>
-      <div class="analogy" style="border-left-color:#FF0055">
-        <strong style="color:#FF0055">Ejemplos Clave (Haz clic):</strong><br><br>
-        <a href="javascript:void(0)" onclick="showImg('moog')" style="color:var(--text);font-weight:bold;text-decoration:none;">• Moog Minimoog (Bajos clásicos)</a>
-        <div id="imgMoog" style="display:none;margin-top:10px"><img src="../assets/minimoog.jpg" style="width:100%;border-radius:8px;"></div>
-        <br><br>
-        <a href="javascript:void(0)" onclick="showImg('ms20')" style="color:var(--text);font-weight:bold;text-decoration:none;">• Korg MS-20 (Sonido agresivo y modular)</a>
-        <div id="imgMs20" style="display:none;margin-top:10px"><img src="../assets/ms20.jpg" style="width:100%;border-radius:8px;"></div>
-        <br><br>
-        <a href="javascript:void(0)" onclick="showImg('dx7')" style="color:var(--text);font-weight:bold;text-decoration:none;">• Yamaha DX7 (Síntesis FM de los 80s)</a>
-        <div id="imgDx7" style="display:none;margin-top:10px"><img src="../assets/dx7.jpg" style="width:100%;border-radius:8px;"></div>
-      </div>
-    </div>
-
-    <div class="panel">
-      <h3 style="color:#0055FF">🥁 Cajas de Ritmos (Drum Machines)</h3>
-      <p style="color:var(--muted);margin-bottom:1rem">Generan percusiones y beats.</p>
-      <div style="background:#111;border-radius:10px;padding:1.5rem;color:#fff;text-align:center;margin-bottom:1.5rem;display:flex;flex-direction:column;align-items:center;gap:10px;">
-        <div style="display:flex;gap:15px; user-select:none;">
-          <div onclick="drumHit('kick')" onmousedown="popPad(this)" style="width:60px;height:60px;background:var(--audio);border-radius:8px;box-shadow:inset 0 0 0 2px #fff; display:flex; align-items:center; justify-content:center; font-size:2rem; transition:transform 0.1s; cursor:pointer;">🥁</div>
-          <div onclick="drumHit('snare')" onmousedown="popPad(this)" style="width:60px;height:60px;background:var(--midi);border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:2rem; transition:transform 0.1s; cursor:pointer;">🪘</div>
-          <div onclick="drumHit('hat')" onmousedown="popPad(this)" style="width:60px;height:60px;background:var(--play);border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:2rem; transition:transform 0.1s; cursor:pointer;">🔔</div>
-        </div>
-        <div style="font-size:0.9rem;color:#aaa">Toca los pads para disparar golpes cortos (Kick, Snare, Hat)</div>
-      </div>
-      <p style="font-size:1.1rem">Están diseñadas para secuenciar <strong>golpes percusivos</strong>. Cada botón (Pad) dispara un sonido diferente, ya sea sintetizado o sampleado.</p>
-      <div class="analogy" style="border-left-color:#0055FF">
-        <strong style="color:#0055FF">Ejemplos Clave (Haz clic):</strong><br><br>
-        <a href="javascript:void(0)" onclick="showImg('tr808')" style="color:var(--text);font-weight:bold;text-decoration:none;">• Roland TR-808 (Trap / Reggaeton)</a>
-        <div id="img808" style="display:none;margin-top:10px"><img src="../assets/tr808.jpg" style="width:100%;border-radius:8px;background:#fff;padding:10px;"></div>
-        <br><br>
-        <a href="javascript:void(0)" onclick="showImg('mpc')" style="color:var(--text);font-weight:bold;text-decoration:none;">• Akai MPC2000 (Sampleo / Hip Hop Clásico)</a>
-        <div id="imgMpc" style="display:none;margin-top:10px"><img src="../assets/mpc.jpg" style="width:100%;border-radius:8px;background:#fff;padding:10px;"></div>
-        <br><br>
-        <a href="javascript:void(0)" onclick="showImg('linndrum')" style="color:var(--text);font-weight:bold;text-decoration:none;">• LinnDrum (Pop / Synthwave 80s)</a>
-        <div id="imgLinndrum" style="display:none;margin-top:10px"><img src="../assets/linndrum.jpg" style="width:100%;border-radius:8px;background:#fff;padding:10px;"></div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- M6: CONTROLADORES MIDI ──────────────── -->
-<section id="m6">
-  <div class="tag t-cc">Módulo 06</div>
-  <h2>🎹 Controladores MIDI</h2>
-  <p class="sub">El puente entre el músico y el software.</p>
-  <div class="split">
-
-    <div class="panel">
-      <h3>Mensajes de Nota (Note On / Off)</h3>
-      <p style="color:var(--muted);margin-bottom:1.5rem">Toca las teclas — mantén presionado.</p>
-      <div id="pianoMount"></div>
       
-      <!-- Teclado de computadora QWERTY -->
-      <div class="qwerty-wrap">
-        <h4 style="font-size:1rem; text-align:center; margin-bottom:0.5rem">Activa el Teclado de tu compu con <kbd style="background:#000;color:#fff;padding:2px 6px;border-radius:4px">M</kbd></h4>
-        <div class="qwerty-row">
-          <div class="qk qk-gray"><div class="qk-top">Q</div></div>
-          <div class="qk qk-orange"><div class="qk-top">W</div><span>C#</span></div>
-          <div class="qk qk-orange"><div class="qk-top">E</div><span>D#</span></div>
-          <div class="qk qk-gray"><div class="qk-top">R</div></div>
-          <div class="qk qk-orange"><div class="qk-top">T</div><span>F#</span></div>
-          <div class="qk qk-orange"><div class="qk-top">Y</div><span>G#</span></div>
-          <div class="qk qk-orange"><div class="qk-top">U</div><span>A#</span></div>
-          <div class="qk qk-gray"><div class="qk-top">I</div></div>
-          <div class="qk qk-orange"><div class="qk-top">O</div><span>C#</span></div>
-          <div class="qk qk-gray"><div class="qk-top">P</div></div>
+      <!-- Vista Principal (Center/Right) -->
+      <div class="ui-zone" data-desc="<b>Vista Principal (Sesión/Arreglo):</b> El lienzo principal donde arrastras tus clips, grabas audio y organizas tus pistas (canales). Usa la tecla TAB para alternar entre vertical y horizontal." style="flex:1; background:#2a2a2a; display:flex; gap:10px; padding:1rem">
+        <!-- Pistas simuladas -->
+        <div style="flex:1; background:#444; border-radius:6px; display:flex; flex-direction:column; gap:5px; padding:5px">
+           <div style="width:100%; height:30px; background:var(--audio); border-radius:4px"></div>
+           <div style="width:100%; height:30px; background:var(--audio); border-radius:4px"></div>
         </div>
-        <div class="qwerty-row" style="margin-left:20px;">
-          <div class="qk qk-orange"><div class="qk-top">A</div><span>C</span></div>
-          <div class="qk qk-orange"><div class="qk-top">S</div><span>D</span></div>
-          <div class="qk qk-orange"><div class="qk-top">D</div><span>E</span></div>
-          <div class="qk qk-orange"><div class="qk-top">F</div><span>F</span></div>
-          <div class="qk qk-orange"><div class="qk-top">G</div><span>G</span></div>
-          <div class="qk qk-orange"><div class="qk-top">H</div><span>A</span></div>
-          <div class="qk qk-orange"><div class="qk-top">J</div><span>B</span></div>
-          <div class="qk qk-orange"><div class="qk-top">K</div><span>C</span></div>
-          <div class="qk qk-orange"><div class="qk-top">L</div><span>D</span></div>
+        <div style="flex:1; background:#444; border-radius:6px; display:flex; flex-direction:column; gap:5px; padding:5px">
+           <div style="width:100%; height:30px; background:var(--midi); border-radius:4px"></div>
         </div>
-        <div class="qwerty-row" style="margin-top:10px; padding-left:10px; position:relative;">
-          <div style="position:relative; display:flex; gap:8px;">
-            <div class="qk qk-blue"><div class="qk-top">Z</div><span class="qk-arrow">▼</span></div>
-            <div class="qk qk-blue"><div class="qk-top">X</div><span class="qk-arrow">▲</span></div>
-            <div style="position:absolute; bottom:-25px; width:100%; text-align:center; font-size:0.8rem; font-weight:800; letter-spacing:1px;">OCTAVE</div>
-          </div>
-          
-          <div style="position:relative; display:flex; gap:8px; margin-left:5px;">
-            <div class="qk qk-red"><div class="qk-top">C</div><span class="qk-arrow">▼</span></div>
-            <div class="qk qk-red"><div class="qk-top">V</div><span class="qk-arrow">▲</span></div>
-            <div style="position:absolute; bottom:-25px; width:100%; text-align:center; font-size:0.8rem; font-weight:800; letter-spacing:1px;">VELOCITY</div>
-          </div>
-          
-          <div class="qk qk-gray" style="margin-left:5px;"><div class="qk-top">B</div></div>
-          <div class="qk qk-gray"><div class="qk-top">N</div></div>
-          <div class="qk qk-gray"><div class="qk-top">M</div></div>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="panel">
-      <h3 class="t-cc">Mensajes CC (Control Change)</h3>
-      <p style="color:var(--muted);margin-bottom:1.5rem">Arrastra la perilla hacia arriba/abajo.</p>
-      <div class="knob-wrap">
-        <div class="cc-num" id="ccNum">64</div>
-        <svg id="ccKnob" width="190" height="190" viewBox="0 0 190 190">
-          <circle cx="95" cy="95" r="80" fill="#E5E7EB" stroke="#D1D5DB" stroke-width="4"/>
-          <path id="ccArc" fill="none" stroke="#8800DD" stroke-width="14" stroke-linecap="round"/>
-          <circle cx="95" cy="95" r="40" fill="#6B7280"/>
-          <circle cx="95" cy="95" r="34" fill="#4B5563"/>
-          <line id="ccLine" x1="95" y1="95" x2="95" y2="24" stroke="#fff" stroke-width="8" stroke-linecap="round"/>
-        </svg>
-        <p style="font-size:1rem;color:var(--muted)">Valor CC: 0 – 127</p>
-      </div>
-      <div class="analogy" style="border-left-color:var(--cc)">
-        <strong>🕹 Como el Joystick del control.</strong><br>
-        Movimiento suave y continuo del 0 al 127. Ideal para filtros, volumen, etc.
       </div>
     </div>
+    
+    <!-- Vista de Detalles (Bottom) -->
+    <div class="ui-zone" data-desc="<b>Vista de Detalles (Dispositivos / Clip):</b> Si haces doble clic en un clip o instrumento, esta zona inferior se abre. Aquí es donde modificas los parámetros de tus efectos o editas el Piano Roll de un MIDI." style="height:150px; border-top:2px solid #222; background:#333; display:flex; padding:1rem; gap:1rem">
+      <div style="width:120px; height:100%; border:2px solid #444; border-radius:6px; background:#2a2a2a"></div>
+      <div style="width:120px; height:100%; border:2px solid #444; border-radius:6px; background:#2a2a2a"></div>
+      <div style="width:120px; height:100%; border:2px solid #444; border-radius:6px; background:#2a2a2a"></div>
+    </div>
 
+    <!-- Info Box emergente -->
+    <div id="ui-info-box" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); background:rgba(0,0,0,0.9); color:#fff; padding:2rem; border-radius:12px; border:2px solid var(--play); font-size:1.3rem; max-width:600px; text-align:center; opacity:0; pointer-events:none; transition:opacity 0.2s">
+      Pasa el cursor sobre un área...
+    </div>
   </div>
-</section>
 
-<!-- ═══════════════════════════════════
-     JAVASCRIPT
-═══════════════════════════════════ -->
+  <style>
+    .ui-zone { transition:background 0.2s, filter 0.2s; cursor:crosshair; }
+    .ui-zone:hover { filter:brightness(1.5); box-shadow:inset 0 0 0 3px var(--play); z-index:10; }
+  </style>
 
-<!-- MÓDULO FINAL: RESUMEN Y TEST -->
-<section id="m-final" style="background:#111; color:#fff">
-  <div class="tag" style="background:var(--cc); color:#fff">Módulo Final</div>
-  <h2 style="color:#fff">Resumen de Conceptos</h2>
-  <p class="sub" style="color:#aaa">Conceptos, Atajos de Teclado y Referencias.</p>
   
-  <div class="split" style="margin-bottom:3rem">
-    <div class="panel" style="background:#222; border-color:#333; color:#fff">
-      <h3 style="color:var(--audio); margin-bottom:1rem">🧠 Resumen de Conceptos por Clase</h3>
-      <ul style="margin-left:1.5rem; line-height:1.8; font-size:1.1rem; color:#ddd" id="res-conceptos">
-      </ul>
+<!-- MÓDULO FINAL ESTANDARIZADO -->
+
+<div class="m-final">
+  <div class="tag">Módulo Final</div>
+  <h2>Resumen de Conceptos</h2>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:3rem;">
+    <div>
+      <h3>📚 Conceptos Clave</h3>
+      <ul><li><span>✅</span> <span>El Audio Analógico viaja como electricidad por cables; el Audio Digital es procesado en números por la computadora.</span></li><li><span>✅</span> <span>El MIDI no contiene sonido, solo instrucciones de interpretación (Nota, Duración, Velocidad).</span></li><li><span>✅</span> <span>La Latencia es el retraso entre que tocas una tecla y escuchas el sonido, dependiente del Buffer Size.</span></li></ul>
     </div>
-    <div class="panel" style="background:#222; border-color:#333; color:#fff">
-      <h3 style="color:var(--play); margin-bottom:1rem">⌨️ Shortcuts de Teclado</h3>
-      <ul style="margin-left:1.5rem; line-height:1.8; font-size:1.1rem; color:#ddd" id="res-shortcuts">
-      </ul>
+    <div>
+      <h3>⌨️ Shortcuts Aprendidos</h3>
+      <ul><li><strong>Tab (⇥)</strong> <span>Alterna entre la Vista de Sesión y la Vista de Arreglo.</span></li></ul>
     </div>
   </div>
   
-  <div class="panel" style="background:#222; border-color:#333; color:#fff; margin-bottom:4rem">
-    <h3 style="color:var(--warp-accent); margin-bottom:1rem">📚 Bibliografía Sugerida y Concepto</h3>
-    <p id="res-ref" style="font-size:1.1rem; line-height:1.6; color:#ddd; margin-top:1rem"></p>
+  <h3 style="margin-top:4rem; font-size:2rem; text-align:center; border:none">🧠 Evaluador Interactivo</h3>
+  <div class="quiz-app" id="quiz-app-1">
+    <div class="q-progress" id="q-progress-1">Pregunta 1 de 5</div>
+    <div class="q-text" id="q-text-1"></div>
+    <div id="q-opts-1"></div>
+    <button class="q-next" id="q-next-1" onclick="nextQuestion_1()">Siguiente Pregunta ➔</button>
   </div>
-
-  <h2 style="text-align:center; color:#fff; margin-bottom:2rem">Test Interactivo</h2>
-  <div class="panel" style="background:#1a1a1a; border:color:var(--cc); border-width:3px; border-style:solid; max-width:800px; margin:0 auto; text-align:center">
-    <div style="font-size:1rem; color:var(--muted); margin-bottom:1rem" id="quiz-progress">Pregunta 1 de 3</div>
-    <h3 id="quiz-q" style="font-size:1.5rem; margin-bottom:2rem; color:#fff">Cargando pregunta...</h3>
-    <div id="quiz-opts" style="display:flex; flex-direction:column; gap:1rem; align-items:center; width:100%">
-    </div>
-    <div id="quiz-feedback" style="margin-top:2rem; font-weight:bold; font-size:1.2rem; min-height:2rem"></div>
+  
+  <div style="margin-top: 2rem; border-top: 1px solid #333; padding-top: 2rem; text-align:center;">
+    <h3>📖 Bibliografía y Recursos</h3>
+    <ul style="list-style:none; padding:0; margin-top:1rem; line-height:2;">
+      <li><a href="anexo-glosario.html" style="color:var(--audio); text-decoration:none;">➔ Consultar el Glosario Oficial</a></li>
+      <li><a href="examen-final.html" style="color:var(--play); text-decoration:none; font-weight:bold; font-size:1.2rem;">➔ Ir al GRAN EXAMEN FINAL</a></li>
+    </ul>
   </div>
-</section>
+</div>
 
 <script>
-const classData = {
-      conceptos: [
-        "<b>Audio vs MIDI:</b> El Audio es sonido real grabado. El MIDI son instrucciones (notas, velocidad).",
-        "<b>Vista Sesión vs Arreglo:</b> Sesión (Vertical) para improvisar loops. Arreglo (Horizontal) para estructurar canciones.",
-        "<b>Ruteo:</b> Las señales analógicas (Mic, Guitarra) necesitan una Interfaz de Audio para entrar a la computadora."
-      ],
-      shortcuts: [
-        "<b>TAB:</b> Cambia entre Vista Sesión y Vista Arreglo.",
-        "<b>Barra Espaciadora:</b> Reproducir / Pausar."
-      ],
-      referencia: "<b>Kraftwerk - The Robots:</b> Pioneros en el uso de secuenciadores y sintetizadores. Su música es un excelente ejemplo de estructuración de patrones MIDI y Audio en su forma más pura.",
-      quiz: [
-        { q: "¿Qué viaja a través de un cable MIDI?", opts: ["Audio Analógico", "Audio Digital", "Instrucciones de Notas y Velocidad", "Electricidad para bocinas"], ans: 2 },
-        { q: "¿Para qué sirve la Vista Sesión (la vertical)?", opts: ["Para masterizar la pista", "Para improvisar y lanzar loops", "Para editar vocales", "Para escribir partituras"], ans: 1 },
-        { q: "Si quieres grabar un micrófono XLR a tu computadora, ¿qué necesitas en medio?", opts: ["Un teclado MIDI", "Una Interfaz de Audio", "Un amplificador de guitarra", "Solo un adaptador USB"], ans: 1 }
-      ]
-    };
-
-// --- LOGICA TEST INTERACTIVO ---
-let currentQ = 0;
-function initQuiz() {
-  document.getElementById('res-conceptos').innerHTML = classData.conceptos.map(c => `<li>${c}</li>`).join('');
-  document.getElementById('res-shortcuts').innerHTML = classData.shortcuts.map(s => `<li>${s}</li>`).join('');
-  document.getElementById('res-ref').innerHTML = classData.referencia;
-  loadQuestion();
-}
-
-function loadQuestion() {
-  if (currentQ >= classData.quiz.length) {
-    document.getElementById('quiz-progress').textContent = "¡Test Completado!";
-    document.getElementById('quiz-q').textContent = "🎉 Has terminado el repaso de esta clase.";
-    document.getElementById('quiz-opts').innerHTML = "<button class='btn btn-play' onclick='currentQ=0;loadQuestion()'>🔄 Repetir Test</button>";
-    document.getElementById('quiz-feedback').textContent = "";
-    return;
-  }
-  const q = classData.quiz[currentQ];
-  document.getElementById('quiz-progress').textContent = `Pregunta ${currentQ + 1} de ${classData.quiz.length}`;
-  document.getElementById('quiz-q').textContent = q.q;
-  document.getElementById('quiz-opts').innerHTML = q.opts.map((opt, i) => 
-    `<button class="btn btn-outline" style="width:100%; max-width:500px; color:#fff; border-color:#555" onclick="checkAnswer(${i})">${opt}</button>`
-  ).join('');
-  document.getElementById('quiz-feedback').textContent = "";
-}
-
-function checkAnswer(idx) {
-  const q = classData.quiz[currentQ];
-  const btns = document.getElementById('quiz-opts').querySelectorAll('button');
-  if (idx === q.ans) {
-    btns[idx].style.background = "var(--play)";
-    btns[idx].style.borderColor = "var(--play)";
-    document.getElementById('quiz-feedback').innerHTML = "✅ ¡Correcto!";
-    document.getElementById('quiz-feedback').style.color = "var(--play)";
-    setTimeout(() => { currentQ++; loadQuestion(); }, 1500);
-  } else {
-    btns[idx].style.background = "var(--danger)";
-    btns[idx].style.borderColor = "var(--danger)";
-    document.getElementById('quiz-feedback').innerHTML = "❌ Incorrecto. Intenta de nuevo.";
-    document.getElementById('quiz-feedback').style.color = "var(--danger)";
-  }
-}
-window.addEventListener('DOMContentLoaded', initQuiz);
-
-
-/* ─── AudioContext ─────────────────────── */
-let actx = null;
-function getAC() {
-  if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
-  if (actx.state === 'suspended') actx.resume();
-  return actx;
-}
-
-/* ─── Toast ────────────────────────────── */
-function msg(text, bg, fg) {
-  const t = document.getElementById('toast');
-  t.innerHTML = text;
-  t.style.background = bg || '#000';
-  t.style.color = fg || '#fff';
-  t.classList.add('show');
-  clearTimeout(window._tt);
-  window._tt = setTimeout(() => t.classList.remove('show'), 4500);
-}
-
-/* ═══════════════════════════════════════════════════
-   M1 — AUDIO
-═══════════════════════════════════════════════════ */
-let bellBuffer    = null;   
-let bellSrcNode   = null;   
-let audioFlt      = null;   
-let audioAn       = null;   
-let dataArr       = null;   
-let audPlaying    = false;
-let eqIdx         = 0;
-let wColor        = '#0055FF';
-
-const EQ_MODES = [
-  {name:'Original',            color:'#0055FF', type:'allpass',  freq:null },
-  {name:'Lowpass — Opaco',     color:'#9900FF', type:'lowpass',  freq:400  },
-  {name:'Highpass — Brillante',color:'#FF0055', type:'highpass', freq:3000 },
-];
-
-function loadBellWav() {
-  const statusEl = document.getElementById('audioStatus');
-  return new Promise(resolve => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', '../assets/bell.wav', true);
-    xhr.responseType = 'arraybuffer';
-    xhr.onload = function() {
-      if (xhr.status === 200 || xhr.status === 0) {
-        const ac = getAC();
-        ac.decodeAudioData(
-          xhr.response,
-          function(decoded) {
-            bellBuffer = decoded;
-            statusEl.textContent = 'bell.wav listo (' + decoded.duration.toFixed(1) + 's)';
-            statusEl.style.color = 'var(--play)';
-            resolve(true);
-          },
-          function() {
-            statusEl.textContent = 'No se pudo decodificar bell.wav — usando sonido sintético';
-            statusEl.style.color = 'var(--danger)';
-            bellBuffer = generateSyntheticBell(getAC());
-            resolve(false);
-          }
-        );
-      } else {
-        statusEl.textContent = 'bell.wav no encontrado — usando sonido sintético';
-        statusEl.style.color = 'var(--muted)';
-        bellBuffer = generateSyntheticBell(getAC());
-        resolve(false);
-      }
-    };
-    xhr.onerror = function() {
-      statusEl.textContent = 'Modo sin archivo — usando campana sintética';
-      statusEl.style.color = 'var(--muted)';
-      bellBuffer = generateSyntheticBell(getAC());
-      resolve(false);
-    };
-    xhr.send();
-  });
-}
-
-function generateSyntheticBell(ac) {
-  const sr  = ac.sampleRate;
-  const dur = 3.0;
-  const buf = ac.createBuffer(1, sr * dur, sr);
-  const d   = buf.getChannelData(0);
-  for (let i = 0; i < d.length; i++) {
-    const t = i / sr;
-    d[i] = (
-      Math.sin(2 * Math.PI * 440  * t) * Math.exp(-2.5 * t) * 0.55 +
-      Math.sin(2 * Math.PI * 880  * t) * Math.exp(-4.5 * t) * 0.30 +
-      Math.sin(2 * Math.PI * 1320 * t) * Math.exp(-8   * t) * 0.10 +
-      Math.sin(2 * Math.PI * 1760 * t) * Math.exp(-12  * t) * 0.05
-    );
-  }
-  return buf;
-}
-
-function startAudioPipeline() {
-  const ac = getAC();
-  audioFlt = ac.createBiquadFilter();
-  audioAn  = ac.createAnalyser();
-  audioAn.fftSize = 1024;
-  dataArr = new Uint8Array(audioAn.frequencyBinCount);
-  bellSrcNode = ac.createBufferSource();
-  bellSrcNode.buffer = bellBuffer;
-  bellSrcNode.loop   = true;
-  bellSrcNode.connect(audioFlt);
-  audioFlt.connect(audioAn);
-  audioAn.connect(ac.destination);
-  applyEQ();
-  bellSrcNode.start();
-}
-
-function stopAudioPipeline() {
-  if (!bellSrcNode) return;
-  try { bellSrcNode.stop(); } catch(e) {}
-  bellSrcNode = null;
-  audioFlt    = null;
-  audioAn     = null;
-  dataArr     = null;
-}
-
-function applyEQ() {
-  if (!audioFlt) return;
-  const m = EQ_MODES[eqIdx];
-  audioFlt.type = m.type;
-  if (m.freq !== null) audioFlt.frequency.value = m.freq;
-  wColor = m.color;
-}
-
-function toggleAudio() {
-  const btn = document.getElementById('btnAudio');
-  if (audPlaying) {
-    stopAudioPipeline();
-    audPlaying = false;
-    btn.textContent = '▶ Play Audio';
-    btn.style.background = 'var(--audio)';
-  } else {
-    if (!bellBuffer) {
-      btn.textContent = '⏳ Cargando…';
-      loadBellWav().then(() => {
-        startAudioPipeline();
-        audPlaying = true;
-        btn.textContent = '⏹ Stop Audio';
-        btn.style.background = 'var(--danger)';
-        msg('🔊 Reproduciendo audio en loop.', 'var(--audio)');
-      });
-    } else {
-      startAudioPipeline();
-      audPlaying = true;
-      btn.textContent = '⏹ Stop Audio';
-      btn.style.background = 'var(--danger)';
-      msg('🔊 Reproduciendo audio en loop.', 'var(--audio)');
+  const qData_1 = [{"q":"¿Qué transmite el protocolo MIDI?","opts":["Audio en alta calidad","Instrucciones de interpretación (notas, velocidad) sin sonido","Electricidad analógica","Ruido de fondo"],"ans":1},{"q":"¿Qué hace una Interfaz de Audio?","opts":["Aumenta los graves","Convierte la señal analógica del micrófono a digital (USB) y viceversa","Genera sonidos MIDI","Graba video"],"ans":1},{"q":"Si tienes mucha Latencia (retraso) al tocar tu teclado MIDI, debes:","opts":["Comprar un teclado nuevo","Reducir el Buffer Size en las preferencias de Audio","Aumentar el volumen master","Usar cable de oro"],"ans":1},{"q":"¿Para qué sirve el botón 'OVR' (Overdub) en el transporte de Ableton?","opts":["Para borrar audio","Para grabar notas MIDI sobre un clip existente sin borrar las anteriores","Para hacer la canción más rápida","Para subir el master"],"ans":1},{"q":"¿Qué es un Drum Rack?","opts":["Un sintetizador","Un rack de 128 pads donde mapeas samples de batería a teclas MIDI","Un micrófono","Un metrónomo"],"ans":1}];
+  let curQ_1 = 0; let score_1 = 0;
+  function renderQ_1() {
+    if(curQ_1 >= qData_1.length) {
+      let p = Math.round((score_1 / qData_1.length) * 100);
+      let msg = p === 100 ? '¡Perfecto!' : (p >= 60 ? '¡Bien hecho!' : 'Repasa la lección.');
+      if (p >= 60) localStorage.setItem('ableton101_c1', score_1);
+      document.getElementById('quiz-app-1').innerHTML = '<div style="text-align:center"><div style="font-size:4rem;margin-bottom:1rem">' + (p>=60?'🏆':'📉') + '</div><h3 style="color:#fff;font-size:2rem;margin-bottom:1rem">Tu Score: ' + score_1 + ' / ' + qData_1.length + ' (' + p + '%)</h3><p style="color:#aaa;font-size:1.2rem">' + msg + '</p></div>';
+      return;
     }
+    let q = qData_1[curQ_1];
+    document.getElementById('q-progress-1').textContent = 'Pregunta ' + (curQ_1+1) + ' de ' + qData_1.length;
+    document.getElementById('q-text-1').textContent = q.q;
+    let optsHTML = '';
+    q.opts.forEach((opt, idx) => { optsHTML += '<button class="q-opt" onclick="checkQ_1(' + idx + ', ' + q.ans + ', this)">' + opt + '</button>'; });
+    document.getElementById('q-opts-1').innerHTML = optsHTML;
+    document.getElementById('q-next-1').style.display = 'none';
   }
-}
-
-function cycleEQ() {
-  eqIdx = (eqIdx + 1) % EQ_MODES.length;
-  applyEQ();
-  const name = EQ_MODES[eqIdx].name;
-  document.getElementById('btnEQ').textContent = '🎨 EQ: ' + name;
-  msg('🎨 <b>' + name + '</b> — el archivo no cambia, solo su color sonoro.', 'var(--audio)');
-}
-
-const wCanvas = document.getElementById('waveCanvas');
-const wCtx    = wCanvas.getContext('2d');
-let fakePh = 0;
-(function waveLoop() {
-  const W = wCanvas.width  = wCanvas.offsetWidth;
-  const H = wCanvas.height = wCanvas.offsetHeight;
-  wCtx.clearRect(0, 0, W, H);
-  wCtx.beginPath();
-  wCtx.strokeStyle = wColor;
-  wCtx.lineWidth   = 4;
-  if (audPlaying && audioAn && dataArr) {
-    audioAn.getByteTimeDomainData(dataArr);
-    const sw = W / dataArr.length;
-    for (let i = 0; i < dataArr.length; i++) {
-      const y = (dataArr[i] / 128) * (H / 2);
-      i === 0 ? wCtx.moveTo(0, y) : wCtx.lineTo(i * sw, y);
-    }
-  } else {
-    for (let x = 0; x < W; x++) {
-      const y = H / 2 + Math.sin(x * 0.012 + fakePh) * 10;
-      x === 0 ? wCtx.moveTo(x, y) : wCtx.lineTo(x, y);
-    }
-    fakePh += 0.025;
+  function checkQ_1(sIdx, cIdx, btn) {
+    const btns = document.getElementById('q-opts-1').querySelectorAll('.q-opt');
+    btns.forEach(b => { b.disabled = true; b.style.opacity = '0.7'; });
+    btn.style.opacity = '1';
+    if(sIdx === cIdx) { btn.classList.add('correct'); score_1++; } 
+    else { btn.classList.add('wrong'); btns[cIdx].classList.add('correct'); btns[cIdx].style.opacity = '1'; }
+    document.getElementById('q-next-1').style.display = 'block';
   }
-  wCtx.stroke();
-  requestAnimationFrame(waveLoop);
-})();
-
-const midiViz   = document.getElementById('midiViz');
-const midiNodes = [];
-[25,60,40,80,30,70,45,90,35,65,50,85,28,75,55].forEach((h, i) => {
-  const d = document.createElement('div');
-  d.className = 'mnote';
-  d.style.height = h + '%';
-  d.style.background = i % 2 === 0 ? 'var(--midi)' : '#FF7722';
-  midiViz.appendChild(d);
-  midiNodes.push(d);
-});
-
-let melodyBusy = false;
-function playMelody(type, name) {
-  if (melodyBusy) return;
-  melodyBusy = true;
-  const ac     = getAC();
-  const notes  = [261.63, 329.63, 392.00, 493.88, 523.25, 659.25, 523.25, 392.00];
-  const dur    = 0.18;
-  const t0     = ac.currentTime + 0.05;
-  notes.forEach((freq, i) => {
-    const o = ac.createOscillator(), g = ac.createGain();
-    o.type = type; o.frequency.value = freq;
-    g.gain.setValueAtTime(0, t0 + i * dur);
-    g.gain.linearRampToValueAtTime(0.2, t0 + i * dur + 0.02);
-    g.gain.exponentialRampToValueAtTime(0.001, t0 + i * dur + dur * 0.9);
-    o.connect(g); g.connect(ac.destination);
-    o.start(t0 + i * dur); o.stop(t0 + i * dur + dur);
-    setTimeout(() => {
-      const vi = (i * 2) % midiNodes.length;
-      [midiNodes[vi], midiNodes[vi + 1]].forEach(n => n && n.classList.add('lit'));
-      setTimeout(() => {
-        [midiNodes[vi], midiNodes[vi + 1]].forEach(n => n && n.classList.remove('lit'));
-      }, dur * 1000);
-    }, (t0 - ac.currentTime + i * dur) * 1000);
-  });
-  msg('🎵 Melodía con <b>' + name + '</b> — mismas notas, diferente timbre.', 'var(--midi)');
-  setTimeout(() => { melodyBusy = false; }, (notes.length * dur + 0.4) * 1000);
-}
-
-/* ═══════════════════════════════════════════════════
-   M2 — TAB
-═══════════════════════════════════════════════════ */
-let tabMode = false;
-function pressTab() {
-  tabMode = !tabMode;
-  const daw  = document.getElementById('dawWindow');
-  const lbl  = document.getElementById('modeLabel');
-  const btn  = document.getElementById('tabBtn');
-  const tit  = document.getElementById('dawTitle');
-
-  if (tabMode) {
-    daw.classList.remove('state-session');
-    daw.classList.add('state-arrangement');
-    lbl.textContent = '🟢 Vista de Arreglo (Línea de tiempo)';
-    lbl.style.color = 'var(--play)';
-    btn.textContent = '[ TAB ] Volver a Sesión';
-    tit.textContent = 'VISTA ARREGLO';
-  } else {
-    daw.classList.remove('state-arrangement');
-    daw.classList.add('state-session');
-    lbl.textContent = '🟠 Vista de Sesión (Columnas)';
-    lbl.style.color = 'var(--midi)';
-    btn.textContent = '[ TAB ] Cambiar Vista';
-    tit.textContent = 'VISTA SESIÓN';
-  }
-}
-
-/* ═══════════════════════════════════════════════════
-   M3 — RUTEO (SVG dinámico + Validación de Hardware)
-═══════════════════════════════════════════════════ */
-const NODE_INFO = {
-  'mic':     { title:'🎤 Micrófono XLR', color:'ra', text:'Señal analógica profesional. Necesita preamplificador y conversión analógica-digital.' },
-  'mic-int': { title:'💻 Mic Integrado', color:'ra', text:'El micrófono integrado de tu computadora. Ya está conectado directamente a la Tarjeta Interna.' },
-  'guitar':  { title:'🎸 Guitarra',  color:'ra', text:'Señal de instrumento. Conecta a una entrada "INST" de una interfaz externa.' },
-  'kb':      { title:'🎹 Teclado MIDI', color:'rm', text:'¡El MIDI no es audio! Solo son datos informáticos (Notas, Velocity). Va por USB.' },
-  'ext':     { title:'🎛️ Interfaz Externa (In)', color:'ra', text:'Toma la señal analógica, la amplifica y la convierte a números (Digital) para la PC.' },
-  'int':     { title:'🖥️ Tarjeta Interna (In)',  color:'ra', text:'El chip de audio de tu computadora. Solo recibe el Micrófono Integrado o un puerto de micrófono de consumidor.' },
-  'abl':     { title:'💻 Ableton Live', color:'rcore', text:'El cerebro central. Aquí grabas, aplicas efectos y produces.' },
-  'out-ext': { title:'🎛️ Interfaz Externa (Out)', color:'ro', text:'Ableton manda números, la interfaz los convierte de regreso a electricidad (Analógico) para las bocinas.' },
-  'out-int': { title:'🖥️ Tarjeta Interna (Out)', color:'ro', text:'Salida de audífonos (minijack) de tu computadora.' },
-  'spk':     { title:'🔊 Bocinas',    color:'ro', text:'Monitores de estudio. Si usas Interfaz Externa, van conectados por cables TRS/XLR.' },
-  'head':    { title:'🎧 Audífonos', color:'ro', text:'Monitoreo directo a tus oídos.' },
-};
-
-let activeSrc = null, activeIfaceIn = null, activeDaw = null, activeIfaceOut = null;
-
-function connectNode(key) {
-  const ac = getAC();
-  const inf = NODE_INFO[key];
-  const el = document.getElementById('n-' + key);
-  
-  document.getElementById('rInfoTitle').textContent = inf.title;
-  document.getElementById('rInfoText').textContent = inf.text;
-  document.getElementById('rInfo').classList.add('show');
-
-  // CLICK EN FUENTE
-  if (['mic','mic-int','guitar','kb'].includes(key)) {
-    resetRouting(); // Restart if user clicks a new source
-    activeSrc = key;
-    el.classList.add(key==='kb' ? 'rm' : 'ra');
-    beep(ac, 440, key==='kb'?'square':'sine');
-    
-    if (key === 'kb') {
-      msg('Teclado MIDI seleccionado. ¿A dónde se conecta físicamente? (Haz clic en el siguiente paso)', 'var(--midi)');
-    } else {
-      msg('Fuente de audio seleccionada. ¿A qué interfaz debe conectarse?', 'var(--audio)');
-    }
-  } 
-  
-  // CLICK EN INTERFAZ DE ENTRADA
-  else if (['ext','int'].includes(key)) {
-    if (!activeSrc) return msg('Primero selecciona una FUENTE (Columna 1).', 'var(--danger)');
-    if (activeSrc === 'kb') {
-      return msg('❌ ¡Incorrecto! El Teclado MIDI manda datos por USB, no necesita una interfaz de audio. Conéctalo directo al DAW.', 'var(--danger)');
-    }
-    if (key === 'int' && (activeSrc === 'mic' || activeSrc === 'guitar')) {
-      return msg('❌ ¡Error! Un micrófono profesional XLR o Guitarra no caben en la tarjeta interna.', 'var(--danger)');
-    }
-    if (key === 'ext' && activeSrc === 'mic-int') {
-      return msg('❌ ¡Error! El micrófono de tu laptop no se puede conectar a una interfaz externa.', 'var(--danger)');
-    }
-    
-    ['n-ext','n-int'].forEach(id => document.getElementById(id).classList.remove('ra'));
-    activeIfaceIn = key;
-    el.classList.add('ra');
-    drawLine('n-'+activeSrc, 'n-'+key, 'var(--audio)', 'l-src');
-    beep(ac, 523, 'sine');
-    msg('¡Correcto! Señal convertida a digital. ¿A dónde va ahora?', 'var(--audio)');
-  }
-  
-  // CLICK EN DAW (ABLETON)
-  else if (key === 'abl') {
-    if (!activeSrc) return msg('Comienza seleccionando una Fuente.', 'var(--danger)');
-    if (activeSrc === 'kb') {
-      activeDaw = key;
-      el.style.borderColor = 'var(--midi)';
-      drawLine('n-kb', 'n-abl', 'var(--midi)', 'l-kb');
-      beep(ac, 587, 'square');
-      return msg('✅ ¡Correcto! El MIDI entra directo por USB. Ahora envía la señal a una Interfaz de Salida.', 'var(--midi)');
-    }
-    if (!activeIfaceIn) {
-      return msg('❌ Falta un paso: El audio analógico debe pasar por una Interfaz primero.', 'var(--danger)');
-    }
-    activeDaw = key;
-    el.style.borderColor = 'var(--audio)';
-    drawLine('n-'+activeIfaceIn, 'n-abl', 'var(--audio)', 'l-in');
-    beep(ac, 659, 'sine');
-    msg('¡Audio procesándose en Ableton! Ahora envíalo a una Interfaz de Salida.', 'var(--play)');
-  }
-  
-  // CLICK EN INTERFAZ DE SALIDA
-  else if (['out-ext','out-int'].includes(key)) {
-    if (!activeDaw) return msg('Primero haz que la señal llegue a Ableton Live.', 'var(--danger)');
-    
-    ['n-out-ext','n-out-int'].forEach(id => document.getElementById(id).classList.remove('ro'));
-    activeIfaceOut = key;
-    el.classList.add('ro');
-    drawLine('n-abl', 'n-'+key, 'var(--play)', 'l-out');
-    document.getElementById('n-abl').style.borderColor = 'var(--text)'; // restore
-    beep(ac, 783, 'triangle');
-    msg('¡Señal digital convertida de regreso a analógica! Finalmente, elige Bocinas o Audífonos.', 'var(--play)');
-  }
-  
-  // CLICK EN SALIDA FINAL
-  else if (['spk','head'].includes(key)) {
-    if (!activeIfaceOut) return msg('Falta pasar por la Interfaz de Salida primero.', 'var(--danger)');
-    
-    ['n-spk','n-head'].forEach(id => document.getElementById(id).classList.remove('ro'));
-    el.classList.add('ro');
-    drawLine('n-'+activeIfaceOut, 'n-'+key, 'var(--play)', 'l-spk');
-    beep(ac, 880, 'triangle');
-    msg('✅ ¡Ruta completada con éxito! Has dominado el ruteo de señal.', 'var(--play)');
-  }
-}
-
-function resetRouting() {
-  ['n-mic','n-mic-int','n-guitar','n-kb','n-ext','n-int','n-abl','n-out-ext','n-out-int','n-spk','n-head'].forEach(id => {
-    const el = document.getElementById(id);
-    if(el) {
-      el.classList.remove('ra','rm','ro');
-      if(id === 'n-abl') el.style.borderColor = '';
-    }
-  });
-  ['l-src','l-in','l-kb','l-out','l-spk'].forEach(clearLine);
-  activeSrc = null; activeIfaceIn = null; activeDaw = null; activeIfaceOut = null;
-  document.getElementById('rInfo').classList.remove('show');
-}
-
-function clearLine(id) {
-  const existing = document.getElementById(id);
-  if (existing) existing.remove();
-}
-
-function drawLine(id1, id2, color, lineId) {
-  clearLine(lineId);
-  const el1 = document.getElementById(id1);
-  const el2 = document.getElementById(id2);
-  const svg = document.getElementById('routeSVG');
-  const w = svg.clientWidth, h = svg.clientHeight;
-  const wrapRect = document.getElementById('routeWrap').getBoundingClientRect();
-  const r1 = el1.getBoundingClientRect();
-  const r2 = el2.getBoundingClientRect();
-
-  const x1 = r1.left + r1.width/2 - wrapRect.left;
-  const y1 = r1.top + r1.height/2 - wrapRect.top;
-  const x2 = r2.left + r2.width/2 - wrapRect.left;
-  const y2 = r2.top + r2.height/2 - wrapRect.top;
-
-  const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-  line.setAttribute('id', lineId);
-  line.setAttribute('x1', x1); line.setAttribute('y1', y1);
-  line.setAttribute('x2', x2); line.setAttribute('y2', y2);
-  line.setAttribute('stroke', color);
-  line.setAttribute('stroke-width', '6');
-  line.setAttribute('stroke-dasharray', '12 8');
-  line.setAttribute('stroke-linecap', 'round');
-  
-  const length = Math.sqrt((x2-x1)**2 + (y2-y1)**2);
-  line.style.strokeDashoffset = length;
-  line.style.transition = 'stroke-dashoffset 0.5s ease-out';
-  svg.appendChild(line);
-  
-  // trigger animation
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      line.style.strokeDashoffset = '0';
-    });
-  });
-}
-
-/* ═══════════════════════════════════════════════════
-   M4 — SECUENCIADOR
-═══════════════════════════════════════════════════ */
-const seqGrid = document.getElementById('seqGrid');
-[{id:'kick',label:'🥁 Kick',cls:'kick'},{id:'snare',label:'🪘 Snare',cls:'snare'},{id:'hat',label:'🔔 Hi-Hat',cls:'hat'}]
-.forEach(ins => {
-  const lbl = document.createElement('div'); lbl.className='seq-lbl'; lbl.textContent=ins.label; seqGrid.appendChild(lbl);
-  for (let i=0;i<8;i++) {
-    const p = document.createElement('div'); p.className=`seq-pad ${ins.cls}`;
-    p.dataset.inst=ins.id; p.dataset.step=i; p.onclick=()=>p.classList.toggle('on'); seqGrid.appendChild(p);
-  }
-});
-let seqOn=false, seqSt=0, seqBPM=120, seqIv;
-function updateBPM(v) { seqBPM=+v; document.getElementById('bpmVal').textContent=v; if(seqOn){clearInterval(seqIv);seqIv=setInterval(seqTick,60000/seqBPM/2);} }
-function toggleSeq() {
-  getAC(); const btn=document.getElementById('btnSeq');
-  if (!seqOn) { seqOn=true; btn.textContent='⏹ STOP BEAT'; btn.style.background='var(--danger)'; seqIv=setInterval(seqTick,60000/seqBPM/2); }
-  else { seqOn=false; btn.textContent='▶ PLAY BEAT'; btn.style.background='var(--play)'; clearInterval(seqIv); document.querySelectorAll('.seq-pad').forEach(p=>p.classList.remove('playing')); seqSt=0; }
-}
-function seqTick() {
-  document.querySelectorAll('.seq-pad').forEach(p=>p.classList.remove('playing'));
-  document.querySelectorAll(`.seq-pad[data-step="${seqSt}"]`).forEach(p=>{ p.classList.add('playing'); if(p.classList.contains('on')) drumHit(p.dataset.inst); });
-  seqSt=(seqSt+1)%8;
-}
-function clearSeq() { document.querySelectorAll('.seq-pad').forEach(p=>p.classList.remove('on')); }
-function loadBeat() {
-  clearSeq();
-  [{i:'kick',s:0},{i:'kick',s:4},{i:'snare',s:2},{i:'snare',s:6},...Array.from({length:8},(_,s)=>({i:'hat',s}))]
-  .forEach(({i,s})=>{ document.querySelector(`.seq-pad[data-inst="${i}"][data-step="${s}"]`)?.classList.add('on'); });
-}
-function drumHit(t) {
-  const ac=getAC(), n=ac.currentTime;
-  if (t==='kick') {
-    const o=ac.createOscillator(),g=ac.createGain();
-    o.frequency.setValueAtTime(150,n); o.frequency.exponentialRampToValueAtTime(40,n+.1);
-    g.gain.setValueAtTime(1,n); g.gain.exponentialRampToValueAtTime(.001,n+.3);
-    o.connect(g); g.connect(ac.destination); o.start(n); o.stop(n+.3);
-  } else {
-    const sz=t==='snare'?.1:.04, buf=ac.createBuffer(1,ac.sampleRate*sz,ac.sampleRate), d=buf.getChannelData(0);
-    for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
-    const ns=ac.createBufferSource(); ns.buffer=buf;
-    const f=ac.createBiquadFilter(); f.type='highpass'; f.frequency.value=t==='snare'?1000:7000;
-    const g=ac.createGain(); g.gain.setValueAtTime(t==='snare'?1:.4,n); g.gain.exponentialRampToValueAtTime(.001,n+sz);
-    ns.connect(f); f.connect(g); g.connect(ac.destination); ns.start(n);
-  }
-}
-
-/* ═══════════════════════════════════════════════════
-   M5 — PIANO CSS
-═══════════════════════════════════════════════════ */
-const WKW=56,WKH=170,BKW=36,BKH=108,KG=4,KPL=14;
-const wKeys=[{note:'C4',freq:261.63},{note:'D4',freq:293.66},{note:'E4',freq:329.63},{note:'F4',freq:349.23},{note:'G4',freq:392.00},{note:'A4',freq:440.00},{note:'B4',freq:493.88}];
-const bKeys=[{note:'C#4',freq:277.18,after:0},{note:'D#4',freq:311.13,after:1},null,{note:'F#4',freq:369.99,after:3},{note:'G#4',freq:415.30,after:4},{note:'A#4',freq:466.16,after:5},null];
-const pianoMount=document.getElementById('pianoMount');
-const totalW=KPL+wKeys.length*(WKW+KG)-KG+KPL;
-const pianoOuter=document.createElement('div'); pianoOuter.className='piano-outer'; pianoOuter.style.width=totalW+'px'; pianoOuter.style.maxWidth='100%';
-const keysWrap=document.createElement('div'); keysWrap.className='piano-keys'; keysWrap.style.width=(totalW-KPL*2)+'px'; keysWrap.style.height=WKH+'px';
-
-const activeKeys = new Map();
-function pianoDown(freq,el) {
-  if(activeKeys.has(el)) return;
-  el.classList.add('on');
-  const ac=getAC(), o=ac.createOscillator(), g=ac.createGain();
-  o.type='triangle'; o.frequency.value=freq;
-  g.gain.setValueAtTime(0,ac.currentTime); g.gain.linearRampToValueAtTime(0.22,ac.currentTime+.01);
-  o.connect(g); g.connect(ac.destination); o.start();
-  activeKeys.set(el,{o,g});
-}
-function pianoUp(el) {
-  if(!activeKeys.has(el)) return;
-  el.classList.remove('on');
-  const {o,g}=activeKeys.get(el), ac=getAC();
-  g.gain.linearRampToValueAtTime(.001,ac.currentTime+.12);
-  o.stop(ac.currentTime+.13);
-  activeKeys.delete(el);
-}
-
-wKeys.forEach((k,i)=>{
-  const el=document.createElement('div'); el.className='wkey';
-  el.style.left=(i*(WKW+KG))+'px'; el.style.width=WKW+'px'; el.style.height=WKH+'px';
-  el.textContent=k.note;
-  el.addEventListener('mousedown',e=>{e.preventDefault();pianoDown(k.freq,el)});
-  el.addEventListener('mouseup',()=>pianoUp(el));
-  el.addEventListener('mouseleave',()=>pianoUp(el));
-  el.addEventListener('touchstart',e=>{e.preventDefault();pianoDown(k.freq,el)},{passive:false});
-  el.addEventListener('touchend',()=>pianoUp(el));
-  keysWrap.appendChild(el);
-});
-bKeys.forEach(k=>{
-  if(!k) return;
-  const el=document.createElement('div'); el.className='bkey';
-  el.style.left=((k.after+1)*(WKW+KG)-KG/2-BKW/2)+'px'; el.style.width=BKW+'px'; el.style.height=BKH+'px';
-  el.addEventListener('mousedown',e=>{e.preventDefault();pianoDown(k.freq,el)});
-  el.addEventListener('mouseup',()=>pianoUp(el));
-  el.addEventListener('mouseleave',()=>pianoUp(el));
-  el.addEventListener('touchstart',e=>{e.preventDefault();pianoDown(k.freq,el)},{passive:false});
-  el.addEventListener('touchend',()=>pianoUp(el));
-  keysWrap.appendChild(el);
-});
-
-const pianoBase=document.createElement('div'); pianoBase.className='piano-base'; pianoBase.style.width=totalW+'px';
-pianoOuter.appendChild(keysWrap); pianoMount.appendChild(pianoOuter); pianoMount.appendChild(pianoBase);
-
-/* ═══════════════════════════════════════════════════
-   M5 — CC KNOB SVG
-═══════════════════════════════════════════════════ */
-let ccVal=64, ccDrone=null, ccFilter=null, ccGain=null;
-const CX=95,CY=95,KR=71;
-const ccKnob=document.getElementById('ccKnob');
-const ccLine=document.getElementById('ccLine');
-const ccArc=document.getElementById('ccArc');
-const ccNum=document.getElementById('ccNum');
-
-function renderKnob(v) {
-  ccVal=Math.max(0,Math.min(127,Math.round(v)));
-  ccNum.textContent=ccVal;
-  const angleDeg=-135+(ccVal/127)*270;
-  const angleRad=(angleDeg-90)*Math.PI/180;
-  const lx=CX+KR*Math.cos(angleRad), ly=CY+KR*Math.sin(angleRad);
-  ccLine.setAttribute('x2',lx); ccLine.setAttribute('y2',ly);
-  const sRad=(-135-90)*Math.PI/180, sx=CX+KR*Math.cos(sRad), sy=CY+KR*Math.sin(sRad);
-  const sweep=angleDeg-(-135), large=sweep>180?1:0;
-  ccArc.setAttribute('d', ccVal>0 ? `M ${sx} ${sy} A ${KR} ${KR} 0 ${large} 1 ${lx} ${ly}` : '');
-  if(ccFilter) ccFilter.frequency.value=80+(ccVal/127)*5000;
-}
-
-let dragging=false, dY0=0, dV0=64;
-function dragStart(y) { dragging=true; dY0=y; dV0=ccVal; startDrone(); }
-function dragMove(y)  { if(!dragging) return; renderKnob(dV0+(dY0-y)); }
-function dragEnd()    { if(!dragging) return; dragging=false; stopDrone(); }
-
-ccKnob.addEventListener('mousedown',e=>{e.preventDefault();dragStart(e.clientY)});
-document.addEventListener('mousemove',e=>{if(dragging)dragMove(e.clientY)});
-document.addEventListener('mouseup',dragEnd);
-ccKnob.addEventListener('touchstart',e=>{e.preventDefault();dragStart(e.touches[0].clientY)},{passive:false});
-ccKnob.addEventListener('touchmove',e=>{e.preventDefault();dragMove(e.touches[0].clientY)},{passive:false});
-ccKnob.addEventListener('touchend',dragEnd);
-
-function startDrone() {
-  if(ccDrone) return;
-  const ac=getAC();
-  ccDrone=ac.createOscillator(); ccFilter=ac.createBiquadFilter(); ccGain=ac.createGain();
-  ccDrone.type='sawtooth'; ccDrone.frequency.value=65.41;
-  ccFilter.type='lowpass'; ccFilter.frequency.value=80+(ccVal/127)*5000; ccFilter.Q.value=7;
-  ccGain.gain.setValueAtTime(.22,ac.currentTime);
-  ccDrone.connect(ccFilter); ccFilter.connect(ccGain); ccGain.connect(ac.destination); ccDrone.start();
-}
-function stopDrone() {
-  if(!ccDrone) return;
-  const ac=getAC(), ref=ccDrone; ccDrone=null;
-  ccGain.gain.linearRampToValueAtTime(.001,ac.currentTime+.12);
-  setTimeout(()=>{try{ref.stop();}catch(e){}},150);
-}
-renderKnob(64);
-
-/* ─── Carga de bell.wav al inicio ─────── */
-function failAudioChange() {
-  msg('❌ ¡Error! El audio es un bloque grabado (fotografía). Para cambiar las notas, tendrías que volver a grabarlo.', 'var(--danger)');
-}
-
-let synthBusy = false;
-function playSynth(type) {
-  if (synthBusy) return;
-  synthBusy = true;
-  const ac = getAC();
-  const notes = [261.63, 311.13, 392.00, 523.25];
-  const dur = 0.15;
-  const t0 = ac.currentTime + 0.05;
-  notes.forEach((freq, i) => {
-    const o = ac.createOscillator(), g = ac.createGain();
-    o.type = type; o.frequency.value = freq;
-    g.gain.setValueAtTime(0, t0 + i * dur);
-    g.gain.linearRampToValueAtTime(0.2, t0 + i * dur + 0.02);
-    g.gain.exponentialRampToValueAtTime(0.001, t0 + i * dur + dur * 0.9);
-    o.connect(g); g.connect(ac.destination);
-    o.start(t0 + i * dur); o.stop(t0 + i * dur + dur);
-  });
-  let name = type === 'sine' ? 'Senoidal' : type === 'square' ? 'Cuadrada' : 'Sierra';
-  msg('〰️ Oscilador: Onda ' + name, '#FF0055');
-  setTimeout(() => { synthBusy = false; }, (notes.length * dur + 0.2) * 1000);
-}
-
-function popPad(el) {
-  el.style.transform = 'scale(0.85)';
-  setTimeout(() => el.style.transform = 'scale(1)', 100);
-}
-
-function showImg(id) {
-  const map = {moog: 'imgMoog', ms20: 'imgMs20', dx7: 'imgDx7', tr808: 'img808', mpc: 'imgMpc', linndrum: 'imgLinndrum'};
-  for (let k in map) {
-    const el = document.getElementById(map[k]);
-    if(el) {
-      el.style.display = (k === id && el.style.display === 'none') ? 'block' : 'none';
-    }
-  }
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-  loadBellWav();
-});
-
+  function nextQuestion_1() { curQ_1++; renderQ_1(); }
+  setTimeout(() => renderQ_1(), 100);
 </script>
-</body>
-</html>
+
+<script src="../js/tooltips.js"></script>
+<script>
+  function touchHandler(event) {
+    if(event.target.tagName !== 'CANVAS' && event.target.type !== 'range') return;
+    var touch = event.changedTouches[0];
+    var simulatedEvent = document.createEvent("MouseEvent");
+    simulatedEvent.initMouseEvent({ touchstart:"mousedown", touchmove:"mousemove", touchend:"mouseup" }[event.type], true, true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null);
+    touch.target.dispatchEvent(simulatedEvent);
+    if(event.target.tagName === 'CANVAS') event.preventDefault();
+  }
+  document.addEventListener("touchstart", touchHandler, {passive: false});
+  document.addEventListener("touchmove", touchHandler, {passive: false});
+  document.addEventListener("touchend", touchHandler, {passive: false});
+</script>
+<div style="position:fixed;bottom:15px;right:20px;font-size:0.9rem;opacity:0.35;z-index:9999;font-weight:700;">Creado por @laurorobles</div>
+</body></html>
