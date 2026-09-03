@@ -37,6 +37,9 @@
     
     .event-img { width:100%; border-radius:12px; margin-bottom:1rem; object-fit:cover; max-height:250px; background:#111; border:2px solid #eee; }
     
+    
+    .event-art { width:100%; height:200px; border-radius:12px; margin-bottom:1.5rem; display:flex; align-items:center; justify-content:center; font-size:5rem; text-shadow:0 10px 20px rgba(0,0,0,0.2); box-shadow:inset 0 0 0 2px rgba(255,255,255,0.1); }
+
     h3 { font-size:1.8rem; margin-top:1rem; margin-bottom:0.5rem; color:#111; line-height:1.1; }
     p.desc { color:var(--muted); font-size:1.1rem; }
     
@@ -56,11 +59,11 @@
     .btn-play:hover { filter:brightness(1.1); }
     
     /* Moog Sliders */
-    .slider-grid { display:flex; gap:10px; height:100px; align-items:flex-end; margin-bottom:1rem; }
-    .slider-col { flex:1; display:flex; flex-direction:column; align-items:center; gap:5px; }
-    .slider-track { width:8px; height:100%; background:#333; border-radius:4px; position:relative; cursor:pointer; }
-    .slider-fill { position:absolute; bottom:0; width:100%; background:var(--midi); border-radius:4px; pointer-events:none; }
-    .slider-handle { position:absolute; width:16px; height:8px; background:#fff; left:-4px; transform:translateY(50%); pointer-events:none; border-radius:2px; }
+    .slider-grid { display:flex; gap:15px; height:180px; margin-bottom:2rem; justify-content:center; align-items:stretch; }
+    .slider-col { flex:1; display:flex; justify-content:center; height:100%; }
+    .slider-track { width:100%; max-width:40px; height:100%; background:#222; border-radius:10px; position:relative; cursor:pointer; border:2px solid #444; }
+    .slider-fill { position:absolute; bottom:0; width:100%; background:var(--midi); border-radius:8px; pointer-events:none; }
+    .slider-handle { position:absolute; width:120%; height:16px; background:#fff; left:-10%; transform:translateY(50%); pointer-events:none; border-radius:4px; box-shadow:0 4px 10px rgba(0,0,0,0.8); }
     .slider-col.active .slider-track { box-shadow:0 0 10px var(--midi); background:#553311; }
     
     @media (max-width: 768px) {
@@ -97,7 +100,7 @@
     <div class="dot"></div>
     <div class="content">
       <div class="year">1800s</div>
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Barrel_organ.jpg/640px-Barrel_organ.jpg" class="event-img" alt="Organillo" onerror="this.style.display='none'">
+      <div class="event-art" style="background:linear-gradient(135deg, #8e9eab, #eef2f3);">🎼</div>
       <h3>Cajas Musicales y Pianolas</h3>
       <p class="desc">La Revolución Industrial trajo las tarjetas de cartón perforadas y los rollos de papel donde los agujeros representaban notas. Este método <strong>binario</strong> (agujero = ON, papel = OFF) sentó las bases lógicas de la informática y del lenguaje que usarían los secuenciadores modernos.</p>
     </div>
@@ -107,7 +110,7 @@
     <div class="dot"></div>
     <div class="content">
       <div class="year">1968</div>
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Moog_synthesizer.jpg/800px-Moog_synthesizer.jpg" class="event-img" alt="Moog 960" onerror="this.style.display='none'">
+      <div class="event-art" style="background:linear-gradient(135deg, #111, #333); border:2px solid #555;">🎛️</div>
       <h3>El Secuenciador Moog 960</h3>
       <p class="desc">Bob Moog introdujo el secuenciador por pasos controlado por voltaje (CV/Gate). Al ajustar perillas en una matriz analógica, los músicos podían programar bucles rítmicos y melódicos automáticos. Revolucionó el paisaje sonoro (Tangerine Dream, Kraftwerk, Giorgio Moroder).</p>
       
@@ -126,7 +129,7 @@
     <div class="dot"></div>
     <div class="content">
       <div class="year">1980</div>
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Roland_TR-808_drum_machine.jpg/800px-Roland_TR-808_drum_machine.jpg" class="event-img" alt="TR 808" onerror="this.style.display='none'">
+      <div class="event-art" style="background:linear-gradient(135deg, #222, #000); border:2px solid var(--kick);">🥁</div>
       <h3>Roland TR-808</h3>
       <p class="desc">La icónica caja de ritmos que introdujo la programación visual de 16 pasos con botones coloridos. Aunque inicialmente fracasó por "no sonar realista", su retumbante bombo sub-grave (Kick) y sus hi-hats robóticos definieron el Hip Hop, el Electro y el Trap moderno.</p>
       
@@ -145,7 +148,7 @@
     <div class="dot"></div>
     <div class="content">
       <div class="year">1981</div>
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Roland_TB-303.jpg/800px-Roland_TB-303.jpg" class="event-img" alt="TB 303" onerror="this.style.display='none'">
+      <div class="event-art" style="background:linear-gradient(135deg, #e0e0e0, #bdbdbd); border:2px solid #999;">🎹</div>
       <h3>TB-303 y el Acid House</h3>
       <p class="desc">Creada como acompañamiento de bajo para guitarristas, fue odiada y abandonada en casas de empeño. Años después, productores underground de Chicago la compraron barata, abusaron de sus perillas de Filtro y Resonancia al límite, e inventaron el <strong>Acid House</strong>.</p>
     </div>
@@ -155,7 +158,7 @@
     <div class="dot"></div>
     <div class="content">
       <div class="year">1983</div>
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/MIDI_cables.jpg/640px-MIDI_cables.jpg" class="event-img" alt="Cables MIDI" onerror="this.style.display='none'">
+      <div class="event-art" style="background:linear-gradient(135deg, #1cb5e0, #000046);">🔌</div>
       <h3>El Nacimiento del MIDI</h3>
       <p class="desc">Por primera vez, marcas rivales (Yamaha, Roland, Korg) acordaron un idioma universal: <strong>M</strong>usical <strong>I</strong>nstrument <strong>D</strong>igital <strong>I</strong>nterface. Un teclado ahora podía controlar a otro. El MIDI revolucionó los estudios al transmitir <em>datos de interpretación</em> en vez de sonido.</p>
     </div>
@@ -165,7 +168,7 @@
     <div class="dot"></div>
     <div class="content">
       <div class="year">1985+</div>
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Atari_1040STf_with_monitor_and_mouse.jpg/800px-Atari_1040STf_with_monitor_and_mouse.jpg" class="event-img" alt="Atari ST" onerror="this.style.display='none'">
+      <div class="event-art" style="background:linear-gradient(135deg, #4b6cb7, #182848);">🖥️</div>
       <h3>Atari ST y la Era del DAW</h3>
       <p class="desc">La computadora Atari ST incluyó puertos MIDI de fábrica, convirtiéndose en el cerebro de los estudios de los 90s. Corría los primeros secuenciadores de software (como Notator y Cubase) introduciendo el <strong>Piano Roll</strong>, la interfaz cuadriculada que usamos hasta el día de hoy.</p>
     </div>
@@ -175,7 +178,7 @@
     <div class="dot"></div>
     <div class="content">
       <div class="year">2001</div>
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Ableton_Live_logo.svg/320px-Ableton_Live_logo.svg.png" style="background:#fff; object-fit:contain; padding:2rem;" class="event-img" alt="Ableton Logo" onerror="this.style.display='none'">
+      <div class="event-art" style="background:var(--surface); border:2px solid var(--border);">🚀</div>
       <h3>Ableton Live: El Instrumento</h3>
       <p class="desc">Gerhard Behles y Robert Henke rompieron el paradigma del arreglo lineal de izquierda a derecha. Introdujeron la <strong>Vista Session</strong> para disparar clips y bucles de audio en vivo sin detener la música, convirtiendo a la computadora portátil en el instrumento en vivo definitivo para los DJs y productores.</p>
     </div>
