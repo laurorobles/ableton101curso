@@ -1010,6 +1010,161 @@ function drawLine(id1, id2, color, lineId) {
   });
 }
 
+/* ═══════════════════════════════════════════════════
+   M4 — SECUENCIADOR
+═══════════════════════════════════════════════════ */
+const seqGrid = document.getElementById('seqGrid');
+[{id:'kick',label:'🥁 Kick',cls:'kick'},{id:'snare',label:'🪘 Snare',cls:'snare'},{id:'hat',label:'🔔 Hi-Hat',cls:'hat'}]
+.forEach(ins => {
+  const lbl = document.createElement('div'); lbl.className='seq-lbl'; lbl.textContent=ins.label; seqGrid.appendChild(lbl);
+  for (let i=0;i<8;i++) {
+    const p = document.createElement('div'); p.className=`seq-pad ${ins.cls}`;
+    p.dataset.inst=ins.id; p.dataset.step=i; p.onclick=()=>p.classList.toggle('on'); seqGrid.appendChild(p);
+  }
+});
+let seqOn=false, seqSt=0, seqBPM=120, seqIv;
+function updateBPM(v) { seqBPM=+v; document.getElementById('bpmVal').textContent=v; if(seqOn){clearInterval(seqIv);seqIv=setInterval(seqTick,60000/seqBPM/2);} }
+function toggleSeq() {
+  getAC(); const btn=document.getElementById('btnSeq');
+  if (!seqOn) { seqOn=true; btn.textContent='⏹ STOP BEAT'; btn.style.background='var(--danger)'; seqIv=setInterval(seqTick,60000/seqBPM/2); }
+  else { seqOn=false; btn.textContent='▶ PLAY BEAT'; btn.style.background='var(--play)'; clearInterval(seqIv); document.querySelectorAll('.seq-pad').forEach(p=>p.classList.remove('playing')); seqSt=0; }
+}
+function seqTick() {
+  document.querySelectorAll('.seq-pad').forEach(p=>p.classList.remove('playing'));
+  document.querySelectorAll(`.seq-pad[data-step="${seqSt}"]`).forEach(p=>{ p.classList.add('playing'); if(p.classList.contains('on')) drumHit(p.dataset.inst); });
+  seqSt=(seqSt+1)%8;
+}
+function clearSeq() { document.querySelectorAll('.seq-pad').forEach(p=>p.classList.remove('on')); }
+function loadBeat() {
+  clearSeq();
+  [{i:'kick',s:0},{i:'kick',s:4},{i:'snare',s:2},{i:'snare',s:6},...Array.from({length:8},(_,s)=>({i:'hat',s}))]
+  .forEach(({i,s})=>{ document.querySelector(`.seq-pad[data-inst="${i}"][data-step="${s}"]`)?.classList.add('on'); });
+}
+function drumHit(t) {
+  const ac=getAC(), n=ac.currentTime;
+  if (t==='kick') {
+    const o=ac.createOscillator(),g=ac.createGain();
+    o.frequency.setValueAtTime(150,n); o.frequency.exponentialRampToValueAtTime(40,n+.1);
+    g.gain.setValueAtTime(1,n); g.gain.exponentialRampToValueAtTime(.001,n+.3);
+    o.connect(g); g.connect(ac.destination); o.start(n); o.stop(n+.3);
+  } else {
+    const sz=t==='snare'?.1:.04, buf=ac.createBuffer(1,ac.sampleRate*sz,ac.sampleRate), d=buf.getChannelData(0);
+    for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+    const ns=ac.createBufferSource(); ns.buffer=buf;
+    const f=ac.createBiquadFilter(); f.type='highpass'; f.frequency.value=t==='snare'?1000:7000;
+    const g=ac.createGain(); g.gain.setValueAtTime(t==='snare'?1:.4,n); g.gain.exponentialRampToValueAtTime(.001,n+sz);
+    ns.connect(f); f.connect(g); g.connect(ac.destination); ns.start(n);
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   M5 — PIANO CSS
+═══════════════════════════════════════════════════ */
+const WKW=56,WKH=170,BKW=36,BKH=108,KG=4,KPL=14;
+const wKeys=[{note:'C4',freq:261.63},{note:'D4',freq:293.66},{note:'E4',freq:329.63},{note:'F4',freq:349.23},{note:'G4',freq:392.00},{note:'A4',freq:440.00},{note:'B4',freq:493.88}];
+const bKeys=[{note:'C#4',freq:277.18,after:0},{note:'D#4',freq:311.13,after:1},null,{note:'F#4',freq:369.99,after:3},{note:'G#4',freq:415.30,after:4},{note:'A#4',freq:466.16,after:5},null];
+const pianoMount=document.getElementById('pianoMount');
+const totalW=KPL+wKeys.length*(WKW+KG)-KG+KPL;
+const pianoOuter=document.createElement('div'); pianoOuter.className='piano-outer'; pianoOuter.style.width=totalW+'px'; pianoOuter.style.maxWidth='100%';
+const keysWrap=document.createElement('div'); keysWrap.className='piano-keys'; keysWrap.style.width=(totalW-KPL*2)+'px'; keysWrap.style.height=WKH+'px';
+
+const activeKeys = new Map();
+function pianoDown(freq,el) {
+  if(activeKeys.has(el)) return;
+  el.classList.add('on');
+  const ac=getAC(), o=ac.createOscillator(), g=ac.createGain();
+  o.type='triangle'; o.frequency.value=freq;
+  g.gain.setValueAtTime(0,ac.currentTime); g.gain.linearRampToValueAtTime(0.22,ac.currentTime+.01);
+  o.connect(g); g.connect(ac.destination); o.start();
+  activeKeys.set(el,{o,g});
+}
+function pianoUp(el) {
+  if(!activeKeys.has(el)) return;
+  el.classList.remove('on');
+  const {o,g}=activeKeys.get(el), ac=getAC();
+  g.gain.linearRampToValueAtTime(.001,ac.currentTime+.12);
+  o.stop(ac.currentTime+.13);
+  activeKeys.delete(el);
+}
+
+wKeys.forEach((k,i)=>{
+  const el=document.createElement('div'); el.className='wkey';
+  el.style.left=(i*(WKW+KG))+'px'; el.style.width=WKW+'px'; el.style.height=WKH+'px';
+  el.textContent=k.note;
+  el.addEventListener('mousedown',e=>{e.preventDefault();pianoDown(k.freq,el)});
+  el.addEventListener('mouseup',()=>pianoUp(el));
+  el.addEventListener('mouseleave',()=>pianoUp(el));
+  el.addEventListener('touchstart',e=>{e.preventDefault();pianoDown(k.freq,el)},{passive:false});
+  el.addEventListener('touchend',()=>pianoUp(el));
+  keysWrap.appendChild(el);
+});
+bKeys.forEach(k=>{
+  if(!k) return;
+  const el=document.createElement('div'); el.className='bkey';
+  el.style.left=((k.after+1)*(WKW+KG)-KG/2-BKW/2)+'px'; el.style.width=BKW+'px'; el.style.height=BKH+'px';
+  el.addEventListener('mousedown',e=>{e.preventDefault();pianoDown(k.freq,el)});
+  el.addEventListener('mouseup',()=>pianoUp(el));
+  el.addEventListener('mouseleave',()=>pianoUp(el));
+  el.addEventListener('touchstart',e=>{e.preventDefault();pianoDown(k.freq,el)},{passive:false});
+  el.addEventListener('touchend',()=>pianoUp(el));
+  keysWrap.appendChild(el);
+});
+
+const pianoBase=document.createElement('div'); pianoBase.className='piano-base'; pianoBase.style.width=totalW+'px';
+pianoOuter.appendChild(keysWrap); pianoMount.appendChild(pianoOuter); pianoMount.appendChild(pianoBase);
+
+/* ═══════════════════════════════════════════════════
+   M5 — CC KNOB SVG
+═══════════════════════════════════════════════════ */
+let ccVal=64, ccDrone=null, ccFilter=null, ccGain=null;
+const CX=95,CY=95,KR=71;
+const ccKnob=document.getElementById('ccKnob');
+const ccLine=document.getElementById('ccLine');
+const ccArc=document.getElementById('ccArc');
+const ccNum=document.getElementById('ccNum');
+
+function renderKnob(v) {
+  ccVal=Math.max(0,Math.min(127,Math.round(v)));
+  ccNum.textContent=ccVal;
+  const angleDeg=-135+(ccVal/127)*270;
+  const angleRad=(angleDeg-90)*Math.PI/180;
+  const lx=CX+KR*Math.cos(angleRad), ly=CY+KR*Math.sin(angleRad);
+  ccLine.setAttribute('x2',lx); ccLine.setAttribute('y2',ly);
+  const sRad=(-135-90)*Math.PI/180, sx=CX+KR*Math.cos(sRad), sy=CY+KR*Math.sin(sRad);
+  const sweep=angleDeg-(-135), large=sweep>180?1:0;
+  ccArc.setAttribute('d', ccVal>0 ? `M ${sx} ${sy} A ${KR} ${KR} 0 ${large} 1 ${lx} ${ly}` : '');
+  if(ccFilter) ccFilter.frequency.value=80+(ccVal/127)*5000;
+}
+
+let dragging=false, dY0=0, dV0=64;
+function dragStart(y) { dragging=true; dY0=y; dV0=ccVal; startDrone(); }
+function dragMove(y)  { if(!dragging) return; renderKnob(dV0+(dY0-y)); }
+function dragEnd()    { if(!dragging) return; dragging=false; stopDrone(); }
+
+ccKnob.addEventListener('mousedown',e=>{e.preventDefault();dragStart(e.clientY)});
+document.addEventListener('mousemove',e=>{if(dragging)dragMove(e.clientY)});
+document.addEventListener('mouseup',dragEnd);
+ccKnob.addEventListener('touchstart',e=>{e.preventDefault();dragStart(e.touches[0].clientY)},{passive:false});
+ccKnob.addEventListener('touchmove',e=>{e.preventDefault();dragMove(e.touches[0].clientY)},{passive:false});
+ccKnob.addEventListener('touchend',dragEnd);
+
+function startDrone() {
+  if(ccDrone) return;
+  const ac=getAC();
+  ccDrone=ac.createOscillator(); ccFilter=ac.createBiquadFilter(); ccGain=ac.createGain();
+  ccDrone.type='sawtooth'; ccDrone.frequency.value=65.41;
+  ccFilter.type='lowpass'; ccFilter.frequency.value=80+(ccVal/127)*5000; ccFilter.Q.value=7;
+  ccGain.gain.setValueAtTime(.22,ac.currentTime);
+  ccDrone.connect(ccFilter); ccFilter.connect(ccGain); ccGain.connect(ac.destination); ccDrone.start();
+}
+function stopDrone() {
+  if(!ccDrone) return;
+  const ac=getAC(), ref=ccDrone; ccDrone=null;
+  ccGain.gain.linearRampToValueAtTime(.001,ac.currentTime+.12);
+  setTimeout(()=>{try{ref.stop();}catch(e){}},150);
+}
+renderKnob(64);
+
 /* ─── Carga de bell.wav al inicio ─────── */
 function failAudioChange() {
   msg('❌ ¡Error! El audio es un bloque grabado (fotografía). Para cambiar las notas, tendrías que volver a grabarlo.', 'var(--danger)');
