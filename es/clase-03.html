@@ -119,11 +119,11 @@
     <div class="timeline" id="timeline">
       <div class="grid"></div>
       <div class="track">
-        <div class="track-header" style=\"color:var(--audio)">Audio 1</div>
+        <div class="track-header" style="color:var(--audio)">Audio 1</div>
         <div class="clip" style="left:15%; width:20%" id="clip1">Batería</div>
       </div>
       <div class="track">
-        <div class="track-header" style=\"color:var(--midi)">MIDI 2</div>
+        <div class="track-header" style="color:var(--midi)">MIDI 2</div>
         <div class="clip" style="background:var(--midi); left:40%; width:30%" id="clip2">Bajo</div>
       </div>
     </div>
@@ -144,7 +144,7 @@
       <button class="btn btn-outline" onclick="editAction('cut')">✂️ Cortar a la mitad (Cmd+E)</button>
       <button class="btn btn-outline" onclick="editAction('dup')">👯 Duplicar (Cmd+D)</button>
       <button class="btn btn-outline" onclick="editAction('join')">🔗 Consolidar (Cmd+J)</button>
-      <button class="btn btn-outline" onclick="editAction('del')" style=\"color:var(--danger); border-color:var(--danger)">🗑️ Eliminar (Backspace)</button>
+      <button class="btn btn-outline" onclick="editAction('del')" style="color:var(--danger); border-color:var(--danger)">🗑️ Eliminar (Backspace)</button>
     </div>
     
     <div class="edit-area" id="edit-area">
@@ -212,34 +212,34 @@
 <!-- M-ROUTING: INSERTS VS SENDS -->
 <section id="m-routing" style="background:#111; color:#fff">
   <div class="tag" style="background:#444; color:#fff">Concepto Avanzado</div>
-  <h2 style=\"color:#fff">Insertos vs. Canales de Retorno</h2>
-  <p class="sub" style=\"color:#aaa">Existen dos formas principales de aplicar efectos (especialmente Reverb y Delay). Pasa el mouse para entender la diferencia arquitectónica de la señal.</p>
+  <h2 style="color:#fff">Insertos vs. Canales de Retorno</h2>
+  <p class="sub" style="color:#aaa">Existen dos formas principales de aplicar efectos (especialmente Reverb y Delay). Pasa el mouse para entender la diferencia arquitectónica de la señal.</p>
 
   <div class="split" style="max-width:1000px; margin:0 auto; gap:4rem">
     
     <!-- INSERTO -->
     <div class="panel" style="background:#222; border-color:#333; text-align:center; position:relative" id="p-insert">
-      <h3 style=\"color:var(--danger)">1. Efecto de Inserto</h3>
+      <h3 style="color:var(--danger)">1. Efecto de Inserto</h3>
       <p style="font-size:1rem; color:#aaa; margin-bottom:2rem">El efecto se pone <b>directamente</b> sobre la pista. El 100% de la señal pasa a través de él. Usado para Ecualizadores, Compresores y Distorsión.</p>
       
       <div style="display:flex; flex-direction:column; align-items:center; gap:1rem; position:relative">
         <div style="background:var(--audio); padding:1rem; border-radius:8px; width:80%; font-weight:bold">Voz Original (100%)</div>
-        <div style=\"color:var(--muted)">↓ Todo el audio fluye ↓</div>
+        <div style="color:var(--muted)">↓ Todo el audio fluye ↓</div>
         <div style="background:var(--danger); padding:1rem; border-radius:8px; width:80%; font-weight:bold; box-shadow:0 0 15px var(--danger)">Distorsión</div>
-        <div style=\"color:var(--muted)">↓ Sale ↓</div>
+        <div style="color:var(--muted)">↓ Sale ↓</div>
         <div style="background:#444; padding:1rem; border-radius:8px; width:80%; font-weight:bold">Voz Distorsionada</div>
       </div>
     </div>
 
     <!-- SEND / RETURN -->
     <div class="panel" style="background:#222; border-color:#333; text-align:center; position:relative" id="p-send">
-      <h3 style=\"color:var(--play)">2. Envío / Retorno (Send/Return)</h3>
+      <h3 style="color:var(--play)">2. Envío / Retorno (Send/Return)</h3>
       <p style="font-size:1rem; color:#aaa; margin-bottom:2rem">Se crea un "Pista Auxiliar" separada con el efecto al 100%. Le "envías" una copia de tu señal. Ideal para Reverb y Delay, porque mantiene tu voz original intacta.</p>
       
       <div style="position:relative; display:flex; justify-content:space-between; align-items:flex-start">
         <div style="width:45%; display:flex; flex-direction:column; align-items:center; gap:1rem">
           <div style="background:var(--audio); padding:1rem; border-radius:8px; width:100%; font-weight:bold">Voz Original</div>
-          <div style=\"color:var(--muted)">↓ Sale Intacta ↓</div>
+          <div style="color:var(--muted)">↓ Sale Intacta ↓</div>
           <div style="background:#444; padding:1rem; border-radius:8px; width:100%; font-weight:bold">Voz (Seca)</div>
         </div>
         
@@ -247,7 +247,7 @@
         
         <div style="width:45%; display:flex; flex-direction:column; align-items:center; gap:1rem">
           <div style="background:var(--play); padding:1rem; border-radius:8px; width:100%; font-weight:bold; box-shadow:0 0 15px var(--play)">Canal Retorno (Reverb 100%)</div>
-          <div style=\"color:var(--muted)">↓ Sale ↓</div>
+          <div style="color:var(--muted)">↓ Sale ↓</div>
           <div style="background:#444; padding:1rem; border-radius:8px; width:100%; font-weight:bold">Reverb (Mojada)</div>
         </div>
       </div>
@@ -325,24 +325,24 @@
 <!-- MÓDULO FINAL: RESUMEN Y TEST -->
 <section id="m-final" style="background:#111; color:#fff">
   <div class="tag" style="background:var(--cc); color:#fff">Módulo Final</div>
-  <h2 style=\"color:#fff">Resumen de Conceptos</h2>
-  <p class="sub" style=\"color:#aaa">Conceptos, Atajos de Teclado y Referencias.</p>
+  <h2 style="color:#fff">Resumen de Conceptos</h2>
+  <p class="sub" style="color:#aaa">Conceptos, Atajos de Teclado y Referencias.</p>
   
   <div class="split" style="margin-bottom:3rem">
     <div class="panel" style="background:#222; border-color:#333; color:#fff">
-      <h3 style=\"color:var(--audio); margin-bottom:1rem">🧠 Resumen de Conceptos por Clase</h3>
+      <h3 style="color:var(--audio); margin-bottom:1rem">🧠 Resumen de Conceptos por Clase</h3>
       <ul style="margin-left:1.5rem; line-height:1.8; font-size:1.1rem; color:#ddd" id="res-conceptos">
       </ul>
     </div>
     <div class="panel" style="background:#222; border-color:#333; color:#fff">
-      <h3 style=\"color:var(--play); margin-bottom:1rem">⌨️ Shortcuts de Teclado</h3>
+      <h3 style="color:var(--play); margin-bottom:1rem">⌨️ Shortcuts de Teclado</h3>
       <ul style="margin-left:1.5rem; line-height:1.8; font-size:1.1rem; color:#ddd" id="res-shortcuts">
       </ul>
     </div>
   </div>
   
   <div class="panel" style="background:#222; border-color:#333; color:#fff; margin-bottom:4rem">
-    <h3 style=\"color:var(--warp-accent); margin-bottom:1rem">📚 Bibliografía Sugerida y Concepto</h3>
+    <h3 style="color:var(--warp-accent); margin-bottom:1rem">📚 Bibliografía Sugerida y Concepto</h3>
     <p id="res-ref" style="font-size:1.1rem; line-height:1.6; color:#ddd; margin-top:1rem"></p>
   </div>
 
@@ -910,6 +910,5 @@ function msg(text, bg, fg) {
     requestAnimationFrame(animate);
   }
 
-</script>
 </script>
 </body></html>

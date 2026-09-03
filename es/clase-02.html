@@ -128,7 +128,7 @@
       <div class="warp-marker" id="m1-marker"></div>
     </div>
     <div class="analogy" style="border-left-color:var(--warp-accent)">
-      <strong id="m1-message" style=\"color:var(--text);">Arrastra el marcador amarillo (Warp Marker) hacia la derecha para sincronizar el Snare con la línea del Grid (75%).</strong>
+      <strong id="m1-message" style="color:var(--text);">Arrastra el marcador amarillo (Warp Marker) hacia la derecha para sincronizar el Snare con la línea del Grid (75%).</strong>
     </div>
   </div>
 </section>
@@ -143,7 +143,7 @@
     <!-- Pista A -->
     <div class="row" style="margin-bottom:1rem;">
       <button class="btn btn-outline" style="border-color:var(--warp-accent)" onclick="warpFromHere()">📌 Warp from Here</button>
-      <span style=\"color:var(--muted);font-size:1rem;">Ideal para bateristas humanos o grabaciones sueltas.</span>
+      <span style="color:var(--muted);font-size:1rem;">Ideal para bateristas humanos o grabaciones sueltas.</span>
     </div>
     <div class="m2-track" id="trackA">
       <div class="m2-track-title">Baterista Humano</div>
@@ -153,7 +153,7 @@
     <!-- Pista B -->
     <div class="row" style="margin-top:2.5rem; margin-bottom:1rem;">
       <button class="btn btn-outline" style="border-color:var(--play)" onclick="warpStraight()">📏 Warp Straight</button>
-      <span style=\"color:var(--muted);font-size:1rem;">Ideal para acapellas electrónicas y stems a un tempo constante.</span>
+      <span style="color:var(--muted);font-size:1rem;">Ideal para acapellas electrónicas y stems a un tempo constante.</span>
     </div>
     <div class="m2-track" id="trackB">
       <div class="m2-track-title">Drum Machine</div>
@@ -184,11 +184,11 @@
       </div>
 
       <div class="control-group">
-        <label for="tempo-slider" style="font-weight:bold; color:var(--muted)">Tempo: <span id="tempo-val" style=\"color:var(--play)">120</span> BPM</label>
+        <label for="tempo-slider" style="font-weight:bold; color:var(--muted)">Tempo: <span id="tempo-val" style="color:var(--play)">120</span> BPM</label>
         <input type="range" id="tempo-slider" min="50" max="150" value="120" oninput="updateTempo(this.value)" style="accent-color:var(--play)">
       </div>
       <div class="control-group">
-        <label for="pitch-slider" style="font-weight:bold; color:var(--muted)">Pitch: <span id="pitch-val" style=\"color:var(--cc)">0</span> st</label>
+        <label for="pitch-slider" style="font-weight:bold; color:var(--muted)">Pitch: <span id="pitch-val" style="color:var(--cc)">0</span> st</label>
         <input type="range" id="pitch-slider" min="-12" max="12" value="0" oninput="updatePitch(this.value)" style="accent-color:var(--cc)">
       </div>
     </div>
@@ -207,24 +207,24 @@
 <!-- MÓDULO FINAL: RESUMEN Y TEST -->
 <section id="m-final" style="background:#111; color:#fff">
   <div class="tag" style="background:var(--cc); color:#fff">Módulo Final</div>
-  <h2 style=\"color:#fff">Resumen de Conceptos</h2>
-  <p class="sub" style=\"color:#aaa">Conceptos, Atajos de Teclado y Referencias.</p>
+  <h2 style="color:#fff">Resumen de Conceptos</h2>
+  <p class="sub" style="color:#aaa">Conceptos, Atajos de Teclado y Referencias.</p>
   
   <div class="split" style="margin-bottom:3rem">
     <div class="panel" style="background:#222; border-color:#333; color:#fff">
-      <h3 style=\"color:var(--audio); margin-bottom:1rem">🧠 Resumen de Conceptos por Clase</h3>
+      <h3 style="color:var(--audio); margin-bottom:1rem">🧠 Resumen de Conceptos por Clase</h3>
       <ul style="margin-left:1.5rem; line-height:1.8; font-size:1.1rem; color:#ddd" id="res-conceptos">
       </ul>
     </div>
     <div class="panel" style="background:#222; border-color:#333; color:#fff">
-      <h3 style=\"color:var(--play); margin-bottom:1rem">⌨️ Shortcuts de Teclado</h3>
+      <h3 style="color:var(--play); margin-bottom:1rem">⌨️ Shortcuts de Teclado</h3>
       <ul style="margin-left:1.5rem; line-height:1.8; font-size:1.1rem; color:#ddd" id="res-shortcuts">
       </ul>
     </div>
   </div>
   
   <div class="panel" style="background:#222; border-color:#333; color:#fff; margin-bottom:4rem">
-    <h3 style=\"color:var(--warp-accent); margin-bottom:1rem">📚 Bibliografía Sugerida y Concepto</h3>
+    <h3 style="color:var(--warp-accent); margin-bottom:1rem">📚 Bibliografía Sugerida y Concepto</h3>
     <p id="res-ref" style="font-size:1.1rem; line-height:1.6; color:#ddd; margin-top:1rem"></p>
   </div>
 
@@ -554,6 +554,5 @@ function msg(text, bg, fg) {
       }
     }
   }
-</script>
 </script>
 </body></html>
