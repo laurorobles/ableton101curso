@@ -489,6 +489,14 @@
 </script>
 <div style="position:fixed;bottom:15px;right:20px;font-size:0.9rem;opacity:0.35;z-index:9999;font-weight:700;">Creado por @laurorobles</div>
 <script>
+
+let actx = null;
+function getAC() {
+  if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+  if (actx.state === 'suspended') actx.resume();
+  return actx;
+}
+
 function msg(text, bg, fg) {
   const t = document.getElementById('toast');
   t.innerHTML = text;
@@ -517,6 +525,27 @@ const EQ_MODES = [
   {name:'Highpass — Brillante',color:'#FF0055', type:'highpass', freq:3000 },
 ];
 
+
+document.addEventListener('DOMContentLoaded', () => {
+  const zones = document.querySelectorAll('.ui-zone');
+  const infoBox = document.getElementById('ui-info-box');
+  
+  if (infoBox) {
+    zones.forEach(zone => {
+      zone.addEventListener('mouseenter', () => {
+        const desc = zone.getAttribute('data-desc');
+        if (desc) {
+          infoBox.innerHTML = desc;
+          infoBox.style.opacity = '1';
+        }
+      });
+      zone.addEventListener('mouseleave', () => {
+        infoBox.style.opacity = '0';
+      });
+    });
+  }
+});
+
 function loadBellWav() {
   const statusEl = document.getElementById('audioStatus');
   return new Promise(resolve => {
@@ -524,7 +553,7 @@ function loadBellWav() {
     xhr.open('GET', '../assets/bell.wav', true);
     xhr.responseType = 'arraybuffer';
     xhr.onload = function() {
-      if (xhr.status === 200 || xhr.status === 0) {
+      if ((xhr.status === 200 || xhr.status === 0) && xhr.response) {
         const ac = getAC();
         ac.decodeAudioData(
           xhr.response,
