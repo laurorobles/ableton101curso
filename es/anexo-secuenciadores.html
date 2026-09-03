@@ -3,49 +3,72 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Ableton 101 — Historia de la Música Electrónica</title>
+  <title>Anexo: Historia de la Música Electrónica</title>
   <style>
     :root {
       --bg:#F8F9FA; --surface:#fff; --text:#000; --muted:#555;
-      --border:#E5E7EB; --audio:#0055FF; --midi:#FF5500;
-      --play:#00B84D;
+      --border:#E5E7EB; --midi:#FF5500; --audio:#0055FF; --play:#00B84D;
+      --kick:#FF0055; --snare:#0055FF; --hat:#00B84D;
     }
     *{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth}
-    body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:18px;line-height:1.6; padding:4rem 5%;}
+    body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.6;padding:2rem;}
     
-    .btn-back { position:fixed; top:20px; left:20px; background:var(--surface); color:var(--text); text-decoration:none; padding:10px 15px; border-radius:8px; border:2px solid var(--border); font-weight:bold; z-index:9999; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
+    .btn-back { display:inline-block; margin-bottom:2rem; text-decoration:none; color:var(--text); font-weight:bold; padding:0.5rem 1rem; border:2px solid var(--border); border-radius:8px; background:var(--surface); transition:0.2s; }
+    .btn-back:hover { background:#eee; }
     
-    header { text-align:center; padding:4rem 2rem; border-radius:24px; border:2px solid var(--border); margin-bottom:4rem; background:#111; color:#fff; }
-    h1 { font-size:3.5rem; font-weight:900; line-height:1.1; margin-bottom:1rem; }
-    p.sub { font-size:1.4rem; color:#aaa; max-width:800px; margin:0 auto; }
+    header { text-align:center; margin-bottom:4rem; padding:4rem 2rem; background:var(--surface); border-radius:24px; border:2px solid var(--border); box-shadow:0 10px 30px rgba(0,0,0,0.05); }
+    h1 { font-size:3.5rem; font-weight:900; letter-spacing:-0.04em; margin-bottom:1rem; }
+    p.sub { font-size:1.3rem; color:var(--muted); max-width:800px; margin:0 auto; }
     
-    .timeline { position:relative; max-width:1000px; margin:0 auto; padding:2rem 0; }
+    .timeline { position:relative; max-width:1100px; margin:0 auto; padding:2rem 0; }
     .timeline::before { content:''; position:absolute; top:0; left:50%; width:4px; height:100%; background:var(--midi); transform:translateX(-50%); opacity:0.3; }
     
-    .event { position:relative; margin-bottom:4rem; width:100%; display:flex; justify-content:space-between; align-items:center; }
+    .event { position:relative; margin-bottom:6rem; width:100%; display:flex; justify-content:space-between; align-items:center; }
     .event:nth-child(even) { flex-direction:row-reverse; }
     
-    .content { width:45%; background:var(--surface); padding:2rem; border-radius:16px; border:2px solid var(--border); box-shadow:0 10px 30px rgba(0,0,0,0.05); position:relative; transition:transform 0.2s; }
-    .content:hover { transform:scale(1.02); border-color:var(--midi); }
+    .content { width:45%; background:var(--surface); padding:2rem; border-radius:16px; border:2px solid var(--border); box-shadow:0 10px 30px rgba(0,0,0,0.05); position:relative; transition:transform 0.3s, box-shadow 0.3s; }
+    .content:hover { transform:scale(1.02); border-color:var(--midi); box-shadow:0 15px 40px rgba(255,85,0,0.15); }
     
-    .year { position:absolute; top:-15px; left:20px; background:var(--midi); color:#fff; font-weight:bold; padding:0.4rem 1.2rem; border-radius:20px; font-size:1rem; letter-spacing:0.05em; box-shadow:0 4px 10px rgba(255,85,0,0.3); }
+    .year { position:absolute; top:-20px; left:20px; background:var(--midi); color:#fff; font-weight:900; padding:0.4rem 1.5rem; border-radius:30px; font-size:1.2rem; letter-spacing:0.05em; box-shadow:0 4px 10px rgba(255,85,0,0.3); }
     .event:nth-child(even) .year { left:auto; right:20px; }
     
-    .dot { position:absolute; left:50%; width:20px; height:20px; background:var(--midi); border-radius:50%; transform:translate(-50%, -50%); border:4px solid var(--bg); box-shadow:0 0 0 4px var(--midi); z-index:2; top:50%; }
+    .dot { position:absolute; left:50%; width:24px; height:24px; background:var(--midi); border-radius:50%; transform:translate(-50%, -50%); border:4px solid var(--bg); box-shadow:0 0 0 4px var(--midi); z-index:2; top:50%; transition:transform 0.3s; }
+    .event:hover .dot { transform:translate(-50%, -50%) scale(1.3); }
     
-    h3 { font-size:1.5rem; margin-top:1rem; margin-bottom:0.5rem; color:#111; }
+    .event-img { width:100%; border-radius:12px; margin-bottom:1rem; object-fit:cover; max-height:250px; background:#111; border:2px solid #eee; }
+    
+    h3 { font-size:1.8rem; margin-top:1rem; margin-bottom:0.5rem; color:#111; line-height:1.1; }
     p.desc { color:var(--muted); font-size:1.1rem; }
     
-    .embed-container { position:relative; padding-bottom:56.25%; height:0; overflow:hidden; max-width:100%; border-radius:8px; margin-top:1rem; }
-    .embed-container iframe { position:absolute; top:0; left:0; width:100%; height:100%; }
+    .interactive-module { background:#111; padding:1.5rem; border-radius:12px; margin-top:1.5rem; color:#fff; }
+    .im-title { font-size:0.9rem; text-transform:uppercase; letter-spacing:1px; color:var(--midi); margin-bottom:1rem; font-weight:bold; }
+    
+    /* TR-808 Grid */
+    .seq-grid { display:grid; grid-template-columns:50px repeat(8,1fr); gap:6px; margin-bottom:1rem; }
+    .seq-pad { aspect-ratio:1; background:#333; border-radius:6px; cursor:pointer; transition:background 0.1s; border:2px solid #222; }
+    .seq-pad.on.k { background:var(--kick); border-color:#ff4d88; }
+    .seq-pad.on.s { background:var(--snare); border-color:#4d88ff; }
+    .seq-pad.on.h { background:var(--hat); border-color:#4dff88; }
+    .seq-pad.playing { border-color:#fff; box-shadow:0 0 10px #fff; transform:scale(0.95); }
+    .seq-label { font-size:0.8rem; font-weight:bold; display:flex; align-items:center; }
+    
+    .btn-play { background:var(--play); color:#fff; border:none; padding:0.8rem 2rem; border-radius:8px; font-weight:bold; cursor:pointer; font-size:1.1rem; }
+    .btn-play:hover { filter:brightness(1.1); }
+    
+    /* Moog Sliders */
+    .slider-grid { display:flex; gap:10px; height:100px; align-items:flex-end; margin-bottom:1rem; }
+    .slider-col { flex:1; display:flex; flex-direction:column; align-items:center; gap:5px; }
+    .slider-track { width:8px; height:100%; background:#333; border-radius:4px; position:relative; cursor:pointer; }
+    .slider-fill { position:absolute; bottom:0; width:100%; background:var(--midi); border-radius:4px; pointer-events:none; }
+    .slider-handle { position:absolute; width:16px; height:8px; background:#fff; left:-4px; transform:translateY(50%); pointer-events:none; border-radius:2px; }
+    .slider-col.active .slider-track { box-shadow:0 0 10px var(--midi); background:#553311; }
     
     @media (max-width: 768px) {
       .timeline::before { left:20px; }
-      .event { flex-direction:column !important; align-items:flex-end; }
+      .event { flex-direction:column !important; align-items:flex-end; margin-bottom:4rem; }
       .content { width:calc(100% - 50px); }
-      .dot { left:20px; }
-      .year { left:20px !important; right:auto !important; }
+      .dot { left:20px; top:30px; }
+      .year { left:20px !important; right:auto !important; top:-15px; }
     }
   </style>
 </head>
@@ -54,8 +77,8 @@
 <a href="../index.html" class="btn-back">← Volver al Índice</a>
 
 <header>
-  <h1>La Evolución de la Música Electrónica</h1>
-  <p class="sub">Desde los primeros autómatas mecánicos hasta la revolución digital del MIDI y los DAWs modernos. Un viaje a través de las máquinas que cambiano la música para siempre.</p>
+  <h1>Historia de la Música Electrónica</h1>
+  <p class="sub">Desde los primeros autómatas mecánicos hasta la revolución digital del MIDI. Descubre, escucha e interactúa con las máquinas que cambiaron la música para siempre.</p>
 </header>
 
 <div class="timeline">
@@ -64,8 +87,9 @@
     <div class="dot"></div>
     <div class="content">
       <div class="year">Siglo IX</div>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Ban%C5%AB_M%C5%ABs%C4%81_instrument.jpg/640px-Ban%C5%AB_M%C5%ABs%C4%81_instrument.jpg" class="event-img" alt="Banu Musa" onerror="this.style.display='none'">
       <h3>Los Hermanos Banū Mūsā</h3>
-      <p class="desc">En Bagdad, tres inventores persas crearon el primer instrumento musical programable del mundo: un órgano hidráulico que tocaba cilindros intercambiables con púas. Este concepto de "pines mecánicos" que disparan notas es el abuelo absoluto de la secuenciación musical.</p>
+      <p class="desc">En Bagdad, tres inventores persas crearon el primer instrumento musical programable del mundo: un órgano hidráulico que tocaba cilindros intercambiables con pines. Este concepto de "pines mecánicos" que disparan notas es el abuelo absoluto de la programación y la secuenciación musical.</p>
     </div>
   </div>
 
@@ -73,17 +97,9 @@
     <div class="dot"></div>
     <div class="content">
       <div class="year">1800s</div>
-      <h3>Organillos y Rollos Perforados</h3>
-      <p class="desc">La Revolución Industrial trajo las cajas musicales y las pianolas. Utilizaban tarjetas de cartón perforadas o rollos de papel donde los agujeros representaban notas. Este método binario (agujero = nota ON, papel = nota OFF) sentó las bases lógicas de la informática y el MIDI.</p>
-    </div>
-  </div>
-
-  <div class="event">
-    <div class="dot"></div>
-    <div class="content">
-      <div class="year">1957</div>
-      <h3>RCA Mark II Sound Synthesizer</h3>
-      <p class="desc">El primer sintetizador programable real, adquirido por Columbia-Princeton. Ocupaba una habitación entera y se programaba ingresando comandos en papel perforado. Hizo posible la composición de música electrónica puramente académica y vanguardista.</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Barrel_organ.jpg/640px-Barrel_organ.jpg" class="event-img" alt="Organillo" onerror="this.style.display='none'">
+      <h3>Cajas Musicales y Pianolas</h3>
+      <p class="desc">La Revolución Industrial trajo las tarjetas de cartón perforadas y los rollos de papel donde los agujeros representaban notas. Este método <strong>binario</strong> (agujero = ON, papel = OFF) sentó las bases lógicas de la informática y del lenguaje que usarían los secuenciadores modernos.</p>
     </div>
   </div>
 
@@ -91,17 +107,18 @@
     <div class="dot"></div>
     <div class="content">
       <div class="year">1968</div>
-      <h3>Moog 960 Sequential Controller</h3>
-      <p class="desc">Bob Moog introdujo el secuenciador por pasos controlado por voltaje (CV/Gate). Al girar las perillas en un panel de 8 o 16 pasos, los músicos podían programar bucles rítmicos y melódicos repetitivos. Wendy Carlos y Tangerine Dream lo utilizaron para revolucionar el paisaje sonoro de los 70s.</p>
-    </div>
-  </div>
-
-  <div class="event">
-    <div class="dot"></div>
-    <div class="content">
-      <div class="year">1974</div>
-      <h3>Kraftwerk y la Repetición</h3>
-      <p class="desc">La banda alemana Kraftwerk lanza "Autobahn". Combinando sintetizadores Moog y percusión electrónica personalizada, demostraron que las secuencias rígidas y mecánicas no eran frías, sino el futuro del pop. Nace la música puramente "secuenciada".</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Moog_synthesizer.jpg/800px-Moog_synthesizer.jpg" class="event-img" alt="Moog 960" onerror="this.style.display='none'">
+      <h3>El Secuenciador Moog 960</h3>
+      <p class="desc">Bob Moog introdujo el secuenciador por pasos controlado por voltaje (CV/Gate). Al ajustar perillas en una matriz analógica, los músicos podían programar bucles rítmicos y melódicos automáticos. Revolucionó el paisaje sonoro (Tangerine Dream, Kraftwerk, Giorgio Moroder).</p>
+      
+      <!-- INTERACTIVO MOOG -->
+      <div class="interactive-module">
+        <div class="im-title">🎛️ Simulador: Secuenciador por Pasos (CV)</div>
+        <div class="slider-grid" id="moogGrid">
+          <!-- JS fills this -->
+        </div>
+        <button class="btn-play" id="btnMoog" onclick="toggleMoog()">▶ INICIAR SECUENCIA</button>
+      </div>
     </div>
   </div>
 
@@ -109,8 +126,18 @@
     <div class="dot"></div>
     <div class="content">
       <div class="year">1980</div>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Roland_TR-808_drum_machine.jpg/800px-Roland_TR-808_drum_machine.jpg" class="event-img" alt="TR 808" onerror="this.style.display='none'">
       <h3>Roland TR-808</h3>
-      <p class="desc">Ikutaro Kakehashi diseña la caja de ritmos TR-808. Su secuenciador visual de 16 pasos con luces rojas y naranjas estableció el estándar (la grilla de 16 pasos) que usamos hoy. Aunque fue un fracaso inicial por no sonar como "baterías reales", su bajo sub-grave y sus chasquidos definieron para siempre el Hip Hop, el Trap y el Electro.</p>
+      <p class="desc">La icónica caja de ritmos que introdujo la programación visual de 16 pasos con botones coloridos. Aunque inicialmente fracasó por "no sonar realista", su retumbante bombo sub-grave (Kick) y sus hi-hats robóticos definieron el Hip Hop, el Electro y el Trap moderno.</p>
+      
+      <!-- INTERACTIVO 808 -->
+      <div class="interactive-module">
+        <div class="im-title">🥁 Simulador: Secuenciador 808</div>
+        <div class="seq-grid" id="drumGrid">
+          <!-- JS fills this -->
+        </div>
+        <button class="btn-play" id="btnDrum" onclick="toggleDrum()">▶ PLAY BEAT</button>
+      </div>
     </div>
   </div>
 
@@ -118,8 +145,9 @@
     <div class="dot"></div>
     <div class="content">
       <div class="year">1981</div>
-      <h3>Roland TB-303 y el Acid House</h3>
-      <p class="desc">Creada como una máquina para que los guitarristas tuvieran acompañamiento de bajo, fracasó estrepitosamente. Años después, productores de Chicago como Phuture la compraron barata en casas de empeño, abusaron de sus perillas de filtro (Resonance / Cutoff) y crearon el sonido squelchy y lisérgico del <strong>Acid House</strong>.</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Roland_TB-303.jpg/800px-Roland_TB-303.jpg" class="event-img" alt="TB 303" onerror="this.style.display='none'">
+      <h3>TB-303 y el Acid House</h3>
+      <p class="desc">Creada como acompañamiento de bajo para guitarristas, fue odiada y abandonada en casas de empeño. Años después, productores underground de Chicago la compraron barata, abusaron de sus perillas de Filtro y Resonancia al límite, e inventaron el <strong>Acid House</strong>.</p>
     </div>
   </div>
 
@@ -127,26 +155,19 @@
     <div class="dot"></div>
     <div class="content">
       <div class="year">1983</div>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/MIDI_cables.jpg/640px-MIDI_cables.jpg" class="event-img" alt="Cables MIDI" onerror="this.style.display='none'">
       <h3>El Nacimiento del MIDI</h3>
-      <p class="desc">Musical Instrument Digital Interface. Por primera vez en la historia, un teclado Yamaha podía comunicarse con una caja de ritmos Roland. El MIDI no transmite audio, transmite *datos de interpretación* (Nota, Velocidad, Duración). Esto permitió que un solo músico controlara un estudio entero desde una computadora.</p>
+      <p class="desc">Por primera vez, marcas rivales (Yamaha, Roland, Korg) acordaron un idioma universal: <strong>M</strong>usical <strong>I</strong>nstrument <strong>D</strong>igital <strong>I</strong>nterface. Un teclado ahora podía controlar a otro. El MIDI revolucionó los estudios al transmitir <em>datos de interpretación</em> en vez de sonido.</p>
     </div>
   </div>
 
   <div class="event">
     <div class="dot"></div>
     <div class="content">
-      <div class="year">Fines de 80s</div>
-      <h3>Atari ST: El Cerebro del Estudio</h3>
-      <p class="desc">La computadora Atari ST venía con puertos MIDI integrados. Combinada con software temprano como Cubase (de Steinberg) y Notator (que luego sería Logic Pro), permitió secuenciar múltiples pistas de hardware de forma gráfica. Nace el "Secuenciador MIDI por Software".</p>
-    </div>
-  </div>
-
-  <div class="event">
-    <div class="dot"></div>
-    <div class="content">
-      <div class="year">1990s</div>
-      <h3>La Era del DAW y el Piano Roll</h3>
-      <p class="desc">Las computadoras se vuelven lo suficientemente potentes para procesar AUDIO digital, no solo MIDI. Los secuenciadores evolucionan a Digital Audio Workstations (DAWs). La interfaz del <strong>Piano Roll</strong> (una cuadrícula con un teclado a la izquierda) se estandariza como la forma universal de escribir notas musicales.</p>
+      <div class="year">1985+</div>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Atari_1040STf_with_monitor_and_mouse.jpg/800px-Atari_1040STf_with_monitor_and_mouse.jpg" class="event-img" alt="Atari ST" onerror="this.style.display='none'">
+      <h3>Atari ST y la Era del DAW</h3>
+      <p class="desc">La computadora Atari ST incluyó puertos MIDI de fábrica, convirtiéndose en el cerebro de los estudios de los 90s. Corría los primeros secuenciadores de software (como Notator y Cubase) introduciendo el <strong>Piano Roll</strong>, la interfaz cuadriculada que usamos hasta el día de hoy.</p>
     </div>
   </div>
 
@@ -154,8 +175,9 @@
     <div class="dot"></div>
     <div class="content">
       <div class="year">2001</div>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Ableton_Live_logo.svg/320px-Ableton_Live_logo.svg.png" style="background:#fff; object-fit:contain; padding:2rem;" class="event-img" alt="Ableton Logo" onerror="this.style.display='none'">
       <h3>Ableton Live: El Instrumento</h3>
-      <p class="desc">Creado por Gerhard Behles y Robert Henke, Ableton Live rompió el paradigma lineal del arreglo (de izquierda a derecha). Introdujo la <strong>Session View</strong> (para disparar clips no lineales en vivo) y el <strong>Warping automático</strong>, permitiendo que el software dejara de ser solo una grabadora y se convirtiera en un instrumento tocable en sí mismo.</p>
+      <p class="desc">Gerhard Behles y Robert Henke rompieron el paradigma del arreglo lineal de izquierda a derecha. Introdujeron la <strong>Vista Session</strong> para disparar clips y bucles de audio en vivo sin detener la música, convirtiendo a la computadora portátil en el instrumento en vivo definitivo para los DJs y productores.</p>
     </div>
   </div>
 
@@ -165,6 +187,173 @@
 <div style="position:fixed; bottom:15px; right:20px; font-size:0.9rem; color:inherit; opacity:0.35; z-index:9999; font-weight:700; pointer-events:none;">
   Creado por @laurorobles
 </div>
-<script src="../js/tooltips.js"></script>
+
+<script>
+  // AUDIO CONTEXT MANAGER
+  let actx = null;
+  function getAC() {
+    if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+    if (actx.state === 'suspended') actx.resume();
+    return actx;
+  }
+
+  // ==========================================
+  // MOOG SIMULATOR (8-step CV sequence)
+  // ==========================================
+  const moogGrid = document.getElementById('moogGrid');
+  const moogSteps = [];
+  for (let i=0; i<8; i++) {
+    const col = document.createElement('div'); col.className = 'slider-col';
+    const track = document.createElement('div'); track.className = 'slider-track';
+    const fill = document.createElement('div'); fill.className = 'slider-fill';
+    const handle = document.createElement('div'); handle.className = 'slider-handle';
+    
+    // Random initial values
+    let val = Math.random();
+    fill.style.height = (val * 100) + '%';
+    handle.style.bottom = (val * 100) + '%';
+    
+    // Drag logic
+    let isDragging = false;
+    const updateVal = (e) => {
+      const rect = track.getBoundingClientRect();
+      const y = e.clientY || (e.touches && e.touches[0].clientY);
+      let p = 1 - ((y - rect.top) / rect.height);
+      p = Math.max(0, Math.min(1, p));
+      val = p;
+      fill.style.height = (val * 100) + '%';
+      handle.style.bottom = (val * 100) + '%';
+      moogSteps[i].val = val;
+    };
+    track.addEventListener('mousedown', (e) => { isDragging=true; updateVal(e); });
+    document.addEventListener('mousemove', (e) => { if(isDragging) updateVal(e); });
+    document.addEventListener('mouseup', () => isDragging=false);
+    track.addEventListener('touchstart', (e) => { isDragging=true; updateVal(e); }, {passive:false});
+    document.addEventListener('touchmove', (e) => { if(isDragging) updateVal(e); }, {passive:false});
+    document.addEventListener('touchend', () => isDragging=false);
+    
+    track.appendChild(fill); track.appendChild(handle);
+    col.appendChild(track); moogGrid.appendChild(col);
+    moogSteps.push({ el: col, val: val });
+  }
+
+  let moogOn = false;
+  let moogIdx = 0;
+  let moogTimer;
+  function toggleMoog() {
+    getAC();
+    const btn = document.getElementById('btnMoog');
+    if (!moogOn) {
+      moogOn = true; btn.textContent = '⏹ STOP'; btn.style.background = 'var(--midi)';
+      moogTimer = setInterval(moogTick, 250);
+    } else {
+      moogOn = false; btn.textContent = '▶ INICIAR SECUENCIA'; btn.style.background = 'var(--play)';
+      clearInterval(moogTimer);
+      moogSteps.forEach(s => s.el.classList.remove('active'));
+    }
+  }
+
+  function moogTick() {
+    const ac = getAC();
+    moogSteps.forEach(s => s.el.classList.remove('active'));
+    const step = moogSteps[moogIdx];
+    step.el.classList.add('active');
+    
+    // Play synth beep (frequency based on slider)
+    const freq = 110 + (step.val * 400); // 110Hz to 510Hz
+    const osc = ac.createOscillator();
+    const filter = ac.createBiquadFilter();
+    const gain = ac.createGain();
+    
+    osc.type = 'sawtooth';
+    osc.frequency.value = freq;
+    filter.type = 'lowpass';
+    filter.frequency.value = freq * 1.5;
+    
+    gain.gain.setValueAtTime(0, ac.currentTime);
+    gain.gain.linearRampToValueAtTime(0.3, ac.currentTime + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.2);
+    
+    osc.connect(filter); filter.connect(gain); gain.connect(ac.destination);
+    osc.start(); osc.stop(ac.currentTime + 0.25);
+    
+    moogIdx = (moogIdx + 1) % 8;
+  }
+
+  // ==========================================
+  // DRUM MACHINE (808 Simulator)
+  // ==========================================
+  const drumGrid = document.getElementById('drumGrid');
+  const dInsts = [{id:'k',lbl:'KICK',c:'var(--kick)'}, {id:'s',lbl:'SNARE',c:'var(--snare)'}, {id:'h',lbl:'HAT',c:'var(--hat)'}];
+  const dPads = [];
+  
+  dInsts.forEach(inst => {
+    const lbl = document.createElement('div'); lbl.className = 'seq-label'; lbl.textContent = inst.lbl; lbl.style.color = inst.c;
+    drumGrid.appendChild(lbl);
+    for(let i=0; i<8; i++) {
+      const p = document.createElement('div'); p.className = 'seq-pad ' + inst.id;
+      // Pre-fill a classic house beat
+      if(inst.id==='k' && (i===0 || i===4)) p.classList.add('on');
+      if(inst.id==='s' && i===4) p.classList.add('on');
+      if(inst.id==='h' && (i===2 || i===6)) p.classList.add('on');
+      
+      p.onclick = () => p.classList.toggle('on');
+      drumGrid.appendChild(p);
+      dPads.push({ el:p, inst:inst.id, step:i });
+    }
+  });
+
+  let drumOn = false;
+  let drumIdx = 0;
+  let drumTimer;
+  function toggleDrum() {
+    getAC();
+    const btn = document.getElementById('btnDrum');
+    if (!drumOn) {
+      drumOn = true; btn.textContent = '⏹ STOP BEAT'; btn.style.background = 'var(--kick)';
+      drumTimer = setInterval(drumTick, 200);
+    } else {
+      drumOn = false; btn.textContent = '▶ PLAY BEAT'; btn.style.background = 'var(--play)';
+      clearInterval(drumTimer);
+      dPads.forEach(p => p.el.classList.remove('playing'));
+    }
+  }
+
+  function drumHit(type, t) {
+    const ac = getAC();
+    if (type === 'k') {
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(40, t+0.1);
+      g.gain.setValueAtTime(1, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.3);
+      o.connect(g); g.connect(ac.destination); o.start(t); o.stop(t+0.3);
+    } else if (type === 'h') {
+      const b = ac.createBuffer(1, ac.sampleRate*0.05, ac.sampleRate), d = b.getChannelData(0);
+      for(let i=0; i<d.length; i++) d[i] = Math.random()*2-1;
+      const s = ac.createBufferSource(), f = ac.createBiquadFilter(), g = ac.createGain();
+      s.buffer = b; f.type = 'highpass'; f.frequency.value = 7000;
+      g.gain.setValueAtTime(0.4, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.05);
+      s.connect(f); f.connect(g); g.connect(ac.destination); s.start(t);
+    } else if (type === 's') {
+      const b = ac.createBuffer(1, ac.sampleRate*0.1, ac.sampleRate), d = b.getChannelData(0);
+      for(let i=0; i<d.length; i++) d[i] = Math.random()*2-1;
+      const s = ac.createBufferSource(), f = ac.createBiquadFilter(), g = ac.createGain();
+      s.buffer = b; f.type = 'highpass'; f.frequency.value = 1000;
+      g.gain.setValueAtTime(1, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.1);
+      s.connect(f); f.connect(g); g.connect(ac.destination); s.start(t);
+    }
+  }
+
+  function drumTick() {
+    const ac = getAC();
+    dPads.forEach(p => {
+      p.el.classList.remove('playing');
+      if (p.step === drumIdx) {
+        p.el.classList.add('playing');
+        if (p.el.classList.contains('on')) drumHit(p.inst, ac.currentTime);
+      }
+    });
+    drumIdx = (drumIdx + 1) % 8;
+  }
+</script>
 </body>
 </html>
