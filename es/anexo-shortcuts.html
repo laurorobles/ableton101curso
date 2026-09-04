@@ -74,6 +74,7 @@
 <div class="filter-bar">
   <input type="text" id="searchInput" class="search-box" placeholder="🔍 Buscar shortcut (ej. 'Consolidar' o 'Cmd + J')..." onkeyup="applyFilters()">
   
+  
   <div class="filter-group" id="catFilters">
     <h3>Categoría</h3>
     <button class="btn-filter active" onclick="setCatFilter('all', this)">Todos</button>
@@ -86,6 +87,20 @@
     <button class="btn-filter" onclick="setCatFilter('warping', this)">Warping</button>
     <button class="btn-filter" onclick="setCatFilter('exportación', this)">Exportación</button>
   </div>
+  
+  <div class="filter-group" id="clsFilters" style="margin-top: 1rem;">
+    <h3>Clase Visto</h3>
+    <button class="btn-filter active" onclick="setClsFilter('all', this)">Todas</button>
+    <button class="btn-filter" onclick="setClsFilter('c1', this)">Clase 1</button>
+    <button class="btn-filter" onclick="setClsFilter('c2', this)">Clase 2</button>
+    <button class="btn-filter" onclick="setClsFilter('c3', this)">Clase 3</button>
+    <button class="btn-filter" onclick="setClsFilter('c4', this)">Clase 4</button>
+    <button class="btn-filter" onclick="setClsFilter('c5', this)">Clase 5</button>
+    <button class="btn-filter" onclick="setClsFilter('c8', this)">Clase 8</button>
+    <button class="btn-filter" onclick="setClsFilter('c15', this)">Clase 15</button>
+    <button class="btn-filter" onclick="setClsFilter('cgen', this)">Uso General</button>
+  </div>
+
 </div>
 
 <div class="grid" id="scGrid">
