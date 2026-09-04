@@ -29,6 +29,7 @@
     .btn-warp{background:var(--warp-accent);color:#000}
     .btn-cc{background:var(--cc);color:#fff}
     .split{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;width:100%}
+    .split > .panel { min-width: 0; overflow: hidden; }
     .panel{background:var(--surface);border:3px solid var(--border);border-radius:20px;padding:2.5rem;box-shadow:0 8px 24px rgba(0,0,0,.04)}
     .analogy{margin-top:1.5rem;padding:1.2rem 1.5rem;background:#F0F4F8;border-left:6px solid #CBD5E1;font-size:1.2rem;border-radius:0 10px 10px 0}
     .row{display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
@@ -138,10 +139,10 @@
     #ccKnob:active{cursor:grabbing}
 
     /* Qwerty Keyboard */
-    .qwerty-wrap { background:#E6E6E6; border-radius:12px; padding:2rem 1.5rem; display:flex; flex-direction:column; gap:8px; font-family:sans-serif; margin-top:2.5rem; position:relative; box-shadow:inset 0 0 0 2px #d0d0d0; }
+    .qwerty-wrap { background:#E6E6E6; border-radius:12px; padding:1.5rem 1rem; display:flex; flex-direction:column; gap:8px; font-family:sans-serif; margin-top:1.5rem; position:relative; box-shadow:inset 0 0 0 2px #d0d0d0; width: 100%; max-width: 440px; margin-left: auto; margin-right: auto; }
     .qwerty-row { display:flex; justify-content:center; gap:8px; }
-    .qk { width:52px; height:52px; border-radius:10px; display:flex; flex-direction:column; justify-content:space-between; padding:4px 6px; font-weight:800; font-size:1.1rem; box-shadow:0 4px 0 rgba(0,0,0,0.1); position:relative; }
-    .qk span { align-self:center; font-size:1.6rem; color:#fff; text-shadow:0 1px 2px rgba(0,0,0,0.2); line-height:1; }
+    .qk { width:42px; height:42px; border-radius:8px; display:flex; flex-direction:column; justify-content:space-between; padding:3px 4px; font-weight:800; font-size:0.9rem; box-shadow:0 3px 0 rgba(0,0,0,0.1); position:relative; }
+    .qk span { align-self:center; font-size:1.2rem; color:#fff; text-shadow:0 1px 2px rgba(0,0,0,0.2); line-height:1; }
     .qk-top { font-size:0.7rem; position:absolute; top:4px; left:6px; color:#444; }
     
     .qk-gray { background:#ccc; }
@@ -149,14 +150,14 @@
     .qk-orange span { color:#fff; }
     .qk-blue { background:#66C2D9; justify-content:center; align-items:center; }
     .qk-red { background:#EF5350; justify-content:center; align-items:center; }
-    .qk-arrow { font-size:1.5rem; color:#fff; }
+    .qk-arrow { font-size:1.2rem; color:#fff; }
     
     .q-lbl { position:absolute; bottom:-25px; font-size:0.8rem; font-weight:800; letter-spacing:1px; color:#000; }
     
     /* ── Toast ── */
     #toast{position:fixed;bottom:40px;left:50%;transform:translateX(-50%) translateY(160px);background:var(--text);color:#fff;padding:1.2rem 2.5rem;border-radius:100px;font-size:1.4rem;font-weight:bold;z-index:9999;transition:transform .4s cubic-bezier(.175,.885,.32,1.275);box-shadow:0 20px 40px rgba(0,0,0,.25);max-width:640px;text-align:center}
     #toast.show{transform:translateX(-50%) translateY(0)}
-    header { text-align:center; padding:4rem 2rem; border-radius:24px; border:2px solid var(--border); margin-bottom:4rem; background:var(--surface); }
+    header { text-align:center; padding:4rem 2rem; border-radius:24px; border:2px solid var(--border); margin: 0 auto 4rem auto; background:var(--surface); }
 
     .m-final { background:#111; color:#fff; padding:4rem; border-radius:24px; margin-top:4rem; max-width:1000px; margin:4rem auto; }
     .m-final h2 { color:#fff; }
@@ -185,12 +186,12 @@
     @media (max-width: 900px) {
       .split { grid-template-columns: 1fr !important; }
       body { padding: 2rem 5%; }
-      .qwerty-wrap { transform: scale(0.9) !important; transform-origin: left center !important; }
-      #pianoMount { transform: scale(0.9) !important; transform-origin: left center !important; }
+      .qwerty-wrap { zoom: 0.8 !important; }
+      #pianoMount { zoom: 0.8 !important; }
     }
     @media (max-width: 600px) {
-      .qwerty-wrap { transform: scale(0.65) !important; transform-origin: left center !important; margin-bottom: -5rem !important; }
-      #pianoMount { transform: scale(0.65) !important; transform-origin: left center !important; margin-bottom: -30px !important; }
+      .qwerty-wrap { zoom: 0.6 !important; }
+      #pianoMount { zoom: 0.6 !important; }
     }
 </style>
 
@@ -366,7 +367,7 @@
 
 
 <!-- M-INTERFAZ: RADIOGRAFÍA -->
-<section id="m-interfaz" style="background:#1c1c1c; color:#fff">
+<section id="m-interfaz" style="background:#1c1c1c; color:#fff; padding:4rem 3rem; border-radius:24px; box-sizing:border-box; margin: 0 auto 4rem auto;">
   <div class="tag" style="background:#444; color:#fff">Familiarización</div>
   <h2 style="color:#fff">Radiografía de Ableton Live</h2>
   <p class="sub" style="color:#aaa">Pasa el mouse sobre las diferentes zonas de esta interfaz simplificada para descubrir cómo está organizado el DAW.</p>
@@ -432,12 +433,12 @@
   <div class="split">
 
     <div class="panel">
-      <h3>Mensajes de Nota (Note On / Off)</h3>
-      <p style="color:var(--muted);margin-bottom:1.5rem">Toca las teclas — mantén presionado.</p>
-      <div id="pianoMount" style="transform: scale(0.8); transform-origin: top center; margin-bottom:-20px;"></div>
+      <h3 style="text-align:center;">Mensajes de Nota (Note On / Off)</h3>
+      <p style="color:var(--muted);margin-bottom:1.5rem;text-align:center;">Toca las teclas — mantén presionado.</p>
+      <div id="pianoMount" style="width:100%; max-width:444px; margin: 0 auto; zoom:0.85;"></div>
       
       <!-- Teclado de computadora QWERTY -->
-      <div class="qwerty-wrap" style="transform: scale(0.75); transform-origin: top center; margin-bottom: -4rem;">
+      <div class="qwerty-wrap" style="zoom:0.9;">
         <h4 style="font-size:1rem; text-align:center; margin-bottom:0.5rem">Activa el Teclado de tu compu con <kbd style="background:#000;color:#fff;padding:2px 6px;border-radius:4px">M</kbd></h4>
         <div class="qwerty-row">
           <div class="qk qk-gray"><div class="qk-top">Q</div></div>
@@ -484,8 +485,8 @@
     </div>
 
     <div class="panel">
-      <h3 class="t-cc">Mensajes CC (Control Change)</h3>
-      <p style="color:var(--muted);margin-bottom:1.5rem">Arrastra la perilla hacia arriba/abajo.</p>
+      <h3 class="t-cc" style="text-align:center;">Mensajes CC (Control Change)</h3>
+      <p style="color:var(--muted);margin-bottom:1.5rem;text-align:center;">Arrastra la perilla hacia arriba/abajo.</p>
       <div class="knob-wrap">
         <div class="cc-num" id="ccNum">64</div>
         <svg id="ccKnob" width="190" height="190" viewBox="0 0 190 190">
@@ -733,7 +734,7 @@ function loadBellWav() {
   const statusEl = document.getElementById('audioStatus');
   statusEl.textContent = 'Descargando audio...';
   
-  return fetch('../assets/bell.wav')
+  return fetch('../assets/bell.wav?v=2')
     .then(res => {
       if(!res.ok) throw new Error('HTTP error ' + res.status);
       return res.arrayBuffer();
