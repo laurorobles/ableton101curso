@@ -409,6 +409,90 @@
   </style>
 
   
+
+<!-- M5: EL IDIOMA MIDI ──────────────── -->
+<section id="m5">
+  <div class="tag t-midi">Módulo 05</div>
+  <h2>🎹 El Idioma MIDI a Profundidad</h2>
+  <p class="sub">El MIDI hace principalmente dos cosas: tocar notas y mover perillas. Así es como se ven.</p>
+  <div class="split">
+
+    <div class="panel">
+      <h3>Mensajes de Nota (Note On / Off)</h3>
+      <p style="color:var(--muted);margin-bottom:1.5rem">Toca las teclas — mantén presionado.</p>
+      <div id="pianoMount"></div>
+      
+      <!-- Teclado de computadora QWERTY -->
+      <div class="qwerty-wrap">
+        <h4 style="font-size:1rem; text-align:center; margin-bottom:0.5rem">Activa el Teclado de tu compu con <kbd style="background:#000;color:#fff;padding:2px 6px;border-radius:4px">M</kbd></h4>
+        <div class="qwerty-row">
+          <div class="qk qk-gray"><div class="qk-top">Q</div></div>
+          <div class="qk qk-orange"><div class="qk-top">W</div><span>C#</span></div>
+          <div class="qk qk-orange"><div class="qk-top">E</div><span>D#</span></div>
+          <div class="qk qk-gray"><div class="qk-top">R</div></div>
+          <div class="qk qk-orange"><div class="qk-top">T</div><span>F#</span></div>
+          <div class="qk qk-orange"><div class="qk-top">Y</div><span>G#</span></div>
+          <div class="qk qk-orange"><div class="qk-top">U</div><span>A#</span></div>
+          <div class="qk qk-gray"><div class="qk-top">I</div></div>
+          <div class="qk qk-orange"><div class="qk-top">O</div><span>C#</span></div>
+          <div class="qk qk-gray"><div class="qk-top">P</div></div>
+        </div>
+        <div class="qwerty-row" style="margin-left:20px;">
+          <div class="qk qk-orange"><div class="qk-top">A</div><span>C</span></div>
+          <div class="qk qk-orange"><div class="qk-top">S</div><span>D</span></div>
+          <div class="qk qk-orange"><div class="qk-top">D</div><span>E</span></div>
+          <div class="qk qk-orange"><div class="qk-top">F</div><span>F</span></div>
+          <div class="qk qk-orange"><div class="qk-top">G</div><span>G</span></div>
+          <div class="qk qk-orange"><div class="qk-top">H</div><span>A</span></div>
+          <div class="qk qk-orange"><div class="qk-top">J</div><span>B</span></div>
+          <div class="qk qk-orange"><div class="qk-top">K</div><span>C</span></div>
+          <div class="qk qk-orange"><div class="qk-top">L</div><span>D</span></div>
+        </div>
+        <div class="qwerty-row" style="margin-top:10px; padding-left:10px; position:relative;">
+          <div style="position:relative; display:flex; gap:8px;">
+            <div class="qk qk-blue"><div class="qk-top">Z</div><span class="qk-arrow">▼</span></div>
+            <div class="qk qk-blue"><div class="qk-top">X</div><span class="qk-arrow">▲</span></div>
+            <div style="position:absolute; bottom:-25px; width:100%; text-align:center; font-size:0.8rem; font-weight:800; letter-spacing:1px;">OCTAVE</div>
+          </div>
+          
+          <div style="position:relative; display:flex; gap:8px; margin-left:5px;">
+            <div class="qk qk-red"><div class="qk-top">C</div><span class="qk-arrow">▼</span></div>
+            <div class="qk qk-red"><div class="qk-top">V</div><span class="qk-arrow">▲</span></div>
+            <div style="position:absolute; bottom:-25px; width:100%; text-align:center; font-size:0.8rem; font-weight:800; letter-spacing:1px;">VELOCITY</div>
+          </div>
+          
+          <div class="qk qk-gray" style="margin-left:5px;"><div class="qk-top">B</div></div>
+          <div class="qk qk-gray"><div class="qk-top">N</div></div>
+          <div class="qk qk-gray"><div class="qk-top">M</div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="panel">
+      <h3 class="t-cc">Mensajes CC (Control Change)</h3>
+      <p style="color:var(--muted);margin-bottom:1.5rem">Arrastra la perilla hacia arriba/abajo.</p>
+      <div class="knob-wrap">
+        <div class="cc-num" id="ccNum">64</div>
+        <svg id="ccKnob" width="190" height="190" viewBox="0 0 190 190">
+          <circle cx="95" cy="95" r="80" fill="#E5E7EB" stroke="#D1D5DB" stroke-width="4"/>
+          <path id="ccArc" fill="none" stroke="#8800DD" stroke-width="14" stroke-linecap="round"/>
+          <circle cx="95" cy="95" r="40" fill="#6B7280"/>
+          <circle cx="95" cy="95" r="34" fill="#4B5563"/>
+          <line id="ccLine" x1="95" y1="95" x2="95" y2="24" stroke="#fff" stroke-width="8" stroke-linecap="round"/>
+        </svg>
+        <p style="font-size:1rem;color:var(--muted)">Valor CC: 0 – 127</p>
+      </div>
+      <div class="analogy" style="border-left-color:var(--cc)">
+        <strong>🕹 Como el Joystick del control.</strong><br>
+        Movimiento suave y continuo del 0 al 127. Ideal para filtros, volumen, etc.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
 <!-- MÓDULO FINAL ESTANDARIZADO -->
 
 <div class="m-final">
