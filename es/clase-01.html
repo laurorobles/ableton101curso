@@ -507,6 +507,88 @@
 </section>
 
 
+
+<!-- M6: SYNTH VS DRUM MACHINE ──────────────── -->
+<section id="m6">
+  <div class="tag t-audio">Módulo 06</div>
+  <h2>Sintetizadores vs. Cajas de Ritmos</h2>
+  <p class="sub">Las dos herramientas más icónicas de la producción electrónica. ¿En qué se diferencian?</p>
+  <div class="split">
+
+    <div class="panel">
+      <h3 style="color:#FF0055">🎹 Sintetizadores</h3>
+      <p style="color:var(--muted);margin-bottom:1rem">Generan melodías, acordes y bajos.</p>
+      <div style="background:#111;border-radius:10px;padding:1.5rem;color:#fff;text-align:center;margin-bottom:1.5rem;">
+        <div style="display:flex; justify-content:center; gap:30px; font-size:3rem; margin-bottom:0.5rem; user-select:none;">
+           <div onclick="playSynth('sine')" style="cursor:pointer; transition:transform 0.1s" onmousedown="popPad(this)" title="Onda Senoidal (Sine)">∿</div>
+           <div onclick="playSynth('square')" style="cursor:pointer; transition:transform 0.1s" onmousedown="popPad(this)" title="Onda Cuadrada (Square)">⎍</div>
+           <div onclick="playSynth('sawtooth')" style="cursor:pointer; transition:transform 0.1s" onmousedown="popPad(this)" title="Onda Sierra (Sawtooth)">◿</div>
+        </div>
+        <div style="font-size:0.9rem;color:#aaa">Haz clic en las ondas para escuchar los osciladores</div>
+      </div>
+      <p style="font-size:1.1rem">Están diseñados para tocar <strong>notas musicales</strong> a diferentes alturas. Usan osciladores (ondas) para crear y esculpir el sonido desde cero.</p>
+      <div class="analogy" style="border-left-color:#FF0055">
+        <strong style="color:#FF0055">Ejemplos Clave (Haz clic):</strong><br><br>
+        <a href="javascript:void(0)" onclick="showImg('moog')" style="color:var(--text);font-weight:bold;text-decoration:none;">• Moog Minimoog (Bajos clásicos)</a>
+        <div id="imgMoog" style="display:none;margin-top:10px"><img src="../assets/minimoog.jpg" style="width:100%;border-radius:8px;"></div>
+        <br><br>
+        <a href="javascript:void(0)" onclick="showImg('ms20')" style="color:var(--text);font-weight:bold;text-decoration:none;">• Korg MS-20 (Sonido agresivo y modular)</a>
+        <div id="imgMs20" style="display:none;margin-top:10px"><img src="../assets/ms20.jpg" style="width:100%;border-radius:8px;"></div>
+        <br><br>
+        <a href="javascript:void(0)" onclick="showImg('dx7')" style="color:var(--text);font-weight:bold;text-decoration:none;">• Yamaha DX7 (Síntesis FM de los 80s)</a>
+        <div id="imgDx7" style="display:none;margin-top:10px"><img src="../assets/dx7.jpg" style="width:100%;border-radius:8px;"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 style="color:#0055FF">🥁 Cajas de Ritmos (Drum Machines)</h3>
+      <p style="color:var(--muted);margin-bottom:1rem">Generan percusiones y beats.</p>
+      <div style="background:#111;border-radius:10px;padding:1.5rem;color:#fff;text-align:center;margin-bottom:1.5rem;display:flex;flex-direction:column;align-items:center;gap:10px;">
+        <div style="display:flex;gap:15px; user-select:none;">
+          <div onclick="drumHit('kick')" onmousedown="popPad(this)" style="width:60px;height:60px;background:var(--audio);border-radius:8px;box-shadow:inset 0 0 0 2px #fff; display:flex; align-items:center; justify-content:center; font-size:2rem; transition:transform 0.1s; cursor:pointer;">🥁</div>
+          <div onclick="drumHit('snare')" onmousedown="popPad(this)" style="width:60px;height:60px;background:var(--midi);border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:2rem; transition:transform 0.1s; cursor:pointer;">🪘</div>
+          <div onclick="drumHit('hat')" onmousedown="popPad(this)" style="width:60px;height:60px;background:var(--play);border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:2rem; transition:transform 0.1s; cursor:pointer;">🔔</div>
+        </div>
+        <div style="font-size:0.9rem;color:#aaa">Toca los pads para disparar golpes cortos (Kick, Snare, Hat)</div>
+      </div>
+      <p style="font-size:1.1rem">Están diseñadas para secuenciar <strong>golpes percusivos</strong>. Cada botón (Pad) dispara un sonido diferente, ya sea sintetizado o sampleado.</p>
+      <div class="analogy" style="border-left-color:#0055FF">
+        <strong style="color:#0055FF">Ejemplos Clave (Haz clic):</strong><br><br>
+        <a href="javascript:void(0)" onclick="showImg('tr808')" style="color:var(--text);font-weight:bold;text-decoration:none;">• Roland TR-808 (Trap / Reggaeton)</a>
+        <div id="img808" style="display:none;margin-top:10px"><img src="../assets/tr808.jpg" style="width:100%;border-radius:8px;background:#fff;padding:10px;"></div>
+        <br><br>
+        <a href="javascript:void(0)" onclick="showImg('mpc')" style="color:var(--text);font-weight:bold;text-decoration:none;">• Akai MPC2000 (Sampleo / Hip Hop Clásico)</a>
+        <div id="imgMpc" style="display:none;margin-top:10px"><img src="../assets/mpc.jpg" style="width:100%;border-radius:8px;background:#fff;padding:10px;"></div>
+        <br><br>
+        <a href="javascript:void(0)" onclick="showImg('linndrum')" style="color:var(--text);font-weight:bold;text-decoration:none;">• LinnDrum (Pop / Synthwave 80s)</a>
+        <div id="imgLinndrum" style="display:none;margin-top:10px"><img src="../assets/linndrum.jpg" style="width:100%;border-radius:8px;background:#fff;padding:10px;"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- M7: TU PRIMER BEAT ──────────────────── -->
+<section id="m7" style="background:var(--surface)">
+  <div class="tag t-play">Módulo 07</div>
+  <h2>Tu Primer Beat</h2>
+  <p class="sub">Activa los cuadros y presiona Play para escuchar tu ritmo.</p>
+  <div class="seq-wrap">
+    <div class="seq-grid" id="seqGrid"></div>
+    <div class="row">
+      <button class="btn btn-play" id="btnSeq" onclick="toggleSeq()" style="font-size:1.8rem;padding:1rem 2.5rem">▶ PLAY BEAT</button>
+      <button class="btn btn-outline" onclick="clearSeq()">🗑 Limpiar</button>
+      <button class="btn btn-outline" onclick="loadBeat()">🥁 Cargar Ritmo</button>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:1rem;font-size:1.3rem;font-weight:bold">
+        Tempo:
+        <input type="range" min="60" max="180" value="120" id="bpmSlider" oninput="updateBPM(this.value)"
+               style="width:180px;height:10px;accent-color:var(--play)">
+        <span id="bpmVal" class="t-play">120</span> BPM
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- MÓDULO FINAL ESTANDARIZADO -->
 
 <div class="m-final">
@@ -644,45 +726,31 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+
+let bellArrayBuffer = null;
+
 function loadBellWav() {
   const statusEl = document.getElementById('audioStatus');
-  return new Promise(resolve => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', '../assets/bell.wav', true);
-    xhr.responseType = 'arraybuffer';
-    xhr.onload = function() {
-      if ((xhr.status === 200 || xhr.status === 0) && xhr.response) {
-        const ac = getAC();
-        ac.decodeAudioData(
-          xhr.response,
-          function(decoded) {
-            bellBuffer = decoded;
-            statusEl.textContent = 'bell.wav listo (' + decoded.duration.toFixed(1) + 's)';
-            statusEl.style.color = 'var(--play)';
-            resolve(true);
-          },
-          function() {
-            statusEl.textContent = 'No se pudo decodificar bell.wav — usando sonido sintético';
-            statusEl.style.color = 'var(--danger)';
-            bellBuffer = generateSyntheticBell(getAC());
-            resolve(false);
-          }
-        );
-      } else {
-        statusEl.textContent = 'bell.wav no encontrado — usando sonido sintético';
-        statusEl.style.color = 'var(--muted)';
-        bellBuffer = generateSyntheticBell(getAC());
-        resolve(false);
-      }
-    };
-    xhr.onerror = function() {
-      statusEl.textContent = 'Modo sin archivo — usando campana sintética';
-      statusEl.style.color = 'var(--muted)';
+  statusEl.textContent = 'Descargando audio...';
+  
+  return fetch('../assets/bell.wav')
+    .then(res => {
+      if(!res.ok) throw new Error('HTTP error ' + res.status);
+      return res.arrayBuffer();
+    })
+    .then(ab => {
+      bellArrayBuffer = ab;
+      statusEl.textContent = 'bell.wav listo (haz clic en Play para activar)';
+      statusEl.style.color = 'var(--play)';
+      return true;
+    })
+    .catch(e => {
+      console.warn("No se pudo cargar bell.wav:", e);
+      statusEl.textContent = 'bell.wav no encontrado — usando sonido sintético';
+      statusEl.style.color = 'var(--danger)';
       bellBuffer = generateSyntheticBell(getAC());
-      resolve(false);
-    };
-    xhr.send();
-  });
+      return false;
+    });
 }
 
 function generateSyntheticBell(ac) {
@@ -735,22 +803,30 @@ function applyEQ() {
   wColor = m.color;
 }
 
+
 function toggleAudio() {
   const btn = document.getElementById('btnAudio');
   if (audPlaying) {
     stopAudioPipeline();
     audPlaying = false;
     btn.textContent = '▶ Play Audio';
-    btn.style.background = 'var(--audio)';
+    btn.style.background = 'var(--play)';
+    msg('⏹ Audio detenido.', 'var(--muted)', '#fff');
   } else {
-    if (!bellBuffer) {
-      btn.textContent = '⏳ Cargando…';
-      loadBellWav().then(() => {
+    if (!bellBuffer && bellArrayBuffer) {
+      // Decode audio on first click (satisfies AutoPlay policy)
+      getAC().decodeAudioData(bellArrayBuffer, (decoded) => {
+        bellBuffer = decoded;
         startAudioPipeline();
         audPlaying = true;
         btn.textContent = '⏹ Stop Audio';
         btn.style.background = 'var(--danger)';
         msg('🔊 Reproduciendo audio en loop.', 'var(--audio)');
+      }, (e) => {
+        msg('❌ Error decodificando audio.', 'var(--danger)');
+        bellBuffer = generateSyntheticBell(getAC());
+        startAudioPipeline();
+        audPlaying = true;
       });
     } else {
       startAudioPipeline();
@@ -761,6 +837,7 @@ function toggleAudio() {
     }
   }
 }
+
 
 function cycleEQ() {
   eqIdx = (eqIdx + 1) % EQ_MODES.length;
@@ -1135,6 +1212,54 @@ function stopDrone() {
   setTimeout(()=>{try{ref.stop();}catch(e){}},150);
 }
 renderKnob(64);
+
+
+/* ═══════════════════════════════════════════════════
+   M6 & M7 — SECUENCIADOR Y DRUM MACHINE
+═══════════════════════════════════════════════════ */
+const seqGrid = document.getElementById('seqGrid');
+[{id:'kick',label:'🥁 Kick',cls:'kick'},{id:'snare',label:'🪘 Snare',cls:'snare'},{id:'hat',label:'🔔 Hi-Hat',cls:'hat'}]
+.forEach(ins => {
+  const lbl = document.createElement('div'); lbl.className='seq-lbl'; lbl.textContent=ins.label; seqGrid.appendChild(lbl);
+  for (let i=0;i<8;i++) {
+    const p = document.createElement('div'); p.className=`seq-pad ${ins.cls}`;
+    p.dataset.inst=ins.id; p.dataset.step=i; p.onclick=()=>p.classList.toggle('on'); seqGrid.appendChild(p);
+  }
+});
+let seqOn=false, seqSt=0, seqBPM=120, seqIv;
+function updateBPM(v) { seqBPM=+v; document.getElementById('bpmVal').textContent=v; if(seqOn){clearInterval(seqIv);seqIv=setInterval(seqTick,60000/seqBPM/2);} }
+function toggleSeq() {
+  getAC(); const btn=document.getElementById('btnSeq');
+  if (!seqOn) { seqOn=true; btn.textContent='⏹ STOP BEAT'; btn.style.background='var(--danger)'; seqIv=setInterval(seqTick,60000/seqBPM/2); }
+  else { seqOn=false; btn.textContent='▶ PLAY BEAT'; btn.style.background='var(--play)'; clearInterval(seqIv); document.querySelectorAll('.seq-pad').forEach(p=>p.classList.remove('playing')); seqSt=0; }
+}
+function seqTick() {
+  document.querySelectorAll('.seq-pad').forEach(p=>p.classList.remove('playing'));
+  document.querySelectorAll(`.seq-pad[data-step="${seqSt}"]`).forEach(p=>{ p.classList.add('playing'); if(p.classList.contains('on')) drumHit(p.dataset.inst); });
+  seqSt=(seqSt+1)%8;
+}
+function clearSeq() { document.querySelectorAll('.seq-pad').forEach(p=>p.classList.remove('on')); }
+function loadBeat() {
+  clearSeq();
+  [{i:'kick',s:0},{i:'kick',s:4},{i:'snare',s:2},{i:'snare',s:6},...Array.from({length:8},(_,s)=>({i:'hat',s}))]
+  .forEach(({i,s})=>{ document.querySelector(`.seq-pad[data-inst="${i}"][data-step="${s}"]`)?.classList.add('on'); });
+}
+function drumHit(t) {
+  const ac=getAC(), n=ac.currentTime;
+  if (t==='kick') {
+    const o=ac.createOscillator(),g=ac.createGain();
+    o.frequency.setValueAtTime(150,n); o.frequency.exponentialRampToValueAtTime(40,n+.1);
+    g.gain.setValueAtTime(1,n); g.gain.exponentialRampToValueAtTime(.001,n+.3);
+    o.connect(g); g.connect(ac.destination); o.start(n); o.stop(n+.3);
+  } else {
+    const sz=t==='snare'?.1:.04, buf=ac.createBuffer(1,ac.sampleRate*sz,ac.sampleRate), d=buf.getChannelData(0);
+    for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+    const ns=ac.createBufferSource(); ns.buffer=buf;
+    const f=ac.createBiquadFilter(); f.type='highpass'; f.frequency.value=t==='snare'?1000:7000;
+    const g=ac.createGain(); g.gain.setValueAtTime(t==='snare'?1:.4,n); g.gain.exponentialRampToValueAtTime(.001,n+sz);
+    ns.connect(f); f.connect(g); g.connect(ac.destination); ns.start(n);
+  }
+}
 
 /* ─── Carga de bell.wav al inicio ─────── */
 function failAudioChange() {
