@@ -422,6 +422,8 @@
 
   
 
+</section>
+
 <!-- M5: EL IDIOMA MIDI ──────────────── -->
 <section id="m5">
   <div class="tag t-midi">Módulo 05</div>
@@ -1024,53 +1026,6 @@ function drawLine(id1, id2, color, lineId) {
       line.style.strokeDashoffset = '0';
     });
   });
-}
-
-/* ═══════════════════════════════════════════════════
-   M4 — SECUENCIADOR
-═══════════════════════════════════════════════════ */
-const seqGrid = document.getElementById('seqGrid');
-[{id:'kick',label:'🥁 Kick',cls:'kick'},{id:'snare',label:'🪘 Snare',cls:'snare'},{id:'hat',label:'🔔 Hi-Hat',cls:'hat'}]
-.forEach(ins => {
-  const lbl = document.createElement('div'); lbl.className='seq-lbl'; lbl.textContent=ins.label; seqGrid.appendChild(lbl);
-  for (let i=0;i<8;i++) {
-    const p = document.createElement('div'); p.className=`seq-pad ${ins.cls}`;
-    p.dataset.inst=ins.id; p.dataset.step=i; p.onclick=()=>p.classList.toggle('on'); seqGrid.appendChild(p);
-  }
-});
-let seqOn=false, seqSt=0, seqBPM=120, seqIv;
-function updateBPM(v) { seqBPM=+v; document.getElementById('bpmVal').textContent=v; if(seqOn){clearInterval(seqIv);seqIv=setInterval(seqTick,60000/seqBPM/2);} }
-function toggleSeq() {
-  getAC(); const btn=document.getElementById('btnSeq');
-  if (!seqOn) { seqOn=true; btn.textContent='⏹ STOP BEAT'; btn.style.background='var(--danger)'; seqIv=setInterval(seqTick,60000/seqBPM/2); }
-  else { seqOn=false; btn.textContent='▶ PLAY BEAT'; btn.style.background='var(--play)'; clearInterval(seqIv); document.querySelectorAll('.seq-pad').forEach(p=>p.classList.remove('playing')); seqSt=0; }
-}
-function seqTick() {
-  document.querySelectorAll('.seq-pad').forEach(p=>p.classList.remove('playing'));
-  document.querySelectorAll(`.seq-pad[data-step="${seqSt}"]`).forEach(p=>{ p.classList.add('playing'); if(p.classList.contains('on')) drumHit(p.dataset.inst); });
-  seqSt=(seqSt+1)%8;
-}
-function clearSeq() { document.querySelectorAll('.seq-pad').forEach(p=>p.classList.remove('on')); }
-function loadBeat() {
-  clearSeq();
-  [{i:'kick',s:0},{i:'kick',s:4},{i:'snare',s:2},{i:'snare',s:6},...Array.from({length:8},(_,s)=>({i:'hat',s}))]
-  .forEach(({i,s})=>{ document.querySelector(`.seq-pad[data-inst="${i}"][data-step="${s}"]`)?.classList.add('on'); });
-}
-function drumHit(t) {
-  const ac=getAC(), n=ac.currentTime;
-  if (t==='kick') {
-    const o=ac.createOscillator(),g=ac.createGain();
-    o.frequency.setValueAtTime(150,n); o.frequency.exponentialRampToValueAtTime(40,n+.1);
-    g.gain.setValueAtTime(1,n); g.gain.exponentialRampToValueAtTime(.001,n+.3);
-    o.connect(g); g.connect(ac.destination); o.start(n); o.stop(n+.3);
-  } else {
-    const sz=t==='snare'?.1:.04, buf=ac.createBuffer(1,ac.sampleRate*sz,ac.sampleRate), d=buf.getChannelData(0);
-    for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
-    const ns=ac.createBufferSource(); ns.buffer=buf;
-    const f=ac.createBiquadFilter(); f.type='highpass'; f.frequency.value=t==='snare'?1000:7000;
-    const g=ac.createGain(); g.gain.setValueAtTime(t==='snare'?1:.4,n); g.gain.exponentialRampToValueAtTime(.001,n+sz);
-    ns.connect(f); f.connect(g); g.connect(ac.destination); ns.start(n);
-  }
 }
 
 /* ═══════════════════════════════════════════════════
