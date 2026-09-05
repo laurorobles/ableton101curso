@@ -1276,6 +1276,18 @@
     const ph = document.getElementById('ph-' + id);
     ph.outerHTML = '<div class="iframe-container"><iframe src="https://www.youtube.com/embed/' + id + '?autoplay=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>';
   }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const grid = document.getElementById('docGrid');
+    if(grid) {
+      const cards = Array.from(grid.querySelectorAll('.doc-card'));
+      for (let i = cards.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cards[i], cards[j]] = [cards[j], cards[i]];
+      }
+      cards.forEach(card => grid.appendChild(card));
+    }
+  });
 </script>
 
 <div style="text-align:center; margin-top:3rem; font-size:0.9rem; color:var(--muted); font-weight:700;">
